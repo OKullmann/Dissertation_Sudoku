@@ -4,7 +4,7 @@
 
 \usepackage{hyperref}
 \usepackage{a4}
-
+\usepackage{subfigure}
 \usepackage{sudoku}
 \usepackage{amsmath}
 \usepackage{colortbl}
@@ -32,21 +32,33 @@
 
 \begin{document}
 
-\title{Sudoku Patterns}
-\author{Yu-Ting Lu 461467@swansea.ac.uk\\
-  Computer Science\\
-  Swansea University\\
- }
-\maketitle
+\begin{titlepage}
+\centering
+\LARGE SWANSEA UNIVERSITY\\ \vspace{40pt}
+\includegraphics[width=0.3\textwidth]{./logo}\\ \vspace{50pt}
+
+\Huge \textbf{Sudoku Patterns}\\ \vspace{70pt}
+\Large Project Dissertation submitted to the Swansea University\\ \vspace{6pt}
+in Partial Fulfilment for the Degree of Master of Science\\ \vspace{6pt}
+\large in\\ \vspace{12pt}
+Computing Science\\ \vspace{60pt}
+\large by\\ \bigskip
+Yu-Ting Lu\\ \vspace{6pt}
+461467 \\ \vspace{30pt}
+September, 2011\\ \vspace{12pt}
+\end{titlepage}
+
 
 \begin{abstract}
   XXX 2 paragraphs XXX
-The concept of this dissertation is to understand all the Candidate Elimination Techniques for solving harder Sudoku problems and evaluate the efficiency. In the report, special techniques will be explained in detail and give an example.
+In the The concept of this dissertation is to understand all the Candidate Elimination Techniques for solving harder Sudoku problems and evaluate the efficiency. In the report, special techniques will be explained in detail and give an example.
 Firstly, the briefly introduction of Sudoku puzzle will be given. Then the detail of special techniques for solving Sudoku will be discussed secondly with the theoretical examples.
 Subsequently, the implementation in all the special techniques will be practiced in coding to evaluate the applicability.
 \end{abstract}
 
+I hereby declare that I am the sole author of this thesis. This is a true copy of the thesis, including any required final revisions, as accepted by my examiners.
 
+I understand that my thesis may be made electronically available to the public.
 \tableofcontents
 
 
@@ -182,10 +194,9 @@ No matter in either way, a loop will keep running to find the most suitable rule
 \tikzstyle{block} = [rectangle, draw, fill=blue!20, 
     text width=10em, text centered, rounded corners, minimum height=2em]
 \tikzstyle{line} = [draw, -latex']
-\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm,
-    minimum height=2em]
-    
+\begin{center}   
 \begin{tikzpicture}[node distance = 2cm, auto]
+
     % Place nodes
     \node [block] (init) {A Sudoku instance};
     \node [block, below of=init] (annotated) {An annotated Sudoku instance};
@@ -202,22 +213,26 @@ No matter in either way, a loop will keep running to find the most suitable rule
     \path [line] (found) -- node {yes}(update);
     \path [line] (update) -- (highlight);
     \path [line] (highlight) -- node {yes}(stop);
+
 \end{tikzpicture}
+\end{center}
 
+There are many rules exist to be applied flexibly to solve the Sudoku puzzle among its difficulty. Generally, it classify into the two types of the rules, one is ``Direct Elimination Techniques'' and another one is ``Candidates Elimination Techniques''. Direct elimination techniques, is a method that does not have to pencil-mark all the possible candidates in the empty cells no matter the difficulty of the puzzle, and it could solve most or the problems but might not be the most efficient way to do. The requirement of this is just a pen with logical thinking brain. Candidates elimination techniques are the approach we will discuss in the  Chapter \ref{cha:Techniques}, it provides different rules that could be utilised in different situation by considering one candidate, a pair candidates, triplet candidates, or quad candidates differently.
 
-There are many rules exist to be applied flexibly to solve the Sudoku puzzle among its difficulty. To classify the rules, firstly there are divided in to two, which are ``Direct Elimination Techniques'' and ``Candidates Elimination Techniques''. Direct elimination techniques, is a method that does not have to pencil-mark all the possible candidates in the empty cells no matter the difficulty of the puzzle. All it required is a pen with logical thinking brain. It could solve most problem but might not be the most efficient way to do. In candidates elimination techniques, it provides different techniques that could be utilised in considering one candidate, a pair candidates, triplet candidates, or quad candidates differently. (\emph{Michael Mepham} has published an introductory guide teaching people how to solve a Sudoku puzzle. \cite{Mepham2005Solving})
+\emph{Berthier} also issues a concept of providing information in the different representation of Sudoku puzzle. Three other perspectives, row-number, column-number, and block-number are firstly introduced in the book (\cite{Berthier2007Sudoku}, Chapter II). Each representation are based on the standard Sudoku in the rc-view.
 
-\emph{Berthier} also issues a concept of providing information in the different representation of Sudoku puzzle. Three other perspectives, row-number, column-number, and block-number are firstly introduced in the book (\cite{Berthier2007Sudoku}, Chapter II). No matter which representation (expect block-number view is slightly different) that the Sudoku puzzle is displayed in, the information given is always same among three factors: row, column, and candidate (number). In fact, three representations which mixed and matched by the factors are compressed from six mix-match as Figure \ref{fig:mixmatch}.
+xxx keep writing. xxx
+Figure \ref{fig:mixmatch}.
 
 \begin{figure}[htbp]
 \setlength{\tabcolsep}{3pt}
 \renewcommand{\arraystretch}{2}
 \begin{center}
-\begin{tabular}{ >{\centering\arraybackslash}m{0.6in}|| >{\centering\arraybackslash}m{1.2in}|| >{\centering\arraybackslash}m{1.2in}|| >{\centering\arraybackslash}m{1.2in}||}
-\multicolumn{1}{c}{} & \multicolumn{1}{c}{row} & \multicolumn{1}{c}{column} & \multicolumn{1}{c}{number}\\ \cline{2-4}
-row & X & row-column & row-number\\ \cline{2-4}
-column & column-row \cellcolor[gray]{.8}& X& column- number\\ \cline{2-4}
-number & number-row \cellcolor[gray]{.8}& number-column \cellcolor[gray]{.8}& X\\ \cline{2-4}
+\begin{tabular}{ >{\centering\arraybackslash}m{0.6in}| >{\centering\arraybackslash}m{1.1in}| >{\centering\arraybackslash}m{1.1in}|}
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{column} & \multicolumn{1}{c}{number}\\ \cline{2-3}
+row & \textbf{row-column} & row-number\\ \cline{2-3}
+column & X& column-number\\ \cline{2-3}
+block & X & block-number \\ \cline{2-3}
 \end{tabular}
 \end{center}
 \caption{Mix-match among row, column, and number}
@@ -237,10 +252,15 @@ XXX
 
 
 \subsection{Outline}
-\label{sec:OUtline}
+\label{sec:Outline}
 
-XXX
+In the Chapter \ref{cha:basicnotnotat} will explain the basic notions and notations of this report.
 
+Chapter \ref{cha:exploitingsymm} discuss the symmetries concept by using different views.
+
+And the rule to apply on solving Sudoku will be introduced in Chapter \ref{cha:Techniques}
+
+Chapter \ref{cha:Environment} is talking about the environment for writing this technical report.
 
 
 
@@ -335,13 +355,13 @@ For an annotated instance $A$ we write $A_{i,j}$ for the content of cell $(i,j)$
 
 \begin{figure}[htbp]
 \begin{sudoku}
-|1|{\cell {}{}3{}56{}{}{}}|{\cell {}{}3{}{}67{\sout 8}{}}|2|{\cell {}{}{}{}{}6{}{\sout 8}9}|{\cell {}{}{}{}{}{}{}{\underline 8}{}}|{\cell {}{}{}{}5{}{}{\sout 8}9}|{\cell {}{}3{}{}{}{}{\sout 8}9}|4|.
-|{\cell {}2{}{}{}{}{}8{}}|9|{\cell {}{}{}{}{}{}{}{\underline 8}{}}|5|{\cell {}{}{}4{}{}{}{\sout 8}{}}|3|6| 7|{\cell 12{}{}{}{}{}8{}}|.
-|{\cell {}23{}56{}8{}}|4|{\cell {}{}3{}{}6{}8{}}|{\cell 1{}{}{}{}6{}{\sout 8}9}|7|{\cell 1{}{}{}{}{}{}{\sout 8}{}}|{\cell 12{}{}5{}{}89}|{\cell {}{}3{}{}{}{}89}|{\cell 123{}{}{}{}8{}}|.
-|{\cell {}{}3{}{}6{}8{}}|1|{\cell {}{}34{}6{}8{}}|{\cell {}{}{}4{}678{}}|{\cell {}234{}6{}8{}}|{\cell {}2{}4{}{}7{\sout 8}{}}|{\cell {}{}{}4{}{}78{}}|5|9|.
-|{\cell {}{}{}{}56{}8{}}|{\cell {}{}{}{}56{}{}{}}|2|{\cell 1{}{}4{}6789}|{\cell {}{}{}456{}89}|{\cell 1{}{}45{}7{\sout 8}{}}|3|{\cell {}{}{}4{}{}{}8{}}|{\cell 1{}{}{}{}678{}}|.
-|9|7|{\cell {}{}34{}6{}8{}}|{\cell 1{}{}4{}6{}8{}}|{\cell {}{}3456{}8{}}|{\cell 1{}{}45{}{}{\sout 8}{}}|{\cell 1{}{}4{}{}{}8{}}|2|{\cell 1{}{}{}{}6{}8{}}|.
-|{\cell {}23{}{}{}7{}{}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}{}3{}{}{}7{}9}|{\cell {}{}{}4{}{}78{}}|1|{\cell {}2{}45{}7{\sout 8}{}}|{\cell {}2{}4{}{}789}|6|{\cell {}23{}{}{}78{}}|.
+|1|{\cell {}{}3{}56{}{}{}}|{\cell {}{}3{}{}67{\xout 8}{}}|2|{\cell {}{}{}{}{}6{}{\xout 8}9}|{\cell {}{}{}{}{}{}{}{\underline 8}{}}|{\cell {}{}{}{}5{}{}{\xout 8}9}|{\cell {}{}3{}{}{}{}{\xout 8}9}|4|.
+|{\cell {}2{}{}{}{}{}8{}}|9|{\cell {}{}{}{}{}{}{}{\underline 8}{}}|5|{\cell {}{}{}4{}{}{}{\xout 8}{}}|3|6| 7|{\cell 12{}{}{}{}{}8{}}|.
+|{\cell {}23{}56{}8{}}|4|{\cell {}{}3{}{}6{}8{}}|{\cell 1{}{}{}{}6{}{\xout 8}9}|7|{\cell 1{}{}{}{}{}{}{\xout 8}{}}|{\cell 12{}{}5{}{}89}|{\cell {}{}3{}{}{}{}89}|{\cell 123{}{}{}{}8{}}|.
+|{\cell {}{}3{}{}6{}8{}}|1|{\cell {}{}34{}6{}8{}}|{\cell {}{}{}4{}678{}}|{\cell {}234{}6{}8{}}|{\cell {}2{}4{}{}7{\xout 8}{}}|{\cell {}{}{}4{}{}78{}}|5|9|.
+|{\cell {}{}{}{}56{}8{}}|{\cell {}{}{}{}56{}{}{}}|2|{\cell 1{}{}4{}6789}|{\cell {}{}{}456{}89}|{\cell 1{}{}45{}7{\xout 8}{}}|3|{\cell {}{}{}4{}{}{}8{}}|{\cell 1{}{}{}{}678{}}|.
+|9|7|{\cell {}{}34{}6{}8{}}|{\cell 1{}{}4{}6{}8{}}|{\cell {}{}3456{}8{}}|{\cell 1{}{}45{}{}{\xout 8}{}}|{\cell 1{}{}4{}{}{}8{}}|2|{\cell 1{}{}{}{}6{}8{}}|.
+|{\cell {}23{}{}{}7{}{}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}{}3{}{}{}7{}9}|{\cell {}{}{}4{}{}78{}}|1|{\cell {}2{}45{}7{\xout 8}{}}|{\cell {}2{}4{}{}789}|6|{\cell {}23{}{}{}78{}}|.
 |{\cell {}2{}{}{}67{}{}}|8|5|3| {\cell {}2{}4{}{}{}{}{}}|9| {\cell {}2{}4{}{}7{}{}}|1| {\cell {}2{}{}{}{}7{}{}}|.
 |4| {\cell {}23{}{}{}{}{}{}}|{\cell 1{}3{}{}{}7{}9}|{\cell {}{}{}{}{}{}78{}}|{\cell {}2{}{}{}{}{}8{}}|6|{\cell {}2{}{}{}{}789}|{\cell {}{}3{}{}{}{}89}| 5|.
 \end{sudoku}
@@ -471,12 +491,12 @@ Four different views:
 \begin{figure}[htbp]
 \begin{sudoku}
  |{\makebox[0pt]{\hspace{-1em}\large r1\raisebox{5ex}[0ex]{\hspace{2em}\large c1}}1}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large c2}}{\cell {}{}3{}56{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large c3}}{\cell {}{}3{}{}678{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large c4}}2}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large c5}}{\cell {}{}{}{}{}6{}89}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large c6}}8}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large c7}}{\cell {}{}{}{}5{}{}89}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large c8}}{\cell {}{}3{}{}{}{}89}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large c9}}4}|.
- |{\makebox[0pt]{\hspace{-2.25em}\large r2}{\cell {}2{}{}{}{}{}8{}}}|9|8|5|{\cell {}{}{}4{}{}{}{\sout 8}{}}|3|6| 7|{\cell 12{}{}{}{}{}8{}}|.
- |{\makebox[0pt]{\hspace{-2.25em}\large r3}{\cell {}23{}56{}8{}}}|4|{\cell {}{}3{}{}6{}8{}}|{\cell 1{}{}{}{}6{}{\sout 8}9}|7|{\cell 1{}{}{}{}{}{}{\sout 8}{}}|{\cell 12{}{}5{}{}89}|{\cell {}{}3{}{}{}{}89}|{\cell 123{}{}{}{}8{}}|.
- |{\makebox[0pt]{\hspace{-2.25em}\large r4}{\cell {}{}3{}{}6{}8{}}}|1|{\cell {}{}34{}6{}8{}}|{\cell {}{}{}4{}678{}}|{\cell {}234{}6{}8{}}|{\cell {}2{}4{}{}7{\sout 8}{}}|{\cell {}{}{}4{}{}78{}}|5|9|.
- |{\makebox[0pt]{\hspace{-2.25em}\large r5}{\cell {}{}{}{}56{}8{}}}|{\cell {}{}{}{}56{}{}{}}|2|{\cell 1{}{}4{}6789}|{\cell {}{}{}456{}89}|{\cell 1{}{}45{}7{\sout 8}{}}|3|{\cell {}{}{}4{}{}{}8{}}|{\cell 1{}{}{}{}678{}}|.
- |{\makebox[0pt]{\hspace{-2.5em}\large r6}9}|7|{\cell {}{}34{}6{}8{}}|{\cell 1{}{}4{}6{}8{}}|{\cell {}{}3456{}8{}}|{\cell 1{}{}45{}{}{\sout 8}{}}|{\cell 1{}{}4{}{}{}8{}}|2|{\cell 1{}{}{}{}6{}8{}}|.
- |{\makebox[0pt]{\hspace{-2em}\large r7}{\cell {}23{}{}{}7{}{}}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}{}3{}{}{}7{}9}|{\cell {}{}{}4{}{}78{}}|1|{\cell {}2{}45{}7{\sout 8}{}}|{\cell {}2{}4{}{}789}|6|{\cell {}23{}{}{}78{}}|.
+ |{\makebox[0pt]{\hspace{-2.3em}\large r2}{\cell {}2{}{}{}{}{}8{}}}|9|8|5|{\cell {}{}{}4{}{}{}{\xout 8}{}}|3|6| 7|{\cell 12{}{}{}{}{}8{}}|.
+ |{\makebox[0pt]{\hspace{-2.1em}\large r3}{\cell {}23{}56{}8{}}}|4|{\cell {}{}3{}{}6{}8{}}|{\cell 1{}{}{}{}6{}{\xout 8}9}|7|{\cell 1{}{}{}{}{}{}{\xout 8}{}}|{\cell 12{}{}5{}{}89}|{\cell {}{}3{}{}{}{}89}|{\cell 123{}{}{}{}8{}}|.
+ |{\makebox[0pt]{\hspace{-2.1em}\large r4}{\cell {}{}3{}{}6{}8{}}}|1|{\cell {}{}34{}6{}8{}}|{\cell {}{}{}4{}678{}}|{\cell {}234{}6{}8{}}|{\cell {}2{}4{}{}7{\xout 8}{}}|{\cell {}{}{}4{}{}78{}}|5|9|.
+ |{\makebox[0pt]{\hspace{-2.1em}\large r5}{\cell {}{}{}{}56{}8{}}}|{\cell {}{}{}{}56{}{}{}}|2|{\cell 1{}{}4{}6789}|{\cell {}{}{}456{}89}|{\cell 1{}{}45{}7{\xout 8}{}}|3|{\cell {}{}{}4{}{}{}8{}}|{\cell 1{}{}{}{}678{}}|.
+ |{\makebox[0pt]{\hspace{-2.5em}\large r6}9}|7|{\cell {}{}34{}6{}8{}}|{\cell 1{}{}4{}6{}8{}}|{\cell {}{}3456{}8{}}|{\cell 1{}{}45{}{}{\xout 8}{}}|{\cell 1{}{}4{}{}{}8{}}|2|{\cell 1{}{}{}{}6{}8{}}|.
+ |{\makebox[0pt]{\hspace{-2em}\large r7}{\cell {}23{}{}{}7{}{}}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}{}3{}{}{}7{}9}|{\cell {}{}{}4{}{}78{}}|1|{\cell {}2{}45{}7{\xout 8}{}}|{\cell {}2{}4{}{}789}|6|{\cell {}23{}{}{}78{}}|.
  |{\makebox[0pt]{\hspace{-2em}\large r8}{\cell {}2{}{}{}67{}{}}}|8|5|3| {\cell {}2{}4{}{}{}{}{}}|9| {\cell {}2{}4{}{}7{}{}}|1| {\cell {}2{}{}{}{}7{}{}}|.
  |{\makebox[0pt]{\hspace{-2.5em}\large r9}4}| {\cell {}23{}{}{}{}{}{}}|{\cell 1{}3{}{}{}7{}9}|{\cell {}{}{}{}{}{}78{}}|{\cell {}2{}{}{}{}{}8{}}|6|{\cell {}2{}{}{}{}789}|{\cell {}{}3{}{}{}{}89}| 5|.
 \end{sudoku}
@@ -488,14 +508,14 @@ Four different views:
 \begin{figure}[htbp]
 \begin{sudoku}
 |{\makebox[0pt]{\hspace{-1em}\large r1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n2}}4}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}23{}{}{}{}8{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}2{}{}{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}23{}5{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}3{}{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}3{}5678{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n9}}{\cell {}{}{}{}5{}78{}}}|.
-|{\makebox[0pt]{\hspace{-2em}\large r2}{\cell {}{}{}{}{}{}{}{}9}}|{\cell 1{}{}{}{}{}{}{}9}|6|{\cell {}{}{}{}5{}{}{}{}}|4|7| 8|{\cell 1{}3{}5{}{}{}9}|2|.
-|{\makebox[0pt]{\hspace{-2em}\large r3}{\cell {}{}{}4{}67{}9}}|{\cell 1{}{}{}{}{}7{}9}|{\cell 1{}3{}{}{}{}89}|2|{\cell 1{}{}{}{}{}7{}{}}|{\cell 1{}34{}{}{}{}{}}|5|{\cell 1{}34{}6789}|{\cell {}{}{}4{}{}78{}}|.
+|{\makebox[0pt]{\hspace{-2.3em}\large r2}{\cell {}{}{}{}{}{}{}{}9}}|{\cell 1{}{}{}{}{}{}{}9}|6|{\cell {}{}{}{}5{}{}{}{}}|4|7| 8|{\cell 1{}3{}5{}{}{}9}|2|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r3}{\cell {}{}{}4{}67{}9}}|{\cell 1{}{}{}{}{}7{}9}|{\cell 1{}3{}{}{}{}89}|2|{\cell 1{}{}{}{}{}7{}{}}|{\cell 1{}34{}{}{}{}{}}|5|{\cell 1{}34{}6789}|{\cell {}{}{}4{}{}78{}}|.
 |{\makebox[0pt]{\hspace{-2.5em}\large r4}2}|{\cell {}{}{}{}56{}{}{}}|{\cell 1{}3{}5{}{}{}{}}|{\cell {}{}34567{}{}}|8|{\cell 1{}345{}{}{}{}}|{\cell {}{}{}4{}67{}{}}|{\cell 1{}34567{}{}}|9|.
-|{\makebox[0pt]{\hspace{-2em}\large r5}{\cell {}{}{}4{}6{}{}9}}|3|7|{\cell {}{}{}456{}8{}}|{\cell 12{}{}56{}{}{}}|{\cell 12{}45{}{}{}9}|{\cell {}{}{}4{}6{}{}9}|{\cell 1{}{}456{}89}|{\cell {}{}{}45{}{}{}{}}|.
-|{\makebox[0pt]{\hspace{-2em}\large r6}{\cell {}{}{}4{}67{}9}}|8|{\cell {}{}3{}5{}{}{}{}}|{\cell {}{}34567{}{}}|{\cell {}{}{}{}56{}{}{}}|{\cell {}{}345{}{}{}9}|2|{\cell {}{}34567{}9}|1|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r5}{\cell {}{}{}4{}6{}{}9}}|3|7|{\cell {}{}{}456{}8{}}|{\cell 12{}{}56{}{}{}}|{\cell 12{}45{}{}{}9}|{\cell {}{}{}4{}6{}{}9}|{\cell 1{}{}456{}89}|{\cell {}{}{}45{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r6}{\cell {}{}{}4{}67{}9}}|8|{\cell {}{}3{}5{}{}{}{}}|{\cell {}{}34567{}{}}|{\cell {}{}{}{}56{}{}{}}|{\cell {}{}345{}{}{}9}|2|{\cell {}{}34567{}9}|1|.
 |{\makebox[0pt]{\hspace{-2.5em}\large r7}5}|{\cell 12{}{}{}67{}9}|{\cell 123{}{}{}{}{}9}|{\cell {}{}{}4{}67{}{}}|{\cell {}{}{}{}{}6{}{}{}}|8|{\cell 1{}34{}67{}9}|{\cell {}{}{}4{}67{}9}|{\cell {}{}3{}{}{}7{}{}}|.
 |{\makebox[0pt]{\hspace{-2.5em}\large r8}8}|{\cell 1{}{}{}5{}7{}9}|4| {\cell {}{}{}{}5{}7{}{}}|3| {\cell 1{}{}{}{}{}{}{}{}}|{\cell 1{}{}{}{}{}7{}9}|2|6|.
-|{\makebox[0pt]{\hspace{-2em}\large r9}{\cell {}{}3{}{}{}{}{}{}}}| {\cell {}2{}{}5{}7{}{}}|{\cell {}23{}{}{}{}8{}}|1|9|6|{\cell {}{}34{}{}7{}{}}| {\cell {}{}{}45{}78{}}|{\cell {}{}3{}{}{}78{}}|.
+|{\makebox[0pt]{\hspace{-2.3em}\large r9}{\cell {}{}3{}{}{}{}{}{}}}| {\cell {}2{}{}5{}7{}{}}|{\cell {}23{}{}{}{}8{}}|1|9|6|{\cell {}{}34{}{}7{}{}}| {\cell {}{}{}45{}78{}}|{\cell {}{}3{}{}{}78{}}|.
 \end{sudoku}
 \caption{An annotated instance in rn-view.}
 \label{fig:rnView}
@@ -505,15 +525,15 @@ Four different views:
 
 \begin{figure}[htbp]
 \begin{sudoku}
-|{\makebox[0pt]{\hspace{-1em}\large c1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n2}}{\cell {}23{}{}{}78{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}{}34{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}{}3{}5{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}{}345{}{}8{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}{}{}{}{}78{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}345{}{}{}{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n9}}6}|.
-|{\makebox[0pt]{\hspace{-2em}\large c2}4}|{\cell {}{}{}{}{}{}7{}9}|{\cell 1{}{}{}{}{}7{}9}|3|{\cell 1{}{}{}5{}{}{}{}}|{\cell 1{}{}{}5{}{}{}{}}|6|8|2|.
-|{\makebox[0pt]{\hspace{-2em}\large c3}{\cell {}{}{}{}{}{}{}{}9}}|5|{\cell 1{}34{}67{}9}|{\cell {}{}{}4{}6{}{}{}}|8|{\cell 1{}34{}6{}{}{}}|{\cell 1{}{}{}{}{}7{}9}|{\cell 1234{}6{}{}{}}|{\cell {}{}{}{}{}{}7{}9}|.
-|{\makebox[0pt]{\hspace{-2.5em}\large c4}{\cell {}{}3{}{}6{}{}{}}}|1|8|{\cell {}{}{}4567{}{}}|2|{\cell {}{}3456{}{}{}}|{\cell {}{}{}45{}7{}9}|{\cell {}{}34567{}9}|{\cell {}{}3{}5{}{}{}{}}|.
-|{\makebox[0pt]{\hspace{-2em}\large c5}7}|{\cell {}{}{}4{}{}{}89}|{\cell {}{}3{}5{}{}{}{}}|{\cell {}2{}456{}8{}}|{\cell {}{}{}{}56{}{}{}}|{\cell 1{}{}456{}{}{}}|3|{\cell 12{}456{}{}9}|{\cell 1{}{}{}5{}{}{}{}}|.
-|{\makebox[0pt]{\hspace{-2em}\large c6}{\cell {}{}3{}56{}{}{}}}|{\cell {}{}{}4{}{}7{}{}}|2|{\cell {}{}{}4567{}{}}|{\cell {}{}{}{}567{}{}}|9|{\cell {}{}{}45{}7{}{}}|{\cell 1{}34567{}{}}|8|.
-|{\makebox[0pt]{\hspace{-2.5em}\large c7}{\cell {}{}3{}{}6{}{}{}}}|{\cell {}{}3{}{}{}789}|5|{\cell {}{}{}4{}678{}}|{\cell 1{}3{}{}{}{}{}{}}|2|{\cell {}{}{}4{}{}789}|{\cell 1{}34{}67{}9}|{\cell 1{}3{}{}{}7{}9}|.
+|{\makebox[0pt]{\hspace{-1em}\large c1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n2}}{\cell {}23{}{}{}78{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}{}34{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}{}3{}5{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}{}345{}{}8{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}{}{}{}{}78{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}2345{}{}{}{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n9}}6}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c2}4}|{\cell {}{}{}{}{}{}7{}9}|{\cell 1{}{}{}{}{}7{}9}|3|{\cell 1{}{}{}5{}{}{}{}}|{\cell 1{}{}{}5{}{}{}{}}|6|8|2|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c3}{\cell {}{}{}{}{}{}{}{}9}}|5|{\cell 1{}34{}67{}9}|{\cell {}{}{}4{}6{}{}{}}|8|{\cell 1{}34{}6{}{}{}}|{\cell 1{}{}{}{}{}7{}9}|{\cell 1234{}6{}{}{}}|{\cell {}{}{}{}{}{}7{}9}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large c4}{\cell {}{}3{}56{}{}{}}}|1|8|{\cell {}{}{}4567{}{}}|2|{\cell {}{}3456{}{}{}}|{\cell {}{}{}45{}7{}9}|{\cell {}{}34567{}9}|{\cell {}{}3{}5{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c5}7}|{\cell {}{}{}4{}{}{}89}|{\cell {}{}{}4{}6{}{}{}}|{\cell {}2{}456{}8{}}|{\cell {}{}{}{}56{}{}{}}|{\cell 1{}{}456{}{}{}}|3|{\cell 12{}456{}{}9}|{\cell 1{}{}{}5{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large c6}{\cell {}{}3{}56{}{}{}}}|{\cell {}{}{}4{}{}7{}{}}|2|{\cell {}{}{}4567{}{}}|{\cell {}{}{}{}567{}{}}|9|{\cell {}{}{}45{}7{}{}}|{\cell 1{}34567{}{}}|8|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c7}{\cell {}{}3{}{}6{}{}{}}}|{\cell {}{}3{}{}{}789}|5|{\cell {}{}{}4{}678{}}|{\cell 1{}3{}{}{}{}{}{}}|2|{\cell {}{}{}4{}{}789}|{\cell 1{}34{}67{}9}|{\cell 1{}3{}{}{}7{}9}|.
 |{\makebox[0pt]{\hspace{-2.5em}\large c8}8}|6|{\cell 1{}3{}{}{}{}{}9}|{\cell {}{}{}{}5{}{}{}{}}|4|7|2|{\cell 1{}3{}5{}{}{}9}|{\cell 1{}3{}{}{}{}{}9}|.
-|{\makebox[0pt]{\hspace{-2em}\large c9}{\cell {}23{}56{}{}{}}}|{\cell {}23{}{}{}78{}}|{\cell {}{}3{}{}{}7{}{}}|1|9|{\cell {}{}{}{}56{}{}{}}|{\cell {}{}{}{}5{}{}89}|{\cell {}23{}567{}{}}|4|.
+|{\makebox[0pt]{\hspace{-2.1em}\large c9}{\cell {}23{}56{}{}{}}}|{\cell {}23{}{}{}78{}}|{\cell {}{}3{}{}{}7{}{}}|1|9|{\cell {}{}{}{}56{}{}{}}|{\cell {}{}{}{}5{}78{}}|{\cell {}23{}567{}{}}|4|.
 \end{sudoku}
 \caption{An annotated instance in cn-view.}
 \label{fig:cnView}
@@ -525,11 +545,11 @@ Four different views:
 \begin{sudoku}
 |{\makebox[0pt]{\hspace{-1em}\large b1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n2}}{\cell {}{}{}4{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}23{}{}{}7{}9}}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n4}}8}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}2{}{}{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}23{}{}{}7{}9}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}3{}{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}34{}67{}9}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n9}}5}|.
 |{\makebox[0pt]{\hspace{-2.1em}\large b2}{\cell {}{}{}{}{}{}7{}9}}|1|6|{\cell {}{}{}{}5{}{}{}{}}|4|{\cell {}2{}{}{}{}7{}{}}|8|{\cell {}23{}5{}{}89}|{\cell {}2{}{}{}{}7{}{}}|.
-|{\makebox[0pt]{\hspace{-2em}\large b3}{\cell {}{}{}{}{}67{}9}}|{\cell {}{}{}{}{}67{}9}|{\cell {}2{}{}{}{}{}89}|3|{\cell 1{}{}{}{}{}7{}{}}|4|5|{\cell 12{}{}{}6789}|{\cell 12{}{}{}{}78{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b3}{\cell {}{}{}{}{}67{}9}}|{\cell {}{}{}{}{}67{}9}|{\cell {}2{}{}{}{}{}89}|3|{\cell 1{}{}{}{}{}7{}{}}|4|5|{\cell 12{}{}{}6789}|{\cell 12{}{}{}{}78{}}|.
 |{\makebox[0pt]{\hspace{-2.5em}\large b4}2}|6|{\cell 1{}3{}{}{}{}{}9}|{\cell {}{}3{}{}{}{}{}9}|{\cell {}{}{}45{}{}{}{}}|{\cell 1{}345{}{}{}9}|8|{\cell 1{}34{}{}{}{}9}|7|.
-|{\makebox[0pt]{\hspace{-2em}\large b5}{\cell {}{}{}4{}67{}9}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}2{}{}{}{}{}8{}}|{\cell 123456789}|{\cell {}{}{}{}56{}89}|{\cell 12{}45{}78{}}|{\cell 1{}34{}6{}{}{}}|{\cell 123456789}|{\cell {}{}{}45{}{}{}{}}|.
-|{\makebox[0pt]{\hspace{-2em}\large b6}{\cell {}{}{}{}{}67{}9}}|8|4|{\cell 1{}{}{}5{}7{}{}}|2|{\cell {}{}{}{}{}6{}{}9}|{\cell 1{}{}{}{}6{}{}{}}|{\cell 1{}{}{}567{}9}|3|.
-|{\makebox[0pt]{\hspace{-2.5em}\large b7}{\cell {}{}{}{}{}{}{}{}9}}|{\cell 12{}4{}{}{}8{}}|{\cell 123{}{}{}{}89}|7|6|{\cell {}{}{}4{}{}{}{}{}}|{\cell 1{}34{}{}{}{}9}|5|{\cell {}{}3{}{}{}{}{}9}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b5}{\cell {}{}{}4{}67{}9}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}2{}{}{}{}{}8{}}|{\cell 123456789}|{\cell {}{}{}{}56{}89}|{\cell 12{}45{}78{}}|{\cell 1{}34{}6{}{}{}}|{\cell 123456789}|{\cell {}{}{}45{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b6}{\cell {}{}{}{}{}67{}9}}|8|4|{\cell 1{}{}{}5{}7{}{}}|2|{\cell {}{}{}{}{}6{}{}9}|{\cell 1{}{}{}{}6{}{}{}}|{\cell 1{}{}{}567{}9}|3|.
+|{\makebox[0pt]{\hspace{-2.3em}\large b7}{\cell {}{}{}{}{}{}{}{}9}}|{\cell 12{}4{}{}{}8{}}|{\cell 123{}{}{}{}89}|7|6|{\cell {}{}{}4{}{}{}{}{}}|{\cell 1{}34{}{}{}{}9}|5|{\cell {}{}3{}{}{}{}{}9}|.
 |{\makebox[0pt]{\hspace{-2.5em}\large b8}2}|{\cell {}{}3{}5{}{}8{}}|4|{\cell 1{}3{}5{}{}{}{}}|{\cell {}{}3{}{}{}{}{}{}}|9|{\cell 1{}3{}{}{}7{}{}}|{\cell 1{}3{}{}{}78{}}|6|.
 |{\makebox[0pt]{\hspace{-2.5em}\large b9}5}|{\cell 1{}34{}67{}{}}|{\cell {}{}3{}{}{}{}8{}}|{\cell 1{}{}4{}{}{}{}{}}|9|2|{\cell 1{}34{}67{}{}}|{\cell 1{}3{}{}{}78{}}|{\cell 1{}{}{}{}{}78{}}.
 \end{sudoku}
@@ -763,15 +783,15 @@ A'(9,7) =(\set{3, 4, 7}, \set{1, 2, 5, 6, 8, 9})\Rightarrow A'(9,7) =(\set{3, 4,
 
 \begin{figure}[htbp]
 \begin{sudoku}
-|{\makebox[0pt]{\hspace{-1em}\large r1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n2}}4}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}2{\sout 3}{}{}{}{}8{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}2{}{}{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}2{\sout 3}{}5{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}{\underline 3}{}{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}{\sout 3}{}5678{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n9}}{\cell {}{}{}{}5{}78{}}}|.
-|{\makebox[0pt]{\hspace{-2em}\large r2}{\cell {}{}{}{}{}{}{}{}9}}|{\cell 1{}{}{}{}{}{}{}9}|6|{\cell {}{}{}{}5{}{}{}{}}|4|7| 8|{\cell 1{}3{}5{}{}{}9}|2|.
-|{\makebox[0pt]{\hspace{-2em}\large r3}{\cell {}{}{}4{}67{}9}}|{\cell 1{}{}{}{}{}7{}9}|{\cell 1{}3{}{}{}{}89}|2|{\cell 1{}{}{}{}{}7{}{}}|{\cell 1{}34{}{}{}{}{}}|5|{\cell 1{}34{}6789}|{\cell {}{}{}4{}{}78{}}|.
+|{\makebox[0pt]{\hspace{-1em}\large r1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n2}}4}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}2{\xout 3}{}{}{}{}8{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}2{}{}{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}2{\xout 3}{}5{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}{\underline 3}{}{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}{\xout 3}{}5678{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n9}}{\cell {}{}{}{}5{}78{}}}|.
+|{\makebox[0pt]{\hspace{-2.3em}\large r2}{\cell {}{}{}{}{}{}{}{}9}}|{\cell 1{}{}{}{}{}{}{}9}|6|{\cell {}{}{}{}5{}{}{}{}}|4|7| 8|{\cell 1{}3{}5{}{}{}9}|2|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r3}{\cell {}{}{}4{}67{}9}}|{\cell 1{}{}{}{}{}7{}9}|{\cell 1{}3{}{}{}{}89}|2|{\cell 1{}{}{}{}{}7{}{}}|{\cell 1{}34{}{}{}{}{}}|5|{\cell 1{}34{}6789}|{\cell {}{}{}4{}{}78{}}|.
 |{\makebox[0pt]{\hspace{-2.5em}\large r4}2}|{\cell {}{}{}{}56{}{}{}}|{\cell 1{}3{}5{}{}{}{}}|{\cell {}{}34567{}{}}|8|{\cell 1{}345{}{}{}{}}|{\cell {}{}{}4{}67{}{}}|{\cell 1{}34567{}{}}|9|.
-|{\makebox[0pt]{\hspace{-2em}\large r5}{\cell {}{}{}4{}6{}{}9}}|3|7|{\cell {}{}{}456{}8{}}|{\cell 12{}{}56{}{}{}}|{\cell 12{}45{}{}{}9}|{\cell {}{}{}4{}6{}{}9}|{\cell 1{}{}456{}89}|{\cell {}{}{}45{}{}{}{}}|.
-|{\makebox[0pt]{\hspace{-2em}\large r6}{\cell {}{}{}4{}67{}9}}|8|{\cell {}{}3{}5{}{}{}{}}|{\cell {}{}34567{}{}}|{\cell {}{}{}{}56{}{}{}}|{\cell {}{}345{}{}{}9}|2|{\cell {}{}34567{}9}|1|.
-|{\makebox[0pt]{\hspace{-2.5em}\large r7}5}|{\cell 12{}{}{}67{}9}|{\cell 123{}{}{}{}{}9}|{\cell {}{}{}4{}67{}{}}|{\cell {}{}{}{}{}6{}{}{}}|8|{\cell 1{}{\sout 3}4{}67{}9}|{\cell {}{}{}4{}67{}9}|{\cell {}{}3{}{}{}7{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r5}{\cell {}{}{}4{}6{}{}9}}|3|7|{\cell {}{}{}456{}8{}}|{\cell 12{}{}56{}{}{}}|{\cell 12{}45{}{}{}9}|{\cell {}{}{}4{}6{}{}9}|{\cell 1{}{}456{}89}|{\cell {}{}{}45{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r6}{\cell {}{}{}4{}67{}9}}|8|{\cell {}{}3{}5{}{}{}{}}|{\cell {}{}34567{}{}}|{\cell {}{}{}{}56{}{}{}}|{\cell {}{}345{}{}{}9}|2|{\cell {}{}34567{}9}|1|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r7}5}|{\cell 12{}{}{}67{}9}|{\cell 123{}{}{}{}{}9}|{\cell {}{}{}4{}67{}{}}|{\cell {}{}{}{}{}6{}{}{}}|8|{\cell 1{}{\xout 3}4{}67{}9}|{\cell {}{}{}4{}67{}9}|{\cell {}{}3{}{}{}7{}{}}|.
 |{\makebox[0pt]{\hspace{-2.5em}\large r8}8}|{\cell 1{}{}{}5{}7{}9}|4| {\cell {}{}{}{}5{}7{}{}}|3| {\cell 1{}{}{}{}{}{}{}{}}|{\cell 1{}{}{}{}{}7{}9}|2|6|.
-|{\makebox[0pt]{\hspace{-2em}\large r9}{\cell {}{}3{}{}{}{}{}{}}}| {\cell {}2{}{}5{}7{}{}}|{\cell {}23{}{}{}{}8{}}|1|9|6|{\cell {}{}{\sout 3}4{}{}7{}{}}| {\cell {}{}{}45{}78{}}|{\cell {}{}3{}{}{}78{}}|.
+|{\makebox[0pt]{\hspace{-2.2em}\large r9}{\cell {}{}3{}{}{}{}{}{}}}| {\cell {}2{}{}5{}7{}{}}|{\cell {}23{}{}{}{}8{}}|1|9|6|{\cell {}{}{\xout 3}4{}{}7{}{}}| {\cell {}{}{}45{}78{}}|{\cell {}{}3{}{}{}78{}}|.
 \end{sudoku}
 \caption{An updated annotated instance of Figure \ref{fig:rnView} in rn-view.}
 \label{fig:rnUpdate}
@@ -806,17 +826,18 @@ A'(4,4) =(\set{4, 5, 6, 7}, \set{1, 2, 3, 8, 9})\Rightarrow A'(4,4) =(\set{4, 5,
 \end{itemize}
 
 
+
 \begin{figure}[htbp]
 \begin{sudoku}
-|{\makebox[0pt]{\hspace{-1em}\large c1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n2}}{\cell {}23{}{}{}78{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}{}34{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}{}3{}5{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}{}345{}{}8{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}{}{}{}{}78{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}345{}{}{}{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n9}}6}|.
-|{\makebox[0pt]{\hspace{-2em}\large c2}4}|{\cell {}{}{}{}{}{}7{}9}|{\cell 1{}{}{}{}{}7{}9}|3|{\cell 1{}{}{}5{}{}{}{}}|{\cell 1{}{}{}5{}{}{}{}}|6|8|2|.
-|{\makebox[0pt]{\hspace{-2em}\large c3}{\cell {}{}{}{}{}{}{}{}9}}|5|{\cell 1{}34{}67{}9}|{\cell {}{}{}4{}6{}{}{}}|8|{\cell 1{}34{}6{}{}{}}|{\cell 1{}{}{}{}{}7{}9}|{\cell 1234{}6{}{}{}}|{\cell {}{}{}{}{}{}7{}9}|.
-|{\makebox[0pt]{\hspace{-2.5em}\large c4}{\cell {}{}3{}{}6{}{}{}}}|1|8|{\cell {}{}{}4{\sout 5}67{}{}}|2|{\cell {}{}3456{}{}{}}|{\cell {}{}{}45{}7{}9}|{\cell {}{}34567{}9}|{\cell {}{}3{}5{}{}{}{}}|.
-|{\makebox[0pt]{\hspace{-2em}\large c5}7}|{\cell {}{}{}4{}{}{}89}|{\cell {}{}3{}5{}{}{}{}}|{\cell {}2{}4{\sout 5}6{}8{}}|{\cell {}{}{}{}56{}{}{}}|{\cell 1{}{}456{}{}{}}|3|{\cell 12{}456{}{}9}|{\cell 1{}{}{}5{}{}{}{}}|.
-|{\makebox[0pt]{\hspace{-2em}\large c6}{\cell {}{}3{}56{}{}{}}}|{\cell {}{}{}4{}{}7{}{}}|2|{\cell {}{}{}4{\sout 5}67{}{}}|{\cell {}{}{}{}567{}{}}|9|{\cell {}{}{}45{}7{}{}}|{\cell 1{}34567{}{}}|8|.
-|{\makebox[0pt]{\hspace{-2.5em}\large c7}{\cell {}{}3{}{}6{}{}{}}}|{\cell {}{}3{}{}{}789}|5|{\cell {}{}{}4{}678{}}|{\cell 1{}3{}{}{}{}{}{}}|2|{\cell {}{}{}4{}{}789}|{\cell 1{}34{}67{}9}|{\cell 1{}3{}{}{}7{}9}|.
-|{\makebox[0pt]{\hspace{-2.5em}\large c8}8}|6|{\cell 1{}3{}{}{}{}{}9}|{\cell {}{}{}{}{\underline 5}{}{}{}{}}|4|7|2|{\cell 1{}3{}{\sout 5}{}{}{}9}|{\cell 1{}3{}{}{}{}{}9}|.
-|{\makebox[0pt]{\hspace{-2em}\large c9}{\cell {}23{}56{}{}{}}}|{\cell {}23{}{}{}78{}}|{\cell {}{}3{}{}{}7{}{}}|1|9|{\cell {}{}{}{}56{}{}{}}|{\cell {}{}{}{}5{}{}89}|{\cell {}23{}567{}{}}|4|.
+|{\makebox[0pt]{\hspace{-1em}\large c1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n2}}{\cell {}23{}{}{}78{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}{}34{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}{}3{}5{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}{}345{}{}8{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}{}{}{}{}78{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}2345{}{}{}{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n9}}6}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c2}4}|{\cell {}{}{}{}{}{}7{}9}|{\cell 1{}{}{}{}{}7{}9}|3|{\cell 1{}{}{}5{}{}{}{}}|{\cell 1{}{}{}5{}{}{}{}}|6|8|2|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c3}{\cell {}{}{}{}{}{}{}{}9}}|5|{\cell 1{}34{}67{}9}|{\cell {}{}{}4{}67{}{}}|8|{\cell 1{}34{}6{}{}{}}|{\cell 1{}{}{}{}{}7{}9}|{\cell 1234{}6{}{}{}}|{\cell {}{}{}{}{}{}7{}9}|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c4}{\cell {}{}3{}{}6{}{}{}}}|1|8|{\cell {}{}{}4{\xout 5}67{}{}}|2|{\cell {}{}3456{}{}{}}|{\cell {}{}{}45{}7{}9}|{\cell {}{}34567{}9}|{\cell {}{}3{}5{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c5}7}|{\cell {}{}{}4{}{}{}89}|{\cell {}{}{}4{}6{}{}{}}|{\cell {}2{}4{\xout 5}6{}8{}}|{\cell {}{}{}{}56{}{}{}}|{\cell 1{}{}456{}{}{}}|3|{\cell 12{}456{}{}9}|{\cell 1{}{}{}5{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large c6}{\cell {}{}3{}56{}{}{}}}|{\cell {}{}{}4{}{}7{}{}}|2|{\cell {}{}{}4{\xout 5}67{}{}}|{\cell {}{}{}{}567{}{}}|9|{\cell {}{}{}45{}7{}{}}|{\cell 1{}34567{}{}}|8|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c7}{\cell {}{}3{}{}6{}{}{}}}|{\cell {}{}3{}{}{}789}|5|{\cell {}{}{}4{}678{}}|{\cell 1{}3{}{}{}{}{}{}}|2|{\cell {}{}{}4{}{}789}|{\cell 1{}34{}67{}9}|{\cell 1{}3{}{}{}7{}9}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c8}8}|6|{\cell 1{}3{}{}{}{}{}9}|{\cell {}{}{}{}{\underline 5}{}{}{}{}}|4|7|2|{\cell 1{}3{}{\xout 5}{}{}{}9}|{\cell 1{}3{}{}{}{}{}9}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large c9}{\cell {}23{}56{}{}{}}}|{\cell {}23{}{}{}78{}}|{\cell {}{}3{}{}{}7{}{}}|1|9|{\cell {}{}{}{}56{}{}{}}|{\cell {}{}{}{}5{}78{}}|{\cell {}23{}567{}{}}|4|.
 \end{sudoku}
 \caption{An updated annotated instance of Figure \ref{fig:cnView} in cn-view.}
 \label{fig:cnUpdate}
@@ -846,12 +867,12 @@ A'(2,8) =(\set{2, 3, 5, 8, 9}, \set{1, 4, 6, 7})\Rightarrow A'(1,8) =(\set{2, 3,
 \begin{figure}[htbp]
 \begin{sudoku}
 |{\makebox[0pt]{\hspace{-1em}\large b1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n2}}{\cell {}{}{}4{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}23{}{}{}7{}9}}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n4}}8}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}2{}{}{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}23{}{}{}7{}9}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}3{}{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}34{}67{}9}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n9}}5}|.
-|{\makebox[0pt]{\hspace{-2.1em}\large b2}{\cell {}{}{}{}{}{}7{}9}}|1|6|{\cell {}{}{}{}{\underline 5}{}{}{}{}}|4|{\cell {}2{}{}{}{}7{}{}}|8|{\cell {}23{}{\sout 5}{}{}89}|{\cell {}2{}{}{}{}7{}{}}|.
-|{\makebox[0pt]{\hspace{-2em}\large b3}{\cell {}{}{}{}{}67{}9}}|{\cell {}{}{}{}{}67{}9}|{\cell {}2{}{}{}{}{}89}|3|{\cell 1{}{}{}{}{}7{}{}}|4|5|{\cell 12{}{}{}6789}|{\cell 12{}{}{}{}78{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b2}{\cell {}{}{}{}{}{}7{}9}}|1|6|{\cell {}{}{}{}{\underline 5}{}{}{}{}}|4|{\cell {}2{}{}{}{}7{}{}}|8|{\cell {}23{}{\xout 5}{}{}89}|{\cell {}2{}{}{}{}7{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b3}{\cell {}{}{}{}{}67{}9}}|{\cell {}{}{}{}{}67{}9}|{\cell {}2{}{}{}{}{}89}|3|{\cell 1{}{}{}{}{}7{}{}}|4|5|{\cell 12{}{}{}6789}|{\cell 12{}{}{}{}78{}}|.
 |{\makebox[0pt]{\hspace{-2.5em}\large b4}2}|6|{\cell 1{}3{}{}{}{}{}9}|{\cell {}{}3{}{}{}{}{}9}|{\cell {}{}{}45{}{}{}{}}|{\cell 1{}345{}{}{}9}|8|{\cell 1{}34{}{}{}{}9}|7|.
-|{\makebox[0pt]{\hspace{-2em}\large b5}{\cell {}{}{}4{}67{}9}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}2{}{}{}{}{}8{}}|{\cell 123456789}|{\cell {}{}{}{}56{}89}|{\cell 12{}45{}78{}}|{\cell 1{}34{}6{}{}{}}|{\cell 123456789}|{\cell {}{}{}45{}{}{}{}}|.
-|{\makebox[0pt]{\hspace{-2em}\large b6}{\cell {}{}{}{}{}67{}9}}|8|4|{\cell 1{}{}{}5{}7{}{}}|2|{\cell {}{}{}{}{}6{}{}9}|{\cell 1{}{}{}{}6{}{}{}}|{\cell 1{}{}{}567{}9}|3|.
-|{\makebox[0pt]{\hspace{-2.5em}\large b7}{\cell {}{}{}{}{}{}{}{}9}}|{\cell 12{}4{}{}{}8{}}|{\cell 123{}{}{}{}89}|7|6|{\cell {}{}{}4{}{}{}{}{}}|{\cell 1{}34{}{}{}{}9}|5|{\cell {}{}3{}{}{}{}{}9}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b5}{\cell {}{}{}4{}67{}9}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}2{}{}{}{}{}8{}}|{\cell 123456789}|{\cell {}{}{}{}56{}89}|{\cell 12{}45{}78{}}|{\cell 1{}34{}6{}{}{}}|{\cell 123456789}|{\cell {}{}{}45{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b6}{\cell {}{}{}{}{}67{}9}}|8|4|{\cell 1{}{}{}5{}7{}{}}|2|{\cell {}{}{}{}{}6{}{}9}|{\cell 1{}{}{}{}6{}{}{}}|{\cell 1{}{}{}567{}9}|3|.
+|{\makebox[0pt]{\hspace{-2.3em}\large b7}{\cell {}{}{}{}{}{}{}{}9}}|{\cell 12{}4{}{}{}8{}}|{\cell 123{}{}{}{}89}|7|6|{\cell {}{}{}4{}{}{}{}{}}|{\cell 1{}34{}{}{}{}9}|5|{\cell {}{}3{}{}{}{}{}9}|.
 |{\makebox[0pt]{\hspace{-2.5em}\large b8}2}|{\cell {}{}3{}5{}{}8{}}|4|{\cell 1{}3{}5{}{}{}{}}|{\cell {}{}3{}{}{}{}{}{}}|9|{\cell 1{}3{}{}{}7{}{}}|{\cell 1{}3{}{}{}78{}}|6|.
 |{\makebox[0pt]{\hspace{-2.5em}\large b9}5}|{\cell 1{}34{}67{}{}}|{\cell {}{}3{}{}{}{}8{}}|{\cell 1{}{}4{}{}{}{}{}}|9|2|{\cell 1{}34{}67{}{}}|{\cell 1{}3{}{}{}78{}}|{\cell 1{}{}{}{}{}78{}}.
 \end{sudoku}
@@ -869,7 +890,7 @@ A'(2,8) =(\set{2, 3, 5, 8, 9}, \set{1, 4, 6, 7})\Rightarrow A'(1,8) =(\set{2, 3,
 
 
 \chapter{Techniques for solving Sudoku}
-\label{sec:Techniques}
+\label{cha:Techniques}
 
 To solve an Sudoku instance, there are loads of rules could be used to support finding a solution for an Sudoku instance. These rules are roughly divided into two different type of techniques, one is called “Direct Elimination Technique”, and another is“Candidates Elimination Techniques".
 
@@ -879,13 +900,29 @@ Consequently, here comes another technique ``Candidates Elimination Techniques''
 
 Generally, most of the Sudoku instance could simply find a solution by apply naked single and hidden single rules repeatedly. However, there are many Sudoku instances have been designed in different difficulty. Thus other advanced rules are also necessary to support on finding a solution for a Sudoku instance.
 
-Naked single and hidden single rules are usually the most basic rules of Candidates Elimination Techniques to begin the game. When the annotated instance is not able to get any more candidates eliminated, more powerful rules come. More powerful rules are: naked pair, hidden pair, naked triplet, hidden triplet, naked quad and hidden quad. Moreover, if more powerful rules still could not satisfy the annotated instance, we have the advanced rules, X-wing, XY-wing, XYZ-wing, WXYZ-wing, and Swordfish to solve those difficult Sudoku instance. Nevertheless, advanced rule are rarely used in most of the time unless high difficulty Sudoku instance has appeared.
+Naked single and hidden single rules are usually the most basic rules of Candidates Elimination Techniques to begin the game. When the annotated instance is not able to get any more candidates eliminated by naked single and hidden single, more powerful rules are needed such like naked pair, hidden pair, naked triplet, hidden triplet, naked quad, hidden quad, X-wing, XY-wing, XYZ-wing, WXYZ-wing, and Swordfish. These rules could help to solve those difficult Sudoku instance more efficiently.
 
-\section{Basic rules}
-\label{sec:Basicrules}
-The basic rules in ``Candidates Elimination Techniques'' are naked single rule and the hidden single rule.
+Last but not least, as we have three other different views introduced in Section \ref{sec:Differentperspectives}. Thus, more situations for the rules could be applied in what kind of units have to be considered.
+\begin{itemize}
+\item In an rc-view annotated instance, the rules could be applied in a shared unit which could be
+\begin{itemize}
+\item a row (x-axis), a column (y-axis), or a block.
+\end{itemize}
+\item In an rn-view annotated instance, the rules could be applied in a shared unit which could be
+\begin{itemize}
+\item shared unit could be a row (x-axis), and a number (y-axis).
+\end{itemize}
+\item In an cn-view annotated instance, the rules could be applied in a shared unit which could be
+\begin{itemize}
+\item shared unit could be a column (x-axis), and a number (y-axis).
+\end{itemize}
+\item In an bn-view annotated instance, the rules could be applied in a shared unit which could be
+\begin{itemize}
+\item shared unit could only be a block(x-axis).
+\end{itemize}
+\end{itemize}
 
-\subsection{Naked Single}
+\section{Naked Single}
 \label{sec:Nakedsingle}
 
 Naked single is used in a situation that ``there is a cell has only one candidate possibly to be filled into this cell''. If there is one cell has an equation written like $A'(i,j) =(\set{v}, \set{1,\dots,N} \setminus \set{v})$, then eliminate candidate $v$ from all other cells in the same row, same column, or same block.
@@ -893,44 +930,49 @@ However, as we have introduced an Sudoku instance could in the different point o
 
 In the rc-view, if there is a cell has only one candidate $v$ possible to filled in to the cell $A'(\text{row}, \text{column})$, then
 \begin{itemize}
-\item all the cells shared a row with $A'\ (row, coulmn)$ have candidate $v$ excluded.
-\item all the cells shared a column with $A'\ (row, coulmn)$ have candidate $v$ excluded.
-\item all the cells shared a block with $A'\ (row, coulmn)$ have candidate $v$ excluded.
-\item highlight the candidate $v$ in cell $A'\ (row, coulmn)$.
+\item all the cells shared an unit (row, column, or block) with $A'(i,j)$ have candidate $v$ excluded,
+\item rewrite the equation for the cell $A'(i,j)$, and all other cells which have candidate $v$ excluded.
 \end{itemize}
-In the Figure \ref{fig:rcWhole}, we find a cell $A'\ (1, 6)$ in rc-view is matched to the situation of naked single for rc-view. Thus, we have an updated annotated instance - Figure \ref{fig:rcWholeupdated}.
+In the Figure \ref{fig:rcWhole}, we find a cell $A'(1,6)$ in rc-view is matched to the situation of naked single for rc-view. Thus, we have an updated annotated instance - Figure \ref{fig:rcWholeupdated}.
 
-What if a cell has only one column $v$ possible to filled in to the cell $A'\ (row, number,)$, then
+What if in the rn-view, a cell $A'(i,j)$ has only one column $v$ possible to filled into the cell $A'(i,j)$, then,
 \begin{itemize}
-\item all the cells shared a row with $A'\ (row, number)$ have column $v$ excluded.
-\item all the cells shared a number with $A'\ (row, number)$ have column $v$ excluded.
-\item highlight the column $v$ in cell $A'\ (row, number)$.
+\item all the cells shared an unit (row, or number) with $A'(i,j)$  have column $v$ excluded,
+\item rewrite the equation for the cell $A'(i,j)$, and all other cells which have column $v$ excluded.
 \end{itemize}
-Suppose we find a cell $A'\ (1, 7)$ in rn-view (see Figure \ref{fig:rnView}) is matched to the situation of naked single for rn-view. Thus, we have an updated annotated instance - Figure \ref{fig:rnUpdate}.
+Suppose we find a cell $A'(1,7)$ in rn-view (see Figure \ref{fig:rnView}) is matched to the situation of naked single for rn-view. Thus, we have an updated annotated instance - Figure \ref{fig:rnUpdate}.
 
-What if a cell has only one row $v$ possible to filled in to the cell $A'\ (column, number,)$, then
-
+What if in the cn-view, a cell $A'(i,j)$ has only one row $v$ possible to filled into the cell $A'(i,j)$, then,
 \begin{itemize}
-\item all the cells shared a column with $A'\ (column, number)$ have row $v$ excluded.
-\item all the cells shared a number with $A'\ (column, number)$ have row $v$ excluded.
-\item highlight the row $v$ in cell $A'\ (column, number)$.
+\item all the cells shared an unit (column, or number) with $A'(i,j)$ have row $v$ excluded.
+\item rewrite the equation for the cell $A'(i,j)$, and all other cells which have row $v$ excluded.
 \end{itemize}
-We now find a cell $A'\ (8, 4)$ in cn-view (see Figure \ref{fig:cnView}) is matched to the situation of naked single for cn-view. Thus, we have an updated annotated instance - Figure \ref{fig:cnUpdate}.
+We now find a cell $A'(8,4)$ in cn-view (see Figure \ref{fig:cnView}) is matched to the situation of naked single for cn-view. Thus, we have an updated annotated instance - Figure \ref{fig:cnUpdate}.
 
-And what if a cell has only one square $v$ possible to filled in to the cell $A'\ (block, number,)$, then
+And what if in a bn-view, a cell $A'(i,j)$ has only one square $v$ possible to filled into the cell $A'(i,j)$, then,
 \begin{itemize}
-\item all the cells shared a block with $A'\ (block, number)$ have square $v$ excluded.
-\item highlight the square $v$ in cell $A'\ (block, number)$.
+\item all the cells shared a block with $A'(i,j)$ have square $v$ excluded.
+\item rewrite the equation for the cell $A'(i,j)$, and all other cells which have square $v$ excluded.
 \end{itemize}
-In the Figure \ref{fig:bnView}, we find a cell $A'\ (2, 4)$ in bn-view is matched to the situation of naked single for bn-view. Thus, we have an updated annotated instance - Figure \ref{fig:bnUpdate}.
+In the Figure \ref{fig:bnView}, we find a cell $A'(2,4)$ in bn-view is matched to the situation of naked single for bn-view. Thus, we have an updated annotated instance - Figure \ref{fig:bnUpdate}.
 
 
-\subsection{Hidden Single}
+\section{Hidden Single}
 \label{sec:Hidden Single}
 
-Hidden single is under a situation which has one candidate could only be used in one of the cells in a row, a column, or a block, but this cell has more than one candidates. However, this technique may sometimes replaced by Cross-Hatching ??? only use defined/explained concepts!!! XXX
+Hidden single rule is used in a situation that ``there is a cell which has more than one candidates in the cell, but only one of the candidates is possible to be appeared in this cell of the unit''. If the condition is satisfied, then the equation for this cell will be re-written, and the candidate will be excluded from all the cells in other shared units.
 
- which is a technique that simply find a place for a specific candidate by scanning that number vertically and horizontally without an annotated instance needed. In the Figure \ref{fig:hiddensingle}, they are three cells have matched to this rule. In the block $b_{1}$, candidate 7 could only be used in cell $(r_{1}, c_{3})$ even though that the cell has other candidates in. In the block $b_{7}$, candidate 1 could only be used in cell $(r_{9}, c_{3})$ even though that the cell has others, and so the cell $(r_{7}, c_{6})$. As we said before, this cell could actually be solved by Cross-Hatching. For example, assume candidate number 1 is being scanning to fill in in block $b_{5}$, block $b_{1}$ has candidate 1 in $r_{1}$ so the cell $(r_{7}, c_{1})$ and $(r_{8}, c_{1})$ are excluded, $b_{4}$ has it in $r_{2}$ so the cell $(r_{7}, c_{2})$ and $(r_{9}, c_{2})$ are excluded, $b_{8}$ has it in $c_{5}$ so the cell $(r_{7}, c_{3})$ are excluded. All the cells have been excluded expect $(r_{9}, c_{3})$, thus, for block $b_{5}$, we can know $(r_{9}, c_{3})$ is the one for candidate $n_{1}$ in block $b_{5}$.
+In the rc-view, if there is a cell $A'(i,j)$ has more than one candidates in the cell, but only one of the candidates $v$ is only appeared in this cell of an unit, then
+\begin{itemize}
+\item the equation for will be re-written.
+\item and exclude candidate $v$ from all other cells in the rest units.
+\end{itemize}
+In the Figure \ref{fig:hiddensinglerc}, we find a cell $A'(1,3)$ in rc-view has matched to the situation description of hidden single that candidate $7$ is only possible to be appeared in the cell $A'(1,3)$ of row $1$. Thus, $A'(1,3)$ has a re-written equation and the candidate $7$ excluded from all other cells in the rest units (column and block).
+\begin{itemize}
+\item $A'(1,3) =(\set{7}, \set{1,\dots,9} \setminus \set{7})$,
+\item $A'(7,3) =(\set{3, 9}, \set{1, 2, 4, 5, 6, 7, 8})$
+\item $A'(9,3) =(\set{1, 3, 9}, \set{2, 4, 5, 6, 7, 8})$
+\end{itemize}
 
 \begin{figure}[htbp]
 \begin{sudoku}
@@ -940,135 +982,358 @@ Hidden single is under a situation which has one candidate could only be used in
 |{\cell {}{}3{}{}6{}8{}}|1|{\cell {}{}34{}6{}{}{}}|{\cell {}{}{}4{}678{}}|{\cell {}234{}6{}8{}}|{\cell {}2{}4{}{}7{}{}}|{\cell {}{}{}4{}{}78{}}|5|9|.
 |{\cell {}{}{}{}56{}8{}}|{\cell {}{}{}{}56{}{}{}}|2|{\cell 1{}{}4{}6789}|{\cell {}{}{}456{}89}|{\cell 1{}{}45{}7{}{}}|3|{\cell {}{}{}4{}{}{}8{}}|{\cell {}{}{}{}{}678{}}|.
 |9|7|{\cell {}{}34{}6{}{}{}}|{\cell 1{}{}4{}6{}8{}}|{\cell {}{}3456{}8{}}|{\cell 1{}{}45{}{}{}{}}|{\cell 1{}{}4{}{}{}8{}}|2|{\cell {}{}{}{}{}6{}8{}}|.
-|{\cell {}{}3{}{}{}7{}{}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}{}3{}{}{}7{}9}|{\cell {}{}{}4{}{}78{}}|1|{\cell {}2{}4{\underline 5}{}7{}{}}|{\cell {}2{}4{}{}789}|6|{\cell {}23{}{}{}78{}}|.
+|{\cell {}{}3{}{}{}7{}{}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}{}3{}{}{}{\xout 7}{}9}|{\cell {}{}{}4{}{}78{}}|1|{\cell {}2{}45{}7{}{}}|{\cell {}2{}4{}{}789}|6|{\cell {}23{}{}{}78{}}|.
 |{\cell {}{}{}{}{}67{}{}}|8|5|3| {\cell {}2{}4{}{}{}{}{}}|9| {\cell {}2{}4{}{}7{}{}}|1| {\cell {}2{}{}{}{}7{}{}}|.
-|4| {\cell {}23{}{}{}{}{}{}}|{\cell {\underline 1}{}3{}{}{}7{}9}|{\cell {}{}{}{}{}{}78{}}|{\cell {}2{}{}{}{}{}8{}}|6|{\cell {}2{}{}{}{}789}|{\cell {}{}3{}{}{}{}89}| 5|.
+|4| {\cell {}23{}{}{}{}{}{}}|{\cell 1{}3{}{}{}{\xout 7}{}9}|{\cell {}{}{}{}{}{}78{}}|{\cell {}2{}{}{}{}{}8{}}|6|{\cell {}2{}{}{}{}789}|{\cell {}{}3{}{}{}{}89}| 5|.
 \end{sudoku}
-\caption{Example in hidden single}
-\label{fig:hiddensingle}
+\caption{Example in rc-view for hidden single}
+\label{fig:hiddensinglerc}
 \end{figure}
 
-
-
-\subsection{Intersection Removal}
-\label{sec:Intersection Removal}
-Sometimes, advanced techniques is needed to be used on supporting more difficult puzzle whilst both naked single and hidden single are not able to find out any way out. The intersection removal technique provides an advanced elimination skill to exclude more impossibilities out of the row, or the column which are in one object block. The prerequisites for this techniques to be utilized are, 
-\begin{enumerate}
-\item All the cells in one block holds a specific candidate just right in the same row or column or
-\item All the cells in one row or one column hold a possible specific candidate just right in the same block.
-\end{enumerate}
-If the first prerequisite is tenable, then the specific candidate could be excluded from all other cells in the same row or column. And if the second prerequisite is tenable, the the specific candidate could be excluded from all other cells in the same block. 
+In the rn-view, if there is a cell $A'(i,j)$ has more than one columns in the cell, but only one of the columns $v$ is only appeared in this cell of an unit, then
+\begin{itemize}
+\item the equation for will be re-written.
+\item and exclude column $v$ from all other cells in the rest units.
+\end{itemize}
+In the Figure \ref{fig:hiddensinglern}, we find a cell $A'(2,8)$ in rn-view has matched to the situation description of hidden single that column $3$ is only possible to be appeared in the cell $A'(2,8)$ of row $2$. Thus, $A'(2,8)$ has a re-written equation and the column $3$ excluded from all other cells in the rest units (number).
+\begin{itemize}
+\item $A'(2,8) = (\set{3}, \set{1,\dots,9} \setminus \set{3})$,
+\item $A'(1,8) = (\set{5, 6, 7, 8}, \set{1, 2, 3, 4, 9})$,
+\item $A'(3,8) = (\set{1, 4, 6, 7, 8, 9}, \set{2, 3, 5})$,
+\item $A'(4,8) = (\set{1, 4, 5, 6, 7}, \set{2, 3, 8, 9})$,
+\item $A'(6,8) = (\set{4, 5, 6, 7, 9}, \set{1, 2, 3, 8})$.
+\end{itemize}
 
 \begin{figure}[htbp]
 \begin{sudoku}
-|2|{\cell {}{}{}{}56789}|{\cell {}{}{}{}5{}78{}}|{\cell {}{}3456{}{}9}|{\cell {}{}345{}789}|{\cell {}{}{}456789}|1|{\cell {}{}{}4{}67{}{}}|{\cell {}{}{}{}{}67{}9}|.
+|{\makebox[0pt]{\hspace{-1em}\large r1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n2}}4}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}23{}{}{}{}8{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}2{}{}{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}23{}5{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}3{}{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}{\xout 3}{}5678{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n9}}{\cell {}{}{}{}5{}78{}}}|.
+|{\makebox[0pt]{\hspace{-2.3em}\large r2}{\cell {}{}{}{}{}{}{}{}9}}|{\cell 1{}{}{}{}{}{}{}9}|6|{\cell {}{}{}{}5{}{}{}{}}|4|7| 8|{\cell 1{}{\underline 3}{}5{}{}{}9}|2|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r3}{\cell {}{}{}4{}67{}9}}|{\cell 1{}{}{}{}{}7{}9}|{\cell 1{}3{}{}{}{}89}|2|{\cell 1{}{}{}{}{}7{}{}}|{\cell 1{}34{}{}{}{}{}}|5|{\cell 1{}{\xout 3}4{}6789}|{\cell {}{}{}4{}{}78{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r4}2}|{\cell {}{}{}{}56{}{}{}}|{\cell 1{}3{}5{}{}{}{}}|{\cell {}{}34567{}{}}|8|{\cell 1{}345{}{}{}{}}|{\cell {}{}{}4{}67{}{}}|{\cell 1{}{\xout 3}4567{}{}}|9|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r5}{\cell {}{}{}4{}6{}{}9}}|3|7|{\cell {}{}{}456{}8{}}|{\cell 12{}{}56{}{}{}}|{\cell 12{}45{}{}{}9}|{\cell {}{}{}4{}6{}{}9}|{\cell 1{}{}456{}89}|{\cell {}{}{}45{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r6}{\cell {}{}{}4{}67{}9}}|8|{\cell {}{}3{}5{}{}{}{}}|{\cell {}{}34567{}{}}|{\cell {}{}{}{}56{}{}{}}|{\cell {}{}345{}{}{}9}|2|{\cell {}{}{\xout 3}4567{}9}|1|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r7}5}|{\cell 12{}{}{}67{}9}|{\cell 123{}{}{}{}{}9}|{\cell {}{}{}4{}67{}{}}|{\cell {}{}{}{}{}6{}{}{}}|8|{\cell 1{}34{}67{}9}|{\cell {}{}{}4{}67{}9}|{\cell {}{}3{}{}{}7{}{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r8}8}|{\cell 1{}{}{}5{}7{}9}|4| {\cell {}{}{}{}5{}7{}{}}|3| {\cell 1{}{}{}{}{}{}{}{}}|{\cell 1{}{}{}{}{}7{}9}|2|6|.
+|{\makebox[0pt]{\hspace{-2.3em}\large r9}{\cell {}{}3{}{}{}{}{}{}}}| {\cell {}2{}{}5{}7{}{}}|{\cell {}23{}{}{}{}8{}}|1|9|6|{\cell {}{}34{}{}7{}{}}| {\cell {}{}{}45{}78{}}|{\cell {}{}3{}{}{}78{}}|.
+\end{sudoku}
+\caption{Example in rn-view for hidden single.}
+\label{fig:hiddensinglern}
+\end{figure}
+
+In the cn-view, if there is a cell $A'(i,j)$ has more than one rows in the cell, but only one of the rows $v$ is only appeared in this cell of an unit, then
+\begin{itemize}
+\item the equation for will be re-written.
+\item and exclude row $v$ from all other cells in the rest units.
+\end{itemize}
+In the Figure \ref{fig:hiddensinglecn}, we find a cell $A'(6,5)$ in cn-view has matched to the situation description of hidden single that row $7$ is only possible to be appeared in the cell $A'(6,5)$ of column $6$. Thus, $A'(6,5)$ has a re-written equation and the row $7$ excluded from all other cells in the rest units (number).
+\begin{itemize}
+\item $A'(6,5) = (\set{7}, \set{1,\dots,9} \setminus \set{7})$,
+\item $A'(6,2) = (\set{4}, \set{1, 2, 3, 5, 6, 7, 8, 9})$,
+\item $A'(6,4) = (\set{4, 6}, \set{1, 2, 3, 5, 7, 8, 9})$,
+\item $A'(6,7) = (\set{4, 5}, \set{1, 2, 3, 6, 7, 8, 9})$,
+\item $A'(6,8) = (\set{1, 3, 4, 5, 6}, \set{2, 7, 8, 9})$.
+\end{itemize}
+
+\begin{figure}[htbp]
+\begin{sudoku}
+|{\makebox[0pt]{\hspace{-1em}\large c1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n2}}{\cell {}23{}{}{}78{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}{}34{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}{}3{}5{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}{}345{}{}8{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}{}{}{}{}78{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}2345{}{}{}{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n9}}6}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c2}4}|{\cell {}{}{}{}{}{}7{}9}|{\cell 1{}{}{}{}{}7{}9}|3|{\cell 1{}{}{}5{}{}{}{}}|{\cell 1{}{}{}5{}{}{}{}}|6|8|2|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c3}{\cell {}{}{}{}{}{}{}{}9}}|5|{\cell 1{}34{}67{}9}|{\cell {}{}{}4{}67{}{}}|8|{\cell 1{}34{}6{}{}{}}|{\cell 1{}{}{}{}{}7{}9}|{\cell 1234{}6{}{}{}}|{\cell {}{}{}{}{}{}7{}9}|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c4}{\cell {}{}3{}{}6{}{}{}}}|1|8|{\cell {}{}{}4{}67{}{}}|2|{\cell {}{}3456{}{}{}}|{\cell {}{}{}45{}7{}9}|{\cell {}{}34567{}9}|{\cell {}{}3{}5{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c5}7}|{\cell {}{}{}4{}{}{}89}|{\cell {}{}{}4{}6{}{}{}}|{\cell {}2{}4{}6{}8{}}|{\cell {}{}{}{}56{}{}{}}|{\cell 1{}{}456{}{}{}}|3|{\cell 12{}456{}{}9}|{\cell 1{}{}{}5{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large c6}{\cell {}{}3{}56{}{}{}}}|{\cell {}{}{}4{}{}{\xout 7}{}{}}|2|{\cell {}{}{}4{}6{\xout 7}{}{}}|{\cell {}{}{}{}{\xout 5}{\xout 6}{\underline 7}{}{}}|9|{\cell {}{}{}45{}{\xout 7}{}{}}|{\cell 1{}3456{\xout 7}{}{}}|8|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c7}{\cell {}{}3{}{}6{}{}{}}}|{\cell {}{}3{}{}{}789}|5|{\cell {}{}{}4{}678{}}|{\cell 1{}3{}{}{}{}{}{}}|2|{\cell {}{}{}4{}{}789}|{\cell 1{}34{}67{}9}|{\cell 1{}3{}{}{}7{}9}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c8}8}|6|{\cell 1{}3{}{}{}{}{}9}|{\cell {}{}{}{}{\underline 5}{}{}{}{}}|4|7|2|{\cell 1{}3{}{}{}{}{}9}|{\cell 1{}3{}{}{}{}{}9}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large c9}{\cell {}23{}56{}{}{}}}|{\cell {}23{}{}{}78{}}|{\cell {}{}3{}{}{}7{}{}}|1|9|{\cell {}{}{}{}56{}{}{}}|{\cell {}{}{}{}5{}78{}}|{\cell {}23{}567{}{}}|4|.
+\end{sudoku}
+\caption{Example in cn-view for hidden single.}
+\label{fig:hiddensinglecn}
+\end{figure}
+
+In the bn-view, if there is a cell $A'(i,j)$ has more than one squares in the cell, but only one of the squares $v$ is only appeared in this cell of an unit, then
+\begin{itemize}
+\item the equation for will be re-written.
+\end{itemize}
+In the Figure \ref{fig:hiddensinglebn}, we find a cell $A'((1, 8)$ in bn-view has matched to the situation description of hidden single that square $6$ is only possible to be appeared in the cell $A'(1, 8)$ of square $6$. Thus, $A'(6,5)$ has a re-written equation.
+\begin{itemize}
+\item $A'(1,8) = (\set{6}, \set{1,\dots,9} \setminus \set{6})$.
+\end{itemize}
+
+\begin{figure}[htbp]
+\begin{sudoku}
+|{\makebox[0pt]{\hspace{-1em}\large b1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n2}}{\cell {}{}{}4{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}23{}{}{}7{}9}}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n4}}8}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}2{}{}{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}23{}{}{}7{}9}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}3{}{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}{\xout 3}{\xout 4}{}{\underline 6}{\xout 7}{}{\xout 9}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n9}}5}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b2}{\cell {}{}{}{}{}{}7{}9}}|1|6|{\cell {}{}{}{}5{}{}{}{}}|4|{\cell {}2{}{}{}{}7{}{}}|8|{\cell {}23{}5{}{}89}|{\cell {}2{}{}{}{}7{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b3}{\cell {}{}{}{}{}67{}9}}|{\cell {}{}{}{}{}67{}9}|{\cell {}2{}{}{}{}{}89}|3|{\cell 1{}{}{}{}{}7{}{}}|4|5|{\cell 12{}{}{}6789}|{\cell 12{}{}{}{}78{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b4}2}|6|{\cell 1{}3{}{}{}{}{}9}|{\cell {}{}3{}{}{}{}{}9}|{\cell {}{}{}45{}{}{}{}}|{\cell 1{}345{}{}{}9}|8|{\cell 1{}34{}{}{}{}9}|7|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b5}{\cell {}{}{}4{}67{}9}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}2{}{}{}{}{}8{}}|{\cell 123456789}|{\cell {}{}{}{}56{}89}|{\cell 12{}45{}78{}}|{\cell 1{}34{}6{}{}{}}|{\cell 123456789}|{\cell {}{}{}45{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b6}{\cell {}{}{}{}{}67{}9}}|8|4|{\cell 1{}{}{}5{}7{}{}}|2|{\cell {}{}{}{}{}6{}{}9}|{\cell 1{}{}{}{}6{}{}{}}|{\cell 1{}{}{}567{}9}|3|.
+|{\makebox[0pt]{\hspace{-2.3em}\large b7}{\cell {}{}{}{}{}{}{}{}9}}|{\cell 12{}4{}{}{}8{}}|{\cell 123{}{}{}{}89}|7|6|{\cell {}{}{}4{}{}{}{}{}}|{\cell 1{}34{}{}{}{}9}|5|{\cell {}{}3{}{}{}{}{}9}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b8}2}|{\cell {}{}3{}5{}{}8{}}|4|{\cell 1{}3{}5{}{}{}{}}|{\cell {}{}3{}{}{}{}{}{}}|9|{\cell 1{}3{}{}{}7{}{}}|{\cell 1{}3{}{}{}78{}}|6|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b9}5}|{\cell 1{}34{}67{}{}}|{\cell {}{}3{}{}{}{}8{}}|{\cell 1{}{}4{}{}{}{}{}}|9|2|{\cell 1{}34{}67{}{}}|{\cell 1{}3{}{}{}78{}}|{\cell 1{}{}{}{}{}78{}}.
+\end{sudoku}
+\caption{Example in bn-view for hidden single.}
+\label{fig:hiddensinglebn}
+\end{figure}
+
+\section{Intersection Removal}
+\label{sec:IntersectionRemoval}
+Sometimes, an advanced rule is needed to be used on supporting more difficult Sudoku puzzle whilst both naked single and hidden single are not able to find out any way out. The intersection removal rule provides an advanced elimination skill to exclude more impossibilities out of the row, or the column which are in one object block. Notice that this rule is required the block examined with the column or the row, but except in the general rc-view annotated instance, other views does not have block elements involved. Thus, this rule could only applied in an rc-view annotated instance. And the prerequisites for this rule to be examined are, 
+\begin{enumerate}
+\item All the cells in one block holds a specific candidate just right in the same row (or column),
+\begin{itemize}
+\item If the prerequisite is true, then the specific candidate could be excluded from all other cells in the same row (or column). 
+\end{itemize}
+\item or all the cells in one column (or one row) hold a possible specific candidate just right in the same block.
+\begin{itemize}
+\item If the prerequisite is true, the the specific candidate could be excluded from all other cells in the same block. 
+\end{itemize}
+\end{enumerate}
+In the Figure \ref{fig:intersectionremovalrc}, a case that all the cells in a block holds a candidate $v$ just right in the same column is found. Cell $A'(1,8)$ and cell $A'(3,8)$ in the block $3$ hold candidate $4$ which just right in the same column $8$. Hence, candidate $4$ then could be excluded from all other cells $A'(4,8)$ and $A'(6,8)$ in the same column $8$.
+
+
+\begin{figure}[htbp]
+\begin{sudoku}
+|2|{\cell {}{}{}{}56789}|{\cell {}{}{}{}5{}78{}}|{\cell {}{}3456{}{}9}|{\cell {}{}345{}789}|{\cell {}{}{}456789}|1|{\cell {}{}{}{\underline 4}{}67{}{}}|{\cell {}{}{}{}{}67{}9}|.
 |1|4|{\cell {}{}{}{}5{}7{}{}}|{\cell {}{}{}{}56{}{}9}|2|{\cell {}{}{}{}567{}9}|{\cell {}{}{}{}{}67{}9}|8|3|.
-|{\cell {}{}{}{}{}67{}9}|{\cell {}{}{}{}{}6789}|3|{\cell {}{}{}4{}6{}{}9}|1|{\cell {}{}{}4{}6789}|5|{\cell {}2{}4{}67{}{}}|{\cell {}2{}{}{}67{}9}|.
-|{\cell {}{}345{}7{}{}}|{\cell 123{}5{}7{}{}}|{\cell {}2{}45{}7{}{}}|{\cell {}{}3456{}{}9}|{\cell {}{}345{}{}89}|{\cell {}{}{}456{}89}|{\cell {}{}{}4{}6789}|{\cell 12{}4{}67{}{}}|{\cell 12{}{}{}6789}|.
+|{\cell {}{}{}{}{}67{}9}|{\cell {}{}{}{}{}6789}|3|{\cell {}{}{}4{}6{}{}9}|1|{\cell {}{}{}4{}6789}|5|{\cell {}2{}{\underline 4}{}67{}{}}|{\cell {}2{}{}{}67{}9}|.
+|{\cell {}{}345{}7{}{}}|{\cell 123{}5{}7{}{}}|{\cell {}2{}45{}7{}{}}|{\cell {}{}3456{}{}9}|{\cell {}{}345{}{}89}|{\cell {}{}{}456{}89}|{\cell {}{}{}4{}6789}|{\cell 12{}{\xout 4}{}67{}{}}|{\cell 12{}{}{}6789}|.
 |{\cell {}{}34{}{}{}{}{}}|{\cell 123{}{}{}{}{}{}}|6|7|{\cell {}{}34{}{}{}89}|{\cell {}{}{}4{}{}{}89}|{\cell {}{}{}4{}{}{}89}|5|{\cell 12{}{}{}{}{}89}|.
-|8|{\cell {}{}{}{}5{}7{}{}}|9|2|{\cell {}{}{}45{}{}{}{}}|1|3|{\cell {}{}{}4{}67{}{}}|{\cell {}{}{}{}{}67{}{}}|.
+|8|{\cell {}{}{}{}5{}7{}{}}|9|2|{\cell {}{}{}45{}{}{}{}}|1|3|{\cell {}{}{}{\xout 4}{}67{}{}}|{\cell {}{}{}{}{}67{}{}}|.
 |{\cell {}{}{}4567{}9}|{\cell {}{}{}{}56789}|{\cell {}{}{}45{}78{}}|{\cell {}{}{}45{}{}{}9}|{\cell {}{}{}45{}7{}9}|3|2|{\cell 1{}{}{}{}67{}{}}|{\cell 1{}{}{}5678{}}|.
 |{\cell {}{}{}4567{}9}|{\cell {}{}{}{}567{}9}|1|8|{\cell {}{}{}45{}7{}9}|2|{\cell {}{}{}{}{}67{}{}}|3|{\cell {}{}{}{}567{}{}}|.
 |{\cell {}{}3{}5{}7{}{}}|{\cell {}23{}5{}78{}}|{\cell {}2{}{}5{}78{}}|1|6|{\cell {}{}{}{}5{}7{}{}}|{\cell {}{}{}{}{}{}78{}}|9|4|.
 \end{sudoku}
-\caption{Example in intersection removal}
-\label{fig:intersectionremoval}
+\caption{Example in rc-view for intersection removal.}
+\label{fig:intersectionremovalrc}
 \end{figure}
-
-For example, in \ref{fig:intersectionremoval} candidate $n_{4}$ happens to appear in both $(r_{1},\ c_{8})$ and $(r_{3},\ c_{8})$ in block $b_{3}$ which just right in the same column $c_{8}$, hence, this candidate $n_{4}$ then could be excluded from all other cells $(r_{4},\ c_{8})$ and $(r_{6},\ c_{8})$ in the same column $c_{8}$.
-
+|
 
 
 
-\section{Intermediate rules}
-\label{sec:Intermediaterules}
-
-\subsection{Naked Pair}
+\section{Naked Pair}
 \label{sec:Naked Pair}
+Naked pair rule is used in a situation that ``there are two cell each has exact two \textbf{same} candidates in the cell, and happen to appear in an shared unit (or probably in two shared units)''. Then, excludes these two candidates from other cells in the shared unit(s), and rewrite the equation of the cell.
 
-Naked Pair could hold when any of these three prerequisites hold, which are, 
+In the rc-view, if there are two cell each has exact two candidates in
 \begin{itemize}
-\item in a row: two cells happen to shared a row and have only two candidate left in the cells.
-\item in a column: two cells happen to shared a column and have only two candidate left in the cells.
-\item or in a block: two cells happen to shared a row and have only two candidate left in the cells.
+\item a row,
+\item a column,
+\item a block,
+\item a row and a block at the same time,
+\item or a column and a block at the same time.
 \end{itemize}
-The first two prerequisites above could be mixed and matched with the last one, such like two cells have shared a block and also a column or two cells have shared a block and also a row. When one prerequisite has been matched, then all other cells shared the same row, column, or block could have these two candidates excluded. Because the situation told that these two candidates could only be used in these two cells, and no longer able to be used for others. For example, in the instance Figure \ref{fig:nakedpairb4} which is shown, candidates 2 and 3 are the \textbf{only} two candidates left in the cell $(r_{7},\ c_{2})$ and $(r_{9},\ c_{2})$ which happened to be in a column and also a block, it tells that 2 or 3 could only be used in these cells, no longer for others in the same column or same block. Thus, candidates 2 and 3 will be excluded in this column and the block which $(r_{7},\ c_{2})$ and $(r_{9},\ c_{2})$ are both in to a consequence like Figure \ref{fig:nakedpairaf}. 
-
+then all other cells in a same unit could have these two candidates excluded and the equations re-written. For example, in the annotated instance Figure \ref{fig:nakedpairrc} shown, there are two cells $(7,2)$ and $(9,2)$ (shared a column and a block) have exact two candidates $2$ and $3$ left in these two cells. Thus candidates $2$ and $3$ will be excluded from all other cells in the same column $2$ and the block $7$, and the re-written equation for the cells have candidates eliminated.
+\begin{eqnarray*}
+A'(1,2) = (\set{5, 6}, \set{1, 2, 3, 4, 7, 8, 9})\\
+A'(7,1) = (\set{7}, \set{1, 2, 3, 4, 5, 6, 8, 9})\\
+A'(7,3) = (\set{7, 9}, \set{1, 2, 3, 4, 5, 6, 8})\\
+A'(8,1) = (\set{6, 7}, \set{1, 2, 3, 4, 5, 8, 9})\\
+A'(9,3) = (\set{1, 7, 9}, \set{2, 3, 4, 5, 6, 8})\\
+\end{eqnarray*}
 
 \begin{figure}[htbp]
 \begin{sudoku}
-|1|{\cell {}{}3{}56{}{}{}}|{\cell {}{}3{}{}67{}{}}|2|{\cell {}{}{}{}{}6{}{}9}|8|{\cell {}{}{}{}5{}{}{}9}|{\cell {}{}3{}{}{}{}{}9}|4|.
+|1|{\cell {}{}{\xout 3}{}56{}{}{}}|{\cell {}{}3{}{}67{}{}}|2|{\cell {}{}{}{}{}6{}{}9}|8|{\cell {}{}{}{}5{}{}{}9}|{\cell {}{}3{}{}{}{}{}9}|4|.
 |{\cell {}2{}{}{}{}{}{}{}}|9|8|5|{\cell {}{}{}4{}{}{}{}{}}|3|6| 7|{\cell 12{}{}{}{}{}8{}}|.
 |{\cell {}23{}56{}{}{}}|4|{\cell {}{}3{}{}6{}{}{}}|{\cell 1{}{}{}{}6{}{}9}|7|{\cell 1{}{}{}{}{}{}{}{}}|{\cell 12{}{}5{}{}89}|{\cell {}{}3{}{}{}{}89}|{\cell 123{}{}{}{}8{}}|.
 |{\cell {}{}3{}{}6{}8{}}|1|{\cell {}{}34{}6{}{}{}}|{\cell {}{}{}4{}678{}}|{\cell {}234{}6{}8{}}|{\cell {}2{}4{}{}7{}{}}|{\cell {}{}{}4{}{}78{}}|5|9|.
 |{\cell {}{}{}{}56{}8{}}|{\cell {}{}{}{}56{}{}{}}|2|{\cell 1{}{}4{}6789}|{\cell {}{}{}456{}89}|{\cell 1{}{}45{}7{}{}}|3|{\cell {}{}{}4{}{}{}8{}}|{\cell 1{}{}{}{}678{}}|.
 |9|7|{\cell {}{}34{}6{}{}{}}|{\cell 1{}{}4{}6{}8{}}|{\cell {}{}3456{}8{}}|{\cell 1{}{}45{}{}{}{}}|{\cell 1{}{}4{}{}{}8{}}|2|{\cell 1{}{}{}{}6{}8{}}|.
-|{\cell {}23{}{}{}7{}{}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}{}3{}{}{}7{}9}|{\cell {}{}{}4{}{}78{}}|1|{\cell {}2{}45{}7{}{}}|{\cell {}2{}4{}{}789}|6|{\cell {}23{}{}{}78{}}|.
-|{\cell {}2{}{}{}67{}{}}|8|5|3| {\cell {}2{}4{}{}{}{}{}}|9| {\cell {}2{}4{}{}7{}{}}|1| {\cell {}2{}{}{}{}7{}{}}|.
-|4| {\cell {}23{}{}{}{}{}{}}|{\cell 1{}3{}{}{}7{}9}|{\cell {}{}{}{}{}{}78{}}|{\cell {}2{}{}{}{}{}8{}}|6|{\cell {}2{}{}{}{}789}|{\cell {}{}3{}{}{}{}89}| 5|.
+|{\cell {}{\xout 2}{\xout 3}{}{}{}7{}{}}|{\cell {}{\underline 2}{\underline 3}{}{}{}{}{}{}}|{\cell {}{}{\xout 3}{}{}{}7{}9}|{\cell {}{}{}4{}{}78{}}|1|{\cell {}2{}45{}7{}{}}|{\cell {}2{}4{}{}789}|6|{\cell {}23{}{}{}78{}}|.
+|{\cell {}{\xout 2}{}{}{}67{}{}}|8|5|3| {\cell {}2{}4{}{}{}{}{}}|9| {\cell {}2{}4{}{}7{}{}}|1| {\cell {}2{}{}{}{}7{}{}}|.
+|4| {\cell {}{\underline 2}{\underline 3}{}{}{}{}{}{}}|{\cell 1{}{\xout 3}{}{}{}7{}9}|{\cell {}{}{}{}{}{}78{}}|{\cell {}2{}{}{}{}{}8{}}|6|{\cell {}2{}{}{}{}789}|{\cell {}{}3{}{}{}{}89}| 5|.
 \end{sudoku}
-\caption{Example in haked pair - before}
-\label{fig:nakedpairb4}
+\caption{Example in rc-view for naked pair.}
+\label{fig:nakedpairrc}
 \end{figure}
+
+In the rn-view, if there are two cell each has exact two candidates in
+\begin{itemize}
+\item a row,
+\item a number.
+\end{itemize}
+then all other cells in a same unit could have these two columns excluded and its equation re-written. For example, in the annotated instance Figure \ref{fig:nakedpairrn} shown, there are two cells $(3,3)$ and $(9,3)$ shared a number and have exact two columns $3$ and $8$ left in these two cells. Thus columns $3$ and $8$ will be excluded from the other cells in the shared unit, and the re-written equation for the cells have columns eliminated.
+for the number-axis $3$:
+\begin{eqnarray*}
+A'(4,3) = (\set{1, 5}, \set{2, 3, 4, 6, 7, 8, 9})\\
+A'(6,3) = (\set{5}, \set{1, 2, 3, 4, 6, 7, 8 ,9})\\
+A'(7,3) = (\set{1, 2, 9}, \set{3, 4, 5 ,6 ,7, 8})\\
+\end{eqnarray*}
 
 \begin{figure}[htbp]
 \begin{sudoku}
-|1|{\cell {}{}{\sout 3}{}56{}{}{}}|{\cell {}{}3{}{}67{}{}}|2|{\cell {}{}{}{}{}6{}{}9}|8|{\cell {}{}{}{}5{}{}{}9}|{\cell {}{}3{}{}{}{}{}9}|4|.
-|{\cell {}2{}{}{}{}{}{}{}}|9|8|5|{\cell {}{}{}4{}{}{}{}{}}|3|6| 7|{\cell 12{}{}{}{}{}8{}}|.
-|{\cell {}23{}56{}{}{}}|4|{\cell {}{}3{}{}6{}{}{}}|{\cell 1{}{}{}{}6{}{}9}|7|{\cell 1{}{}{}{}{}{}{}{}}|{\cell 12{}{}5{}{}89}|{\cell {}{}3{}{}{}{}89}|{\cell 123{}{}{}{}8{}}|.
-|{\cell {}{}3{}{}6{}8{}}|1|{\cell {}{}34{}6{}{}{}}|{\cell {}{}{}4{}678{}}|{\cell {}234{}6{}8{}}|{\cell {}2{}4{}{}7{}{}}|{\cell {}{}{}4{}{}78{}}|5|9|.
-|{\cell {}{}{}{}56{}8{}}|{\cell {}{}{}{}56{}{}{}}|2|{\cell 1{}{}4{}6789}|{\cell {}{}{}456{}89}|{\cell 1{}{}45{}7{}{}}|3|{\cell {}{}{}4{}{}{}8{}}|{\cell 1{}{}{}{}678{}}|.
-|9|7|{\cell {}{}34{}6{}{}{}}|{\cell 1{}{}4{}6{}8{}}|{\cell {}{}3456{}8{}}|{\cell 1{}{}45{}{}{}{}}|{\cell 1{}{}4{}{}{}8{}}|2|{\cell 1{}{}{}{}6{}8{}}|.
-|{\cell {}{\sout 2}{\sout 3}{}{}{}7{}{}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}{}{\sout 3}{}{}{}7{}9}|{\cell {}{}{}4{}{}78{}}|1|{\cell {}2{}45{}7{}{}}|{\cell {}2{}4{}{}789}|6|{\cell {}23{}{}{}78{}}|.
-|{\cell {}{\sout 2}{}{}{}67{}{}}|8|5|3| {\cell {}2{}4{}{}{}{}{}}|9| {\cell {}2{}4{}{}7{}{}}|1| {\cell {}2{}{}{}{}7{}{}}|.
-|4| {\cell {}23{}{}{}{}{}{}}|{\cell 1{}{\sout 3}{}{}{}7{}9}|{\cell {}{}{}{}{}{}78{}}|{\cell {}2{}{}{}{}{}8{}}|6|{\cell {}2{}{}{}{}789}|{\cell {}{}3{}{}{}{}89}| 5|.
+|{\makebox[0pt]{\hspace{-1em}\large r1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n2}}4}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}2{}{}{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}2{}{}{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}23{}5{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}3{}{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}{}{}5678{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n9}}{\cell {}{}{}{}5{}78{}}}|.
+|{\makebox[0pt]{\hspace{-2.3em}\large r2}{\cell {}{}{}{}{}{}{}{}9}}|{\cell 1{}{}{}{}{}{}{}{}}|6|{\cell {}{}{}{}5{}{}{}{}}|4|7| 8|{\cell {\xout 1}{}{}{}5{}{}{}{}}|2|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r3}{\cell {}{}{}4{}67{}{}}}|{\cell {}{}{}{}{}{}7{}{}}|{\cell {}{}{\underline 3}{}{}{}{}{\underline 8}{}}|2|{\cell 1{}{}{}{}{}7{}{}}|{\cell 1{}34{}{}{}{}{}}|5|{\cell 1{}{}4{}6789}|{\cell {}{}{}4{}{}78{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r4}2}|{\cell {}{}{}{}56{}{}{}}|{\cell 1{}{\xout 3}{}5{}{}{}{}}|{\cell {}{}34567{}{}}|8|{\cell 1{}345{}{}{}{}}|{\cell {}{}{}4{}67{}{}}|{\cell 1{}{}4567{}{}}|9|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r5}{\cell {}{}{}4{}6{}{}9}}|3|7|{\cell {}{}{}456{}8{}}|{\cell 12{}{}56{}{}{}}|{\cell 12{}45{}{}{}9}|{\cell {}{}{}4{}6{}{}9}|{\cell 1{}{}456{}89}|{\cell {}{}{}45{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r6}{\cell {}{}{}4{}67{}9}}|8|{\cell {}{}{\xout 3}{}5{}{}{}{}}|{\cell {}{}34567{}{}}|{\cell {}{}{}{}56{}{}{}}|{\cell {}{}345{}{}{}9}|2|{\cell {}{}{}4567{}9}|1|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r7}5}|{\cell 12{}{}{}67{}9}|{\cell 12{\xout 3}{}{}{}{}{}9}|{\cell {}{}{}4{}67{}{}}|{\cell {}{}{}{}{}6{}{}{}}|8|{\cell 1{}34{}67{}9}|{\cell {}{}{}4{}67{}9}|{\cell {}{}3{}{}{}7{}{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r8}8}|{\cell 1{}{}{}5{}7{}9}|4| {\cell {}{}{}{}5{}7{}{}}|3| {\cell 1{}{}{}{}{}{}{}{}}|{\cell 1{}{}{}{}{}7{}9}|2|6|.
+|{\makebox[0pt]{\hspace{-2.3em}\large r9}{\cell {}{}3{}{}{}{}{}{}}}|{\cell {}2{}{}5{}7{}{}}|{\cell {}{}{\underline 3}{}{}{}{}{\underline 8}{}}|1|9|6|{\cell {}{}34{}{}7{}{}}| {\cell {}{}{}45{}78{}}|{\cell {}{}3{}{}{}78{}}|.
 \end{sudoku}
-\caption{Example in naked pair - after}
-\label{fig:nakedpairaf}
+\caption{Example in rn-view for naked pair.}
+\label{fig:nakedpairrn}
+\end{figure}
+
+In the cn-view, if there are two cell each has exact two candidates in
+\begin{itemize}
+\item a column,
+\item a number.
+\end{itemize}
+then all other cells in a same unit could have these two columns excluded and its equation re-written. For example, in the annotated instance Figure \ref{fig:nakedpaircn} shown, there are two cells $(2,5)$ and $(2,6)$ shared a column and have exact two columns $1$ and $5$ left in these two cells. Thus columns $1$ and $5$ will be excluded from the other cells in the shared unit, and the re-written equation for the cells have rows eliminated.
+for the number-axis $3$:
+\begin{eqnarray*}
+A'(2,3) = (\set{7, 9}, \set{1, 2 ,3 ,4 ,5 ,6, 8})\\
+\end{eqnarray*}
+
+\begin{figure}[htbp]
+\begin{sudoku}
+|{\makebox[0pt]{\hspace{-1em}\large c1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n2}}{\cell {}23{}{}{}78{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}{}34{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}{}3{}5{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}{}345{}{}8{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}{}{}{}{}78{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}2345{}{}{}{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n9}}6}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c2}4}|{\cell {}{}{}{}{}{}7{}9}|{\cell {\xout 1}{}{}{}{}{}7{}9}|3|{\cell {\underline 1}{}{}{}{\underline 5}{}{}{}{}}|{\cell {\underline 1}{}{}{}{\underline 5}{}{}{}{}}|6|8|2|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c3}{\cell {}{}{}{}{}{}{}{}9}}|5|{\cell 1{}34{}67{}9}|{\cell {}{}{}4{}67{}{}}|8|{\cell 1{}34{}6{}{}{}}|{\cell 1{}{}{}{}{}7{}9}|{\cell 1234{}6{}{}{}}|{\cell {}{}{}{}{}{}7{}9}|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c4}{\cell {}{}3{}{}6{}{}{}}}|1|8|{\cell {}{}{}4{}67{}{}}|2|{\cell {}{}3456{}{}{}}|{\cell {}{}{}45{}7{}9}|{\cell {}{}34567{}9}|{\cell {}{}3{}5{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c5}7}|{\cell {}{}{}4{}{}{}89}|{\cell {}{}{}4{}6{}{}{}}|{\cell {}2{}4{}6{}8{}}|{\cell {}{}{}{}56{}{}{}}|{\cell 1{}{}456{}{}{}}|3|{\cell 12{}456{}{}9}|{\cell 1{}{}{}5{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large c6}{\cell {}{}3{}56{}{}{}}}|{\cell {}{}{}4{}{}{\xout 7}{}{}}|2|{\cell {}{}{}4{}6{\xout 7}{}{}}|{\cell {}{}{}{}{\xout 5}{\xout 6}{\underline 7}{}{}}|9|{\cell {}{}{}45{}{\xout 7}{}{}}|{\cell 1{}3456{\xout 7}{}{}}|8|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c7}{\cell {}{}3{}{}6{}{}{}}}|{\cell {}{}3{}{}{}789}|5|{\cell {}{}{}4{}678{}}|{\cell 1{}3{}{}{}{}{}{}}|2|{\cell {}{}{}4{}{}789}|{\cell 1{}34{}67{}9}|{\cell 1{}3{}{}{}7{}9}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c8}8}|6|{\cell 1{}3{}{}{}{}{}9}|{\cell {}{}{}{}{\underline 5}{}{}{}{}}|4|7|2|{\cell 1{}3{}{}{}{}{}9}|{\cell 1{}3{}{}{}{}{}9}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large c9}{\cell {}23{}56{}{}{}}}|{\cell {}23{}{}{}78{}}|{\cell {}{}3{}{}{}7{}{}}|1|9|{\cell {}{}{}{}56{}{}{}}|{\cell {}{}{}{}5{}78{}}|{\cell {}23{}567{}{}}|4|.
+\end{sudoku}
+\caption{Example in cn-view for naked pair.}
+\label{fig:nakedpaircn}
+\end{figure}
+
+In the bn-view, if there are two cell each has exact two squares in
+\begin{itemize}
+\item a block.
+\end{itemize}
+then all other cells in the same block could have these two rows excluded and its equation re-written. For example, in the annotated instance Figure \ref{fig:nakedpairbn} shown, there are two cells $(2,6)$ and $(2,9)$ shared a block and have exact two squares $2$ and $7$ left in these two cells. Thus squares $2$ and $7$ will be excluded from the other cells in the shared unit, and the re-written equation for the cells have rows eliminated.
+\begin{eqnarray*}
+A'(2,1) = (\set{9}, \set{1, 2, 3, 4, 5, 6, 7, 8})\\
+A'(2,8) = (\set{3, 5, 8, 9}, \set{1, 2 ,4 ,6, 7})\\
+\end{eqnarray*}
+
+\begin{figure}[htbp]
+\begin{sudoku}
+|{\makebox[0pt]{\hspace{-1em}\large b1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n2}}{\cell {}{}{}4{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}23{}{}{}7{}9}}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n4}}8}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}2{}{}{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}23{}{}{}7{}9}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}3{}{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}34{}{\underline 6}7{}9}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n9}}5}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b2}{\cell {}{}{}{}{}{}{\xout 7}{}9}}|1|6|{\cell {}{}{}{}5{}{}{}{}}|4|{\cell {}{\underline 2}{}{}{}{}{\underline 7}{}{}}|8|{\cell {}{\xout 2}3{}5{}{}89}|{\cell {}{\underline 2}{}{}{}{}{\underline 7}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b3}{\cell {}{}{}{}{}67{}9}}|{\cell {}{}{}{}{}67{}9}|{\cell {}2{}{}{}{}{}89}|3|{\cell 1{}{}{}{}{}7{}{}}|4|5|{\cell 12{}{}{}6789}|{\cell 12{}{}{}{}78{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b4}2}|6|{\cell 1{}3{}{}{}{}{}9}|{\cell {}{}3{}{}{}{}{}9}|{\cell {}{}{}45{}{}{}{}}|{\cell 1{}345{}{}{}9}|8|{\cell 1{}34{}{}{}{}9}|7|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b5}{\cell {}{}{}4{}67{}9}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}2{}{}{}{}{}8{}}|{\cell 123456789}|{\cell {}{}{}{}56{}89}|{\cell 12{}45{}78{}}|{\cell 1{}34{}6{}{}{}}|{\cell 123456789}|{\cell {}{}{}45{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b6}{\cell {}{}{}{}{}67{}9}}|8|4|{\cell 1{}{}{}5{}7{}{}}|2|{\cell {}{}{}{}{}6{}{}9}|{\cell 1{}{}{}{}6{}{}{}}|{\cell 1{}{}{}567{}9}|3|.
+|{\makebox[0pt]{\hspace{-2.3em}\large b7}{\cell {}{}{}{}{}{}{}{}9}}|{\cell 12{}4{}{}{}8{}}|{\cell 123{}{}{}{}89}|7|6|{\cell {}{}{}4{}{}{}{}{}}|{\cell 1{}34{}{}{}{}9}|5|{\cell {}{}3{}{}{}{}{}9}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b8}2}|{\cell {}{}3{}5{}{}8{}}|4|{\cell 1{}3{}5{}{}{}{}}|{\cell {}{}3{}{}{}{}{}{}}|9|{\cell 1{}3{}{}{}7{}{}}|{\cell 1{}3{}{}{}78{}}|6|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b9}5}|{\cell 1{}34{}67{}{}}|{\cell {}{}3{}{}{}{}8{}}|{\cell 1{}{}4{}{}{}{}{}}|9|2|{\cell 1{}34{}67{}{}}|{\cell 1{}3{}{}{}78{}}|{\cell 1{}{}{}{}{}78{}}.
+\end{sudoku}
+\caption{Example in bn-view for naked pair.}
+\label{fig:nakedpairbn}
 \end{figure}
 
 
-\subsection{Hidden Pair}
+
+\section{Hidden Pair}
 \label{sec:Hidden Pair}
-The prerequisite for Hidden Pair is, that two of all the possible candidates are only appeared in two cells in a shared unit (a row, a column, or a block). Once the prerequisite is satisfied, all other candidates in these two cells could be excluded surely. 
-For instance, in the block $b_{2}$ of Figure \ref{fig:hiddenPair}. $(r_{1},\ c_{5})$ and $(r_{3},\ c_{4})$ do not have only two candidates $n_{6}$ and $n_{9}$ in the cells only, but candidates $n_{6}$ and $n_{9}$ are restricted to these two cells only. Hence, the prerequisite is satisfied, thus all candidates expect $n_{6}$ and $n_{9}$ could all be excluded from these two cells.
+
+Hidden pair rule is used in a situation that ``two of all the possible candidates are only appeared in exact two cells in a shared unit, but these two cells both have more than two candidates in the cell''. As soon as the prerequisite is satisfied, all other candidates in these two cells could be excluded immediately, and the equation for these two cell will be re-written. 
+
+In the rc-view, if there are two cells both have more than one candidates in the cell, but only two of the candidates are only appeared in these two cell of the unit, then
+\begin{itemize}
+\item exclude all other candidates apart from these two candidate from all other cells in the rest units,
+\item and re-write the equation for the cells.
+\end{itemize}
+In the Figure \ref{fig:hiddenpairrc}, we find two cells $(1,5)$ and $(3,4)$ in rc-view has matched to the situation description of hidden pair that candidate $6$ and $9$ are only possible to be appeared in the cell $(1,5)$ and $(3,4)$ of block $2$. Thus, all candidates expect $6$ and $9$ will all be excluded from these two cells and the equations will re-written.
+\begin{eqnarray*}
+A'(1,5) = (\set{6, 9}, \set{1, 2, 3, 4, 5, 7, 8})\\
+A'(3,4) = (\set{6, 9}, \set{1, 2, 3, 4, 5, 7, 8})\\
+\end{eqnarray*}
 
 \begin{figure}[htbp]
 \begin{sudoku}
-|1|{\cell {}{}3{}56{}{}{}}|{\cell {}{}3{}{}67{}{}}|2|{\cell {}{}{}{}{}6{}{}9}|8|{\cell {}{}{}{}5{}{}{}9}|{\cell {}{}3{}{}{}{}{}9}|4|.
+|1|{\cell {}{}3{}56{}{}{}}|{\cell {}{}3{}{}67{}{}}|2|{\cell {}{}{}{}{}{\underline 6}{}{}{\underline 9}}|8|{\cell {}{}{}{}5{}{}{}9}|{\cell {}{}3{}{}{}{}{}9}|4|.
 |2|9|8|5|4|3|6| 7|1|.
-|{\cell {}{}3{}56{}{}{}}|4|{\cell {}{}3{}{}6{}{}{}}|{\cell 1{}{}{}{}6{}{}9}|7|{\cell 1{}{}{}{}{}{}{}{}}|{\cell {}2{}{}5{}{}89}|{\cell {}{}3{}{}{}{}89}|{\cell 123{}{}{}{}8{}}|.
+|{\cell {}{}3{}56{}{}{}}|4|{\cell {}{}3{}{}6{}{}{}}|{\cell {\xout 1}{}{}{}{}{\underline 6}{}{}{\underline 9}}|7|{\cell 1{}{}{}{}{}{}{}{}}|{\cell {}2{}{}5{}{}89}|{\cell {}{}3{}{}{}{}89}|{\cell 123{}{}{}{}8{}}|.
 |{\cell {}{}3{}{}6{}8{}}|1|{\cell {}{}34{}6{}{}{}}|{\cell {}{}{}4{}678{}}|{\cell {}234{}6{}8{}}|{\cell {}2{}4{}{}7{}{}}|{\cell {}{}{}4{}{}78{}}|5|9|.
-|{\cell {}{}{}{}56{}8{}}|{\cell {}{}{}{}56{}{}{}}|2|{\cell 1{}{}4{}6789}|{\cell {}{}{}456{}89}|{\cell 1{}{}45{}7{}{}}|3|{\cell {}{}{}4{}{}{}8{}}|{\cell {}{}{}{}{}678{}}|.
-|9|7|{\cell {}{}34{}6{}{}{}}|{\cell 1{}{}4{}6{}8{}}|{\cell {}{}3456{}8{}}|{\cell 1{}{}45{}{}{}{}}|{\cell 1{}{}4{}{}{}8{}}|2|{\cell {}{}{}{}{}6{}8{}}|.
-|{\cell {}{}3{}{}{}7{}{}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}{}3{}{}{}7{}9}|{\cell {}{}{}4{}{}78{}}|1|{\cell {}2{}4{\underline 5}{}7{}{}}|{\cell {}2{}4{}{}789}|6|{\cell {}23{}{}{}78{}}|.
+|{\cell {}{}{}{}56{}8{}}|{\cell {}{}{}{}56{}{}{}}|2|{\cell 1{}{}4{}6789}|{\cell {}{}{}456{}89}|{\cell 1{}{}4{}{}7{}{}}|3|{\cell {}{}{}4{}{}{}8{}}|{\cell {}{}{}{}{}678{}}|.
+|9|7|{\cell {}{}34{}6{}{}{}}|{\cell 1{}{}4{}6{}8{}}|{\cell {}{}3456{}8{}}|{\cell 1{}{}4{}{}{}{}{}}|{\cell 1{}{}4{}{}{}8{}}|2|{\cell {}{}{}{}{}6{}8{}}|.
+|{\cell {}{}3{}{}{}7{}{}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}{}3{}{}{}7{}9}|{\cell {}{}{}4{}{}78{}}|1|{\cell {}{}{}{}5{}{}{}{}}|{\cell {}2{}4{}{}789}|6|{\cell {}23{}{}{}78{}}|.
 |{\cell {}{}{}{}{}67{}{}}|8|5|3| {\cell {}2{}4{}{}{}{}{}}|9| {\cell {}2{}4{}{}7{}{}}|1| {\cell {}2{}{}{}{}7{}{}}|.
 |4| {\cell {}23{}{}{}{}{}{}}|{\cell {\underline 1}{}3{}{}{}7{}9}|{\cell {}{}{}{}{}{}78{}}|{\cell {}2{}{}{}{}{}8{}}|6|{\cell {}2{}{}{}{}789}|{\cell {}{}3{}{}{}{}89}| 5|.
 \end{sudoku}
-\caption{Example in hidden pair}
-\label{fig:hiddenPair}
+\caption{Example in rc-view for hidden pair.}
+\label{fig:hiddenpairrc}
 \end{figure}
 
-
-
-
-
-\subsection{Naked Triplet}
-\label{sec:Naked Triplet}
-
-Naked Triplet could hold when any of these three prerequisites hold, which are, 
+In both rn-view and cn-view, if there are two cells both have more than one columns (columns for rn-view, rows for cn-view) in the cell, but only two of the columns (or rows) are only allowed to appear in these two cell of the unit, then
 \begin{itemize}
-\item in a row: three cells happen to shared a row and have common three candidate left in the cells.
-\item in a column: three cells happen to shared a column and have common three candidate left in the cells.
-\item or in a block: three cells happen to shared a row and have common three candidate left in the cells.
+\item exclude all other columns (or rows) apart from these two candidate from all other cells in the same unit,
+\item and re-write the equation for the cells.
 \end{itemize}
-By this technique, other cells in the same row, column, or the same block could safely have these three candidates excluded expect three cells which have these candidates. 
+In the Figure \ref{fig:hiddenpairrn}, we find two cells $(5,5)$ and $(5,6)$ in rn-view has matched to the situation description of hidden pair that column $1$ and $2$ are only possible to be appeared in the cell $(5,5)$ and $(5,6)$ of row $5$. Thus, all candidates expect $1$ and $5$ will all be excluded from these two cells and the equations will re-written.
+\begin{eqnarray*}
+A'(5,5) = (\set{1, 2}, \set{3, 4, 5, 6, 7, 8, 9})\\
+A'(5,6) = (\set{1, 2}, \set{3, 4, 5, 6, 7, 8, 9})\\
+\end{eqnarray*}
 
 \begin{figure}[htbp]
 \begin{sudoku}
-|1|{\cell {}{}{\textbf 3}{}{\textbf 5}{\textbf 6}{}{}{}}|{\cell {}{}3{}{}67{}{}}|2|{\cell {}{}{}{}{}6{}{}9}|8|{\cell {}{}{}{}5{}{}{}9}|{\cell {}{}3{}{}{}{}{}9}|4|.
+|{\makebox[0pt]{\hspace{-1em}\large r1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n2}}4}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}2{}{}{}{}{}8{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}2{}{}{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}2{}{}5{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}3{}{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}{}{}5678{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n9}}{\cell {}{}{}{}5{}78{}}}|.
+|{\makebox[0pt]{\hspace{-2.3em}\large r2}{\cell {}{}{}{}{}{}{}{}9}}|{\cell 1{}{}{}{}{}{}{}{}}|6|{\cell {}{}{}{}5{}{}{}{}}|4|7| 8|{\cell {}{}3{}{}{}{}{}{}}|2|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r3}{\cell {}{}{}4{}67{}{}}}|{\cell {}{}{}{}{}{}7{}9}|{\cell 1{}{}{}{}{}{}89}|2|{\cell 1{}{}{}{}{}7{}{}}|{\cell 1{}34{}{}{}{}{}}|5|{\cell {}{}{}4{}6789}|{\cell {}{}{}4{}{}78{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r4}2}|{\cell {}{}{}{}6{}{}{}{}}|{\cell 1{}{}{}{}{}{}{}{}}|{\cell {}{}3{}{}{}{}{}{}}|8|{\cell {}{}{}4{}{}{}{}{}}|{\cell {}{}{}{}{}{}7{}{}}|{\cell 1{}{}{}{}{}{}{}{}}|9|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r5}{\cell {}{}{}4{}6{}{}{}}}|3|7|{\cell {}{}{}{}{}{}{}8{}}|{\cell {\underline 1}{\underline 2}{}{}{\xout 5}{\xout 6}{}{}{}}|{\cell {\underline 1}{\underline 2}{}{\xout 4}{\xout 5}{}{}{}{\xout 9}}|{\cell {}{}{}4{}6{}{}9}|{\cell {}{}{}456{}{}9}|{\cell {}{}{}45{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r6}{\cell {}{}{}4{}67{}{}}}|8|{\cell {}{}3{}{}{}{}{}{}}|{\cell {}{}{}{}{}6{}{}{}}|{\cell {}{}{}{}5{}{}{}{}}|{\cell {}{}{}4{}{}{}{}9}|2|{\cell {}{}{}4{}{}7{}9}|1|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r7}5}|{\cell {}2{}{}{}{}7{}9}|{\cell 12{}{}{}{}{}{}9}|{\cell {}{}{}4{}{}{}{}{}}|{\cell {}{}{}{}{}6{}{}{}}|8|{\cell 1{}{}{}{}{}7{}9}|{\cell {}{}{}{}{}{}7{}9}|{\cell {}{}3{}{}{}7{}{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r8}8}|{\cell {}{}{}{}5{}7{}9}|4| {\cell {}{}{}{}{}{}7{}{}}|3| {\cell 1{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}7{}9}|2|6|.
+|{\makebox[0pt]{\hspace{-2.3em}\large r9}{\cell {}{}3{}{}{}{}{}{}}}| {\cell {}2{}{}5{}7{}{}}|{\cell {}2{}{}{}{}{}8{}}|1|9|6|{\cell {}{}{}4{}{}7{}{}}| {\cell {}{}{}45{}78{}}|{\cell {}{}{}{}{}{}78{}}|.
+\end{sudoku}
+\caption{Example in rn-view for hidden pair.}
+\label{fig:hiddenpairrn}
+\end{figure}
+
+In the bn-view, if there are two cells both have more than one squares in the cell, but only two of the squares are allowed to appear in these two cell of the block, then
+\begin{itemize}
+\item exclude all other candidates apart from these two square from all other cells in the block,
+\item and re-write the equation for the cells.
+\end{itemize}
+For an annotated instance in bn-view, in the block-axis $7$, cell $A'(7,2)$ $A'(7,3)$ both have more than one squares, but squares $2$ and $8$ are only appear in these two cells. Thus we can have all other squares except that two eliminated from the cell, and re-write the equation,
+\begin{eqnarray*}
+A'(7,2) = (\set{1, 2, 4, 8}, \set{3, 5, 6, 7, 9}) \Rightarrow A'(7,2) = (\set{2, 8}, \set{1, 3, 4, 5, 6, 7, 9})\\
+A'(7,3) = (\set{1, 2, 3, 8, 9}, \set{4, 5, 6, 7}) \Rightarrow A'(7,3) = (\set{2, 8}, \set{1, 3, 4, 5, 6, 7, 9})\\
+\end{eqnarray*}
+
+\begin{figure}[htbp]
+\begin{sudoku}
+|{\makebox[0pt]{\hspace{-1em}\large b1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n2}}{\cell {}{}{}4{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}23{}{}{}7{}9}}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n4}}8}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}2{}{}{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}23{}{}{}7{}9}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}3{}{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}{}{}{}6{}{}{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n9}}5}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b2}{\cell {}{}{}{}{}{}7{}9}}|1|6|{\cell {}{}{}{}5{}{}{}{}}|4|{\cell {}2{}{}{}{}7{}{}}|8|{\cell {}23{}5{}{}89}|{\cell {}2{}{}{}{}7{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b3}{\cell {}{}{}{}{}67{}9}}|{\cell {}{}{}{}{}67{}9}|{\cell {}2{}{}{}{}{}89}|3|{\cell 1{}{}{}{}{}7{}{}}|4|5|{\cell 12{}{}{}6789}|{\cell 12{}{}{}{}78{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b4}2}|6|{\cell 1{}3{}{}{}{}{}9}|{\cell {}{}3{}{}{}{}{}9}|{\cell {}{}{}45{}{}{}{}}|{\cell 1{}345{}{}{}9}|8|{\cell 1{}34{}{}{}{}9}|7|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b5}{\cell {}{}{}4{}67{}9}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}2{}{}{}{}{}8{}}|{\cell 123456789}|{\cell {}{}{}{}56{}89}|{\cell 12{}45{}78{}}|{\cell 1{}34{}6{}{}{}}|{\cell 123456789}|{\cell {}{}{}45{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b6}{\cell {}{}{}{}{}67{}9}}|8|4|{\cell 1{}{}{}5{}7{}{}}|2|{\cell {}{}{}{}{}6{}{}9}|{\cell 1{}{}{}{}6{}{}{}}|{\cell 1{}{}{}567{}9}|3|.
+|{\makebox[0pt]{\hspace{-2.3em}\large b7}{\cell {}{}{}{}{}{}{}{}9}}|{\cell {\xout 1}{\underline 2}{}{\xout 4}{}{}{}{\underline 8}{}}|{\cell {\xout 1}{\underline 2}{\xout 3}{}{}{}{}{\underline 8}{\xout 9}}|7|6|{\cell {}{}{}4{}{}{}{}{}}|{\cell 1{}34{}{}{}{}9}|5|{\cell {}{}3{}{}{}{}{}9}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b8}2}|{\cell {}{}3{}5{}{}8{}}|4|{\cell 1{}3{}5{}{}{}{}}|{\cell {}{}3{}{}{}{}{}{}}|9|{\cell 1{}3{}{}{}7{}{}}|{\cell 1{}3{}{}{}78{}}|6|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b9}5}|{\cell 1{}34{}67{}{}}|{\cell {}{}3{}{}{}{}8{}}|{\cell 1{}{}4{}{}{}{}{}}|9|2|{\cell 1{}34{}67{}{}}|{\cell 1{}3{}{}{}78{}}|{\cell 1{}{}{}{}{}78{}}.
+\end{sudoku}
+\caption{Example in bn-view for hidden pair.}
+\label{fig:hiddenpairbn}
+\end{figure}
+
+
+\section{Naked Triplet}
+\label{sec:Naked Triplet}
+
+Naked triplet is a rule in the situation that ``three common candidate appear at least two candidates per cell in total three cells in a shared unit''. Then in the shared unit, any other cells has these three candidates in could have these three candidates excluded and rewrite the equation.
+
+In the annotated instance in rc-view (see Figure \ref{fig:nakedtripletrc}), candidates $3$, $5$ and $6$ are the common three number which appears in the cells $(1,2)$, $(3,1)$, and $(3,3)$ which has shared an unit (block) here. Hence, all other cells which also have candidate $3$, $5$ and $6$ in a shared block $1$ could have these three candidates excluded, because these candidates are not longer possible to be the solution for other cells. And also, the new equation for those affected cells are:
+\begin{eqnarray*}
+A'(7,2) = (\set{1, 2, 4, 8}, \set{3, 5, 6, 7, 9}) \Rightarrow A'(7,2) = (\set{2, 8}, \set{1, 3, 4, 5, 6, 7, 9})\\
+A'(7,3) = (\set{1, 2, 3, 8, 9}, \set{4, 5, 6, 7}) \Rightarrow A'(7,3) = (\set{2, 8}, \set{1, 3, 4, 5, 6, 7, 9})\\
+\end{eqnarray*}
+
+\begin{figure}[htbp]
+\begin{sudoku}
+|1|{\cell {}{}{\underline 3}{}{\underline 5}{\underline 6}{}{}{}}|{\cell {}{}{}{}{}{}7{}{}}|2|{\cell {}{}{}{}{}6{}{}9}|8|{\cell {}{}{}{}5{}{}{}9}|{\cell {}{}3{}{}{}{}{}9}|4|.
 |2|9|8|5|4|3|6| 7|1|.
-|{\cell {}{}{\textbf 3}{}{\textbf{5}}{\textbf 6}{}{}{}}|4|{\cell {}{}{\textbf 3}{}{}{\textbf 6}{}{}{}}|{\cell 1{}{}{}{}6{}{}9}|7|{\cell 1{}{}{}{}{}{}{}{}}|{\cell {}2{}{}5{}{}89}|{\cell {}{}3{}{}{}{}89}|{\cell 123{}{}{}{}8{}}|.
+|{\cell {}{}{\underline 3}{}{\underline 5}{\underline 6}{}{}{}}|4|{\cell {}{}{\underline 3}{}{}{\underline 6}{}{}{}}|{\cell 1{}{}{}{}6{}{}9}|7|{\cell 1{}{}{}{}{}{}{}{}}|{\cell {}2{}{}5{}{}89}|{\cell {}{}3{}{}{}{}89}|{\cell 123{}{}{}{}8{}}|.
 |{\cell {}{}3{}{}6{}8{}}|1|{\cell {}{}34{}6{}{}{}}|{\cell {}{}{}4{}678{}}|{\cell {}234{}6{}8{}}|{\cell {}2{}4{}{}7{}{}}|{\cell {}{}{}4{}{}78{}}|5|9|.
 |{\cell {}{}{}{}56{}8{}}|{\cell {}{}{}{}56{}{}{}}|2|{\cell 1{}{}4{}6789}|{\cell {}{}{}456{}89}|{\cell 1{}{}45{}7{}{}}|3|{\cell {}{}{}4{}{}{}8{}}|{\cell {}{}{}{}{}678{}}|.
 |9|7|{\cell {}{}34{}6{}{}{}}|{\cell 1{}{}4{}6{}8{}}|{\cell {}{}3456{}8{}}|{\cell 1{}{}45{}{}{}{}}|{\cell 1{}{}4{}{}{}8{}}|2|{\cell {}{}{}{}{}6{}8{}}|.
@@ -1076,101 +1341,398 @@ By this technique, other cells in the same row, column, or the same block could 
 |{\cell {}{}{}{}{}67{}{}}|8|5|3| {\cell {}2{}4{}{}{}{}{}}|9| {\cell {}2{}4{}{}7{}{}}|1| {\cell {}2{}{}{}{}7{}{}}|.
 |4| {\cell {}23{}{}{}{}{}{}}|{\cell 1{}3{}{}{}7{}9}|{\cell {}{}{}{}{}{}78{}}|{\cell {}2{}{}{}{}{}8{}}|6|{\cell {}2{}{}{}{}789}|{\cell {}{}3{}{}{}{}89}| 5|.
 \end{sudoku}
-\caption{Example in naked triplet - before}
-\label{fig:nakedtripletb4}
+\caption{Example in rc-view for naked triplet.}
+\label{fig:nakedtripletrc}
 \end{figure}
-In the Figure \ref{fig:nakedtripletb4}, candidates $n_{3}$, $n_{5}$ and $n_{6}$ are the common three number which appears in the cells $(r_{1},\ c_{2})$, $(r_{3},\ c_{1})$, and $(r_{3},\ c_{3})$ which has shared the a unit (column) here. Hence, all other cells which also have candidate $n_{3}$, $n_{5}$ and $n_{6}$ in a shared unit (block $b_{1}$) could have these three candidates excluded, because these candidates are not longer possible to be the solution for them. The Figure{fig:nakedtripletaf} is the updated instance after the exclusion has been made.
+
+As we mentioned in the Section \ref{cha:Techniques}, rn-view could only have rules applied on the row (x-axis) and number (y-axis), so the shared units here are only possible to be a row or a number. In the annotated instance in rn-view (see Figure \ref{fig:nakedtripletrn}), column $5$, $7$ and $9$ are the common three number which appears in the cells $(8,2)$, $(8,4)$, and $(8,7)$ which has shared an unit (row) here. Hence, all other cells which also have column $5$, $7$ and $9$ in a shared row $8$ could have these three candidates excluded, because these candidates are not longer possible to be the solution for other cells. However, here, all other cells in the row do not have column $5$, $7$ and $9$ at all, so no equation needs to be re-written.
 
 \begin{figure}[htbp]
 \begin{sudoku}
-|1|{\cell {}{}3{}56{}{}{}}|{\cell {}{}{\sout 3}{}{}{\sout 6}7{}{}}|2|{\cell {}{}{}{}{}6{}{}9}|8|{\cell {}{}{}{}5{}{}{}9}|{\cell {}{}3{}{}{}{}{}9}|4|.
+|{\makebox[0pt]{\hspace{-1em}\large r1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n2}}4}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}23{}{}{}{}8{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}2{}{}{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}23{}5{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}3{}{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}3{}5678{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n9}}{\cell {}{}{}{}5{}78{}}}|.
+|{\makebox[0pt]{\hspace{-2.3em}\large r2}{\cell {}{}{}{}{}{}{}{}9}}|{\cell 1{}{}{}{}{}{}{}9}|6|{\cell {}{}{}{}5{}{}{}{}}|4|7| 8|{\cell 1{}3{}5{}{}{}9}|2|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r3}{\cell {}{}{}4{}67{}9}}|{\cell 1{}{}{}{}{}7{}9}|{\cell 1{}3{}{}{}{}89}|2|{\cell 1{}{}{}{}{}7{}{}}|{\cell 1{}34{}{}{}{}{}}|5|{\cell 1{}34{}6789}|{\cell {}{}{}4{}{}78{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r4}2}|{\cell {}{}{}{}56{}{}{}}|{\cell 1{}3{}5{}{}{}{}}|{\cell {}{}34567{}{}}|8|{\cell 1{}345{}{}{}{}}|{\cell {}{}{}4{}67{}{}}|{\cell 1{}34567{}{}}|9|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r5}{\cell {}{}{}4{}6{}{}9}}|3|7|{\cell {}{}{}456{}8{}}|{\cell 12{}{}56{}{}{}}|{\cell 12{}45{}{}{}9}|{\cell {}{}{}4{}6{}{}9}|{\cell 1{}{}456{}89}|{\cell {}{}{}45{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r6}{\cell {}{}{}4{}67{}9}}|8|{\cell {}{}3{}5{}{}{}{}}|{\cell {}{}34567{}{}}|{\cell {}{}{}{}56{}{}{}}|{\cell {}{}345{}{}{}9}|2|{\cell {}{}34567{}9}|1|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r7}5}|{\cell 12{}{}{}67{}9}|{\cell 123{}{}{}{}{}9}|{\cell {}{}{}4{}67{}{}}|{\cell {}{}{}{}{}6{}{}{}}|8|{\cell 1{}34{}67{}9}|{\cell {}{}{}4{}67{}9}|{\cell {}{}3{}{}{}7{}{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r8}8}|{\cell {}{}{}{}{\underline 5}{}{\underline 7}{}{\underline 9}}|4| {\cell {}{}{}{}{\underline 5}{}{\underline 7}{}{}}|3| {\cell 1{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{\underline 7}{}{\underline 9}}|2|6|.
+|{\makebox[0pt]{\hspace{-2.3em}\large r9}{\cell {}{}3{}{}{}{}{}{}}}| {\cell {}2{}{}5{}7{}{}}|{\cell {}23{}{}{}{}8{}}|1|9|6|{\cell {}{}34{}{}7{}{}}| {\cell {}{}{}45{}78{}}|{\cell {}{}3{}{}{}78{}}|.
+\end{sudoku}
+\caption{Example in rn-view for naked triplet.}
+\label{fig:nakedtripletrn}
+\end{figure}
+
+As we mentioned in the Section \ref{cha:Techniques}, cn-view could only have rules applied on the column (x-axis) and number (y-axis), so the shared units here are only possible to be a column or a number. In the annotated instance in cn-view (see Figure \ref{fig:nakedtripletcn}), rows $1$, $3$ and $9$ are the common three rows which appears in the cells $(8,3)$, $(8,8)$, and $(8,9)$ which has shared an unit column (x-axis) here. Hence, all other cells which also have rows $1$, $3$ and $9$ in a shared column $8$ could have these three rows excluded, because these rows are not longer possible to be the solution for other cells. However, there is no equation has to be re-written because in this unit all other cells are already have a row highlighted.
+
+\begin{figure}[htbp]
+\begin{sudoku}
+|{\makebox[0pt]{\hspace{-1em}\large c1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n2}}{\cell {}23{}{}{}78{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}{}34{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}{}3{}5{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}{}345{}{}8{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}{}{}{}{}78{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}2345{}{}{}{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n9}}6}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c2}4}|{\cell {}{}{}{}{}{}7{}9}|{\cell {}{}{}{}{}{}7{}9}|3|{\cell 1{}{}{}5{}{}{}{}}|{\cell 1{}{}{}5{}{}{}{}}|6|8|2|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c3}{\cell {}{}{}{}{}{}{}{}9}}|5|{\cell 1{}34{}67{}9}|{\cell {}{}{}4{}67{}{}}|8|{\cell 1{}34{}6{}{}{}}|{\cell 1{}{}{}{}{}7{}9}|{\cell 1234{}6{}{}{}}|{\cell {}{}{}{}{}{}7{}9}|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c4}{\cell {}{}3{}{}6{}{}{}}}|1|8|{\cell {}{}{}4{}67{}{}}|2|{\cell {}{}3456{}{}{}}|{\cell {}{}{}45{}7{}9}|{\cell {}{}34567{}9}|{\cell {}{}3{}5{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c5}7}|{\cell {}{}{}4{}{}{}89}|{\cell {}{}{}4{}6{}{}{}}|{\cell {}2{}4{}6{}8{}}|{\cell {}{}{}{}56{}{}{}}|{\cell 1{}{}456{}{}{}}|3|{\cell 12{}456{}{}9}|{\cell 1{}{}{}5{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large c6}{\cell {}{}3{}56{}{}{}}}|{\cell {}{}{}4{}{}{}{}{}}|2|{\cell {}{}{}4{}6{}{}{}}|{\cell {}{}{}{}{}{}7{}{}}|9|{\cell {}{}{}45{}{}{}{}}|{\cell 1{}3456{}{}{}}|8|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c7}{\cell {}{}3{}{}6{}{}{}}}|{\cell {}{}3{}{}{}789}|5|{\cell {}{}{}4{}678{}}|{\cell 1{}3{}{}{}{}{}{}}|2|{\cell {}{}{}4{}{}789}|{\cell 1{}34{}67{}9}|{\cell 1{}3{}{}{}7{}9}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c8}8}|6|{\cell {\underline 1}{}{\underline 3}{}{}{}{}{}{\underline 9}}|{\cell {}{}{}{}5{}{}{}{}}|4|7|2|{\cell {\underline 1}{}{\underline 3}{}{}{}{}{}{\underline 9}}|{\cell {\underline 1}{}{\underline 3}{}{}{}{}{}{\underline 9}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large c9}{\cell {}23{}56{}{}{}}}|{\cell {}23{}{}{}78{}}|{\cell {}{}3{}{}{}7{}{}}|1|9|{\cell {}{}{}{}56{}{}{}}|{\cell {}{}{}{}5{}78{}}|{\cell {}23{}567{}{}}|4|.
+\end{sudoku}
+\caption{Example in cn-view for naked triplet.}
+\label{fig:nakedtripletcn}
+\end{figure}
+
+Bn-view (see Section \ref{cha:Techniques}) could only have rules applied on the block (x-axis), so the shared unit here is only possible to be a block. In the annotated instance in bn-view (see Figure \ref{fig:nakedtripletbn}), squares $2$, $7$ and $9$ are the common three rows which appears in the cells $(1,3)$, $(1,5)$, and $(1,6)$ which has shared an unit block (x-axis) here. Hence, all other cells which also have squares $2$, $7$ and $9$ in a shared block $1$ could have these three squares excluded, because these squares are not longer possible to be the solution for other cells. However, there is no equation has to be re-written because in this block all other cells are already have a square highlighted.
+
+\begin{figure}[htbp]
+\begin{sudoku}
+|{\makebox[0pt]{\hspace{-1em}\large b1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n2}}{\cell {}{}{}4{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}{\underline 2}{}{}{}{}{\underline 7}{}{\underline 9}}}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n4}}8}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}{\underline 2}{}{}{}{}{\underline 7}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}{\underline 2}{}{}{}{}{\underline 7}{}{\underline 9}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}3{}{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}{}{}{}6{}{}{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n9}}5}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b2}{\cell {}{}{}{}{}{}7{}9}}|1|6|{\cell {}{}{}{}5{}{}{}{}}|4|{\cell {}2{}{}{}{}7{}{}}|8|{\cell {}23{}5{}{}89}|{\cell {}2{}{}{}{}7{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b3}{\cell {}{}{}{}{}67{}9}}|{\cell {}{}{}{}{}67{}9}|{\cell {}2{}{}{}{}{}89}|3|{\cell 1{}{}{}{}{}7{}{}}|4|5|{\cell 12{}{}{}6789}|{\cell 12{}{}{}{}78{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b4}2}|6|{\cell 1{}3{}{}{}{}{}9}|{\cell {}{}3{}{}{}{}{}9}|{\cell {}{}{}45{}{}{}{}}|{\cell 1{}345{}{}{}9}|8|{\cell 1{}34{}{}{}{}9}|7|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b5}{\cell {}{}{}4{}67{}9}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}2{}{}{}{}{}8{}}|{\cell 123456789}|{\cell {}{}{}{}56{}89}|{\cell 12{}45{}78{}}|{\cell 1{}34{}6{}{}{}}|{\cell 123456789}|{\cell {}{}{}45{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b6}{\cell {}{}{}{}{}67{}9}}|8|4|{\cell 1{}{}{}5{}7{}{}}|2|{\cell {}{}{}{}{}6{}{}9}|{\cell 1{}{}{}{}6{}{}{}}|{\cell 1{}{}{}567{}9}|3|.
+|{\makebox[0pt]{\hspace{-2.3em}\large b7}{\cell {}{}{}{}{}{}{}{}9}}|{\cell {}2{}{}{}{}{}8{}}|{\cell {}2{}{}{}{}{}8{}}|7|6|{\cell {}{}{}4{}{}{}{}{}}|{\cell 1{}34{}{}{}{}9}|5|{\cell {}{}3{}{}{}{}{}9}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b8}2}|{\cell {}{}3{}5{}{}8{}}|4|{\cell 1{}3{}5{}{}{}{}}|{\cell {}{}3{}{}{}{}{}{}}|9|{\cell 1{}3{}{}{}7{}{}}|{\cell 1{}3{}{}{}78{}}|6|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b9}5}|{\cell 1{}34{}67{}{}}|{\cell {}{}3{}{}{}{}8{}}|{\cell 1{}{}4{}{}{}{}{}}|9|2|{\cell 1{}34{}67{}{}}|{\cell 1{}3{}{}{}78{}}|{\cell 1{}{}{}{}{}78{}}.
+\end{sudoku}
+\caption{Example in bn-view for naked triplet.}
+\label{fig:nakedtripletbn}
+\end{figure}
+
+
+\section{Hidden Triplet}
+\label{sec:Hidden Triplet}
+Hidden triplet rule is used in a situation that ``three of the all the possible candidates are only happened in only three cells in a shared unit, but these three cells both have more than two candidates in the cell''. Once the condition is satisfied, then other candidates could be excluded from these three cells, and then re-write the equations for cells.
+
+In the rc-view, if there are three cells have more than one candidates in the cell, but only three of the candidates are only appeared in these three cell of the unit, then
+\begin{itemize}
+\item exclude all other candidates apart from the three candidates,
+\item the equation for three cells will be re-written.
+\end{itemize}
+
+In the Figure \ref{fig:hiddentripletrc}, candidate $4$, $7$, and $8$ are appeared in $A'(4,7)$, $A'(7,7)$ and $A'(8,7)$. Hence, all the candidates apart from $4$, $7$, and $8$ could now be excluded from these three cells, and have its equation re-written as:
+\begin{eqnarray*}
+A'(4,7) = (\set{4, 7, 8}, \set{1, 2, 3, 5, 6, 9})\\
+A'(7,7) = (\set{4, 7, 8}, \set{1, 2, 3, 5, 6, 9})\\
+A'(8,7) = (\set{4, 7}, \set{1, 2, 3, 5, 6, 8, 9})\\
+\end{eqnarray*}
+
+\begin{figure}[htbp]
+\begin{sudoku}
+|1|{\cell {}{}{}{}5{}{}{}{}}|{\cell {}{}{}{}{}{}7{}{}}|2|{\cell {}{}{}{}{}6{}{}{}}|8|{\cell {}{}{}{}{}{}{}{}9}|{\cell {}{}3{}{}{}{}{}{}}|4|.
+|2|9|8|5|4|3|6| 7|1|.
+|{\cell {}{}3{}{}6{}{}{}}|4|{\cell {}{}3{}{}6{}{}{}}|{\cell {}{}{}{}{}{}{}{}9}|7|{\cell 1{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}5{}{}{}{}}|{\cell {}{}{}{}{}{}{}8{}}|{\cell {}2{}{}{}{}{}{}{}}|.
+|{\cell {}{}3{}{}6{}8{}}|1|{\cell {}{}34{}6{}{}{}}|{\cell {}{}{}{}{}678{}}|{\cell {}{}34{}6{}{}{}}|{\cell {}2{}4{}{}7{}{}}|{\cell {}{}{}{\underline 4}{}{}{\underline 7}{\underline 8}{}}|5|9|.
+|{\cell {}{}{}{}56{}8{}}|{\cell {}{}{}{}56{}{}{}}|2|{\cell 1{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}9}|{\cell {}{}{}4{}{}7{}{}}|3|{\cell {}{}{}4{}{}{}8{}}|{\cell {}{}{}{}{}678{}}|.
+|9|7|{\cell {}{}34{}6{}{}{}}|{\cell {}{}{}{}{}6{}8{}}|{\cell {}{}3456{}{}{}}|{\cell {}{}{}4{}{}{}{}{}}|{\cell 1{}{}{}{}{}{}{}{}}|2|{\cell {}{}{}{}{}6{}8{}}|.
+|{\cell {}{}3{}{}{}7{}{}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}{}3{}{}{}7{}9}|{\cell {}{}{}4{}{}{}{}{}}|1|{\cell {}{}{}{}5{}{}{}{}}|{\cell {}{\xout 2}{}{\underline 4}{}{}{\underline 7}{\underline 8}{\xout 9}}|6|{\cell {}23{}{}{}78{}}|.
+|{\cell {}{}{}{}{}67{}{}}|8|5|3| {\cell {}2{}{}{}{}{}{}{}}|9| {\cell {}{\xout 2}{}{\underline 4}{}{}{\underline 7}{}{}}|1| {\cell {}2{}{}{}{}7{}{}}|.
+|4| {\cell {}23{}{}{}{}{}{}}|{\cell 1{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}7{}{}}|{\cell {}{}{}{}{}{}{}8{}}|6|{\cell {}2{}{}{}{}{}{}9}|{\cell {}{}3{}{}{}{}{}9}| 5|.
+\end{sudoku}
+\caption{Example in rc-view for hidden triplet.}
+\label{fig:hiddentripletrc}
+\end{figure}
+
+In the rn-view, if there are three cells have more than one columns in the cell, but only three of the columns are only appeared in these three cell of the unit, then
+\begin{itemize}
+\item exclude all other columns apart from the three columns,
+\item the equation for three cells will be re-written.
+\end{itemize}
+
+In the Figure \ref{fig:hiddentripletrn}, columns $3$, $4$, and $6$ are appeared in $A'(4,4)$, $A'(4,6)$ and $A'(4,7)$. Hence, all the columns apart from $4$, $7$, and $8$ could now be excluded from these three cells, and have its equation re-written as:
+\begin{eqnarray*}
+A'(4,4) = (\set{3, 4, 6}, \set{1, 2, 5, 7, 8, 9})\\
+A'(4,6) = (\set{3, 4, 6}, \set{1, 2, 5, 7, 8, 9})\\
+A'(4,7) = (\set{4, 6}, \set{1, 2, 3, 5, 7, 8, 9})\\
+\end{eqnarray*}
+
+\begin{figure}[htbp]
+\begin{sudoku}
+|{\makebox[0pt]{\hspace{-1em}\large r1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n2}}4}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}2{}{}{}{}{}8{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}2{}{}{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}2{}{}5{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}3{}{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}{}{}5678{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n9}}{\cell {}{}{}{}5{}78{}}}|.
+|{\makebox[0pt]{\hspace{-2.3em}\large r2}{\cell {}{}{}{}{}{}{}{}9}}|{\cell 1{}{}{}{}{}{}{}{}}|6|{\cell {}{}{}{}5{}{}{}{}}|4|7| 8|{\cell {}{}3{}5{}{}{}{}}|2|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r3}{\cell {}{}{}4{}67{}9}}|{\cell {}{}{}{}{}{}7{}9}|{\cell 1{}3{}{}{}{}89}|2|{\cell 1{}{}{}{}{}7{}{}}|{\cell {}{}34{}{}{}{}{}}|5|{\cell 1{}34{}6789}|{\cell {}{}{}4{}{}78{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r4}2}|{\cell {}{}{}{}56{}{}{}}|{\cell 1{}3{}5{}{}{}{}}|{\cell {}{}{\underline 3}{\underline 4}{}{\underline 6}{\xout 7}{}{}}|8|{\cell {}{}345{}{}{}{}}|{\cell {}{}{}4{}67{}{}}|{\cell 1{}34567{}{}}|9|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r5}{\cell {}{}{}4{}6{}{}9}}|3|7|{\cell {}{}{}{}{}{}{}8{}}|{\cell 12{}{}56{}{}{}}|{\cell {}2{}45{}{}{}9}|{\cell {}{}{}4{}6{}{}9}|{\cell 1{}{}456{}89}|{\cell {}{}{}45{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r6}{\cell {}{}{}4{}67{}9}}|8|{\cell {}{}3{}5{}{}{}{}}|{\cell {}{}{\underline 3}{\underline 4}{}{\underline 6}{\xout 7}{}{}}|{\cell {}{}{}{}56{}{}{}}|{\cell {}{}345{}{}{}9}|2|{\cell {}{}34567{}9}|1|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r7}5}|{\cell {}2{}{}{}67{}9}|{\cell 123{}{}{}{}{}9}|{\cell {}{}{}{\underline 4}{}{\underline 6}{\xout 7}{}{}}|{\cell {}{}{}{}{}6{}{}{}}|8|{\cell 1{}34{}67{}9}|{\cell {}{}{}4{}67{}9}|{\cell {}{}3{}{}{}7{}{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r8}8}|{\cell {}{}{}{}5{}{}{}{}}|4| {\cell {}{}{}{}{}{}7{}{}}|3| {\cell 1{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}9}|2|6|.
+|{\makebox[0pt]{\hspace{-2.3em}\large r9}{\cell {}{}3{}{}{}{}{}{}}}| {\cell {}2{}{}5{}7{}{}}|{\cell {}2{}{}{}{}{}8{}}|1|9|6|{\cell {}{}{}4{}{}7{}{}}| {\cell {}{}{}45{}78{}}|{\cell {}{}{}{}{}{}78{}}|.
+\end{sudoku}
+\caption{Example in rn-view for naked triplet.}
+\label{fig:nakedtripletrn}
+\end{figure}
+
+In the cn-view, if there are three cells have more than one rows in the cell, but only three of the rows are only appeared in these three cell of the unit, then
+\begin{itemize}
+\item exclude all other rows apart from the three rows,
+\item the equation for three cells will be re-written.
+\end{itemize}
+
+In the Figure \ref{fig:hiddentripletcn}, row $4$, $5$, and $6$ are appeared in $A'(4,6)$, $A'(5,6)$ and $A'(9,6)$. Hence, all the rows apart from $4$, $5$, and $6$ could now be excluded from these three cells, and have its equation re-written as:
+\begin{eqnarray*}
+A'(4,6) = (\set{4, 5, 6}, \set{1, 2, 3, 7, 8, 9})\\
+A'(5,6) = (\set{4, 5, 6}, \set{1, 2, 3, 7, 8, 9})\\
+A'(9,6) = (\set{5, 6}, \set{1, 2, 3, 4, 7, 8, 9})\\
+\end{eqnarray*}
+
+\begin{figure}[htbp]
+\begin{sudoku}
+|{\makebox[0pt]{\hspace{-1em}\large c1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n2}}{\cell {}23{}{}{}78{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}{}34{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}{}3{}5{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}{}{}{}{}{}{}8{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}{}{}{}{}78{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}2345{}{}{}{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n9}}6}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c2}4}|{\cell {}{}{}{}{}{}7{}9}|{\cell {}{}{}{}{}{}7{}9}|3|{\cell 1{}{}{}5{}{}{}{}}|{\cell 1{}{}{}5{}{}{}{}}|6|8|2|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c3}{\cell {}{}{}{}{}{}{}{}9}}|5|{\cell {}{}{}{}{}6{}{}{}}|{\cell {}{}{}4{}{}{}{}{}}|8|{\cell {}{}3{}{}{}{}{}{}}|{\cell 1{}{}{}{}{}{}{}{}}|{\cell {}2{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}7{}{}}|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c4}{\cell {}{}{}{}{}6{}{}{}}}|1|8|{\cell {}{}{}{}{}{}7{}{}}|2|{\cell {}{}{\xout 3}{\underline 4}{\underline 5}{\underline 6}{}{}{}}|{\cell {}{}{}4{}{}{}{}9}|{\cell {}{}3456{}{}9}|{\cell {}{}3{}5{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c5}7}|{\cell {}{}{}{}{}{}{}89}|{\cell {}{}{}4{}6{}{}{}}|{\cell {}2{}{}{}6{}8{}}|{\cell {}{}{}{}56{}{}{}}|{\cell {\xout 1}{}{}{\underline 4}{\underline 5}{\underline 6}{}{}{}}|3|{\cell 12{}456{}{}9}|{\cell 1{}{}{}5{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c6}{\cell {}{}3{}{}{}{}{}{}}}|{\cell {}{}{}4{}{}{}{}{}}|2|{\cell {}{}{}{}{}6{}{}{}}|{\cell {}{}{}{}{}{}7{}{}}|9|{\cell {}{}{}{}5{}{}{}{}}|{\cell 1{}{}{}{}{}{}{}{}}|8|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c7}{\cell {}{}3{}{}6{}{}{}}}|{\cell {}{}3{}{}{}7{}9}|5|{\cell {}{}{}{}{}{}{}8{}}|{\cell 1{}3{}{}{}{}{}{}}|2|{\cell {}{}{}4{}{}7{}9}|{\cell {}{}34{}67{}9}|{\cell 1{}3{}{}{}7{}9}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c8}8}|6|{\cell 1{}3{}{}{}{}{}9}|{\cell {}{}{}{}5{}{}{}{}}|4|7|2|{\cell {}{}3{}{}{}{}{}9}|{\cell 1{}3{}{}{}{}{}9}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large c9}{\cell {}2{}{}56{}{}{}}}|{\cell {}23{}{}{}78{}}|{\cell {}{}3{}{}{}7{}{}}|1|9|{\cell {}{}{}{}{\underline 5}{\underline 6}{}{}{}}|{\cell {}{}{}{}{}{}78{}}|{\cell {}23{}567{}{}}|4|.
+\end{sudoku}
+\caption{Example in cn-view for hidden triplet.}
+\label{fig:hiddentripletcn}
+\end{figure}
+
+In the bn-view, if there are three cells have more than one squares in the cell, but only three of the squares are only appeared in these three cell of the block, then
+\begin{itemize}
+\item exclude all other squares apart from the three squares,
+\item the equation for three cells will be re-written.
+\end{itemize}
+
+In the Figure \ref{fig:hiddentripletbn}, candidate $2$, $8$, and $9$ are appeared in $A'(3,3)$, $A'(3,8)$ and $A'(3,9)$. Hence, all the squares apart from $2$, $8$, and $9$ could now be excluded from the cells, and have its equation re-written as:
+\begin{eqnarray*}
+A'(3,3) = (\set{2, 8, 9}, \set{1, 3, 4, 5, 6, 7})\\
+A'(3,8) = (\set{2, 8, 9}, \set{1, 3, 4, 5, 6, 7})\\
+A'(3,9) = (\set{2, 8,}, \set{1, 3, 4, 5, 6, 7 9})\\
+\end{eqnarray*}
+
+
+\begin{figure}[htbp]
+\begin{sudoku}
+|{\makebox[0pt]{\hspace{-1em}\large b1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n2}}{\cell {}{}{}4{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}2{}{}{}{}7{}9}}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n4}}8}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}2{}{}{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}2{}{}{}{}7{}9}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}3{}{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}{}{}{}6{}{}{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n9}}5}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b2}{\cell {}{}{}{}{}{}7{}9}}|1|6|{\cell {}{}{}{}5{}{}{}{}}|4|{\cell {}2{}{}{}{}7{}{}}|8|{\cell {}23{}5{}{}89}|{\cell {}2{}{}{}{}7{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b3}{\cell {}{}{}{}{}67{}9}}|{\cell {}{}{}{}{}67{}9}|{\cell {}{\underline 2}{}{}{}{}{}{\underline 8}{\underline 9}}|3|{\cell 1{}{}{}{}{}7{}{}}|4|5|{\cell {\xout 1}{\underline 2}{}{}{}{\xout 6}{\xout 7}{\underline 8}{\underline 9}}|{\cell {\xout 1}{\underline 2}{}{}{}{}{\xout 7}{\underline 8}{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b4}2}|6|{\cell 1{}3{}{}{}{}{}9}|{\cell {}{}3{}{}{}{}{}9}|{\cell {}{}{}45{}{}{}{}}|{\cell 1{}345{}{}{}9}|8|{\cell 1{}34{}{}{}{}9}|7|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b5}{\cell {}{}{}4{}67{}9}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}2{}{}{}{}{}8{}}|{\cell 123456789}|{\cell {}{}{}{}56{}89}|{\cell 12{}45{}78{}}|{\cell 1{}34{}6{}{}{}}|{\cell 123456789}|{\cell {}{}{}45{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b6}{\cell {}{}{}{}{}67{}9}}|8|4|{\cell 1{}{}{}5{}7{}{}}|2|{\cell {}{}{}{}{}6{}{}9}|{\cell 1{}{}{}{}6{}{}{}}|{\cell 1{}{}{}567{}9}|3|.
+|{\makebox[0pt]{\hspace{-2.3em}\large b7}{\cell {}{}{}{}{}{}{}{}9}}|{\cell {}2{}{}{}{}{}8{}}|{\cell {}2{}{}{}{}{}8{}}|7|6|{\cell {}{}{}4{}{}{}{}{}}|{\cell 1{}34{}{}{}{}9}|5|{\cell {}{}3{}{}{}{}{}9}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b8}2}|{\cell {}{}3{}5{}{}8{}}|4|{\cell 1{}3{}5{}{}{}{}}|{\cell {}{}3{}{}{}{}{}{}}|9|{\cell 1{}3{}{}{}7{}{}}|{\cell 1{}3{}{}{}78{}}|6|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b9}5}|{\cell 1{}34{}67{}{}}|{\cell {}{}3{}{}{}{}8{}}|{\cell 1{}{}4{}{}{}{}{}}|9|2|{\cell 1{}34{}67{}{}}|{\cell 1{}3{}{}{}78{}}|{\cell 1{}{}{}{}{}78{}}.
+\end{sudoku}
+\caption{Example in bn-view for hidden triplet.}
+\label{fig:hiddentripletbn}
+\end{figure}
+
+
+
+
+\section{Naked Quad}
+\label{sec:Naked Quad}
+Naked quad is used in a situation that ``four cells in an shared unit have common four candidates left in these cells and at least two in each''. If the prerequisite is satisfied, then other cells in this shared unit will not have these four candidates available anymore, thus the equations of the other cells have to be re-written. 
+\begin{itemize}
+\item In the rc-view annotated instance, the shared unit could be either row, column or block.
+\end{itemize}
+
+Figure \ref{fig:nakedquadrc} is an rc-view annotated instance. In the block $8$, cell $A'(7,4)$, $A'(8,5)$, $A'(9,4)$, and$A'(9,5)$ have 4 different candidates $2, 4, 7, 8$ appear commonly in these four cells which satisfy the prerequisite of naked quad rule. Consequently, any other cells in the shared block $8$ which has candidates $2, 4, 7, 8$ will have these four candidates excluded from itself, because these four candidates will not longer possible to be used in other cells, but in this case, other cells in a block have already found the unique equation for itself.\\
+
+\begin{figure}[htbp]
+\begin{sudoku}
+|1|{\cell {}{}3{}56{}{}{}}|{\cell {}{}{}{}{}{}7{}{}}|2|{\cell {}{}{}{}{}6{}{}9}|8|{\cell {}{}{}{}5{}{}{}9}|{\cell {}{}3{}{}{}{}{}9}|4|.
 |2|9|8|5|4|3|6| 7|1|.
 |{\cell {}{}3{}56{}{}{}}|4|{\cell {}{}3{}{}6{}{}{}}|{\cell 1{}{}{}{}6{}{}9}|7|{\cell 1{}{}{}{}{}{}{}{}}|{\cell {}2{}{}5{}{}89}|{\cell {}{}3{}{}{}{}89}|{\cell 123{}{}{}{}8{}}|.
 |{\cell {}{}3{}{}6{}8{}}|1|{\cell {}{}34{}6{}{}{}}|{\cell {}{}{}4{}678{}}|{\cell {}234{}6{}8{}}|{\cell {}2{}4{}{}7{}{}}|{\cell {}{}{}4{}{}78{}}|5|9|.
 |{\cell {}{}{}{}56{}8{}}|{\cell {}{}{}{}56{}{}{}}|2|{\cell 1{}{}4{}6789}|{\cell {}{}{}456{}89}|{\cell 1{}{}45{}7{}{}}|3|{\cell {}{}{}4{}{}{}8{}}|{\cell {}{}{}{}{}678{}}|.
 |9|7|{\cell {}{}34{}6{}{}{}}|{\cell 1{}{}4{}6{}8{}}|{\cell {}{}3456{}8{}}|{\cell 1{}{}45{}{}{}{}}|{\cell 1{}{}4{}{}{}8{}}|2|{\cell {}{}{}{}{}6{}8{}}|.
-|{\cell {}{}3{}{}{}7{}{}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}{}3{}{}{}7{}9}|{\cell {}{}{}4{}{}78{}}|1|{\cell {}2{}45{}7{}{}}|{\cell {}2{}4{}{}789}|6|{\cell {}23{}{}{}78{}}|.
-|{\cell {}{}{}{}{}67{}{}}|8|5|3| {\cell {}2{}4{}{}{}{}{}}|9| {\cell {}2{}4{}{}7{}{}}|1| {\cell {}2{}{}{}{}7{}{}}|.
-|4| {\cell {}23{}{}{}{}{}{}}|{\cell 1{}3{}{}{}7{}9}|{\cell {}{}{}{}{}{}78{}}|{\cell {}2{}{}{}{}{}8{}}|6|{\cell {}2{}{}{}{}789}|{\cell {}{}3{}{}{}{}89}| 5|.
+|{\cell {}{}3{}{}{}7{}{}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}{}3{}{}{}7{}9}|{\cell {}{}{}{\underline 4}{}{}{\underline 7}{\underline 8}{}}|1|{\cell {}{}{}{}5{}{}{}{}}|{\cell {}2{}4{}{}789}|6|{\cell {}23{}{}{}78{}}|.
+|{\cell {}{}{}{}{}67{}{}}|8|5|3| {\cell {}{\underline 2}{}{\underline 4}{}{}{}{}{}}|9| {\cell {}2{}4{}{}7{}{}}|1| {\cell {}2{}{}{}{}7{}{}}|.
+|4| {\cell {}23{}{}{}{}{}{}}|{\cell 1{}3{}{}{}7{}9}|{\cell {}{}{}{}{}{}{\underline 7}{\underline 8}{}}|{\cell {}{\underline 2}{}{}{}{}{}{\underline 8}{}}|6|{\cell {}2{}{}{}{}789}|{\cell {}{}3{}{}{}{}89}| 5|.
 \end{sudoku}
-\caption{Example in naked triplet - after}
-\label{fig:nakedtripletaf}
+\caption{Example in rc-view for naked quad.}
+\label{fig:nakedquadrc}
 \end{figure}
 
+\begin{itemize}
+\item In the rm-view the shared unit could be either row (x-axis) or number (y-axis).
+\end{itemize}
 
-\subsection{Hidden Triplet}
-\label{sec:Hidden Triplet}
-Which is a situation evolved from hidden single and hidden pair. The prerequisite of this technique is three of the possible candidates are only happened in only three cells in one unit (either row, column, or block).
-In the Figure \ref{fig:hiddentriplet}, candidate $n_{2}$, $n_{5}$, and $n_{7}$ (in boldface font) are only appeared in $c_{4}$, $c_{5}$, and $c_{7}$. Hence, all the candidates apart from $n_{2}$, $n_{5}$, and $n_{7}$ could then be excluded from these three cells.
-
-\begin{figure}[htbp]
-\setlength{\tabcolsep}{2.5pt}
-\renewcommand{\arraystretch}{1.6}
-\hspace{1em}
-\begin{center}
-\begin{tabular}{{|>{\centering\arraybackslash}m{0.3in}| >{\centering\arraybackslash}m{0.3in}| >{\centering\arraybackslash}m{0.3in}| >{\centering\arraybackslash}m{0.3in}| >{\centering\arraybackslash}m{0.3in}| >{\centering\arraybackslash}m{0.3in}| >{\centering\arraybackslash}m{0.3in}| >{\centering\arraybackslash}m{0.3in}| >{\centering\arraybackslash}m{0.3in}| }}
-\hline
-{\cell {}{}{}{}{}6{}{}9} &{\cell {}{}{}{}{}6{}8{}} & \LARGE 1 &{\cell {}{\textbf 2}{}{}{\textbf 5}6{}8{}}  & {\cell {}{\textbf 2}{}{}{\textbf 5}{}{\textbf 7}89} & \LARGE 3 & {\cell {}{}{}{}{\textbf 5}{}{\textbf 7}{}9} & \LARGE 4 & {\cell {}{}{}{}{}6{}{}9} \\
-\hline
-\end{tabular}
-\end{center}
-\caption{Example in hidden triplet}
-\label{fig:hiddentriplet}
-\end{figure}
-
-
-
-\subsection{Naked Quad}
-\label{sec:Naked Quad}
-It is in the situation while four cells in a row, a column, or a block are having common four candidate digits left in the cells. If the prerequisite is existed, then it will bring an updated instance which has no these four candidates in other cells which shared a same unit anymore. Figure ~\ref{fig:nakedquad} is an instance which in naked quad situation, in the block $b_{5}$, cell $(r_{5},\ c_{6})$, $(r_{6},\ c_{4})$, $(r_{6},\ c_{5})$, and$(r_{6},\ c_{6})$ have 4 different candidates $n_{2},\ n_{3},\ n_{5},\ and\ n_{9}$ appear commonly in these four cells. Consequently, candidates $n_{2},\ n_{3},\ n_{5},\ and\ n_{9}$ in other cells in the block $b_{5}$ will be excluded (Figure because these four candidates will not longer possible to be used in other cells anymore.
+Figure \ref{fig:nakedquadrn} is an rn-view annotated instance. In the number $3$, cell $A'(3,3)$, $A'(3,4)$, $A'(3,6)$, and$A'(3,7)$ have 4 different columns $1, 3, 5, 9$ appear commonly in these four cells which satisfy the prerequisite of naked quad rule. Consequently, any other cells in the shared number $3$ which has columns $1, 3, 5, 9$ will have these four candidates excluded from the number, because these four columns will not longer possible to be used in other cells, but in this case, other cells in a number do not have these columns $1, 3, 5, 9$ in the cells.\\
 
 \begin{figure}[htbp]
 \begin{sudoku}
-|{\cell 1{}{}{}5{}{}{}{}}|9|4|{\cell 1{}{}{}5{}7{}{}}|3|6|2|{\cell 1{}{}{}{}{}78{}}|{\cell 1{}{}{}{}{}{}8{}}|.
-|{\cell 12{}{}{}6{}{}{}}|7|{\cell 12{}{}{}6{}8{}}|{\cell 12{}{}{}{}{}{}9}|{\cell 12{}{}{}{}{}{}9}|{\cell {}{}{}{}{}{}{}89}|4|3|5|.
-|{\cell 12{}{}5{}{}{}{}}|3|{\cell 12{}{}5{}{}8{}}|4|{\cell 12{}{}{}{}7{}{}}|{\cell {}{}{}{}5{}{}8{}}|{\cell {}{}{}{}67{}{}{}}|{\cell 1{}{}{}{}67{}9}|{\cell 1{}{}{}{}{}{}{}9}|.
-|{\cell {}{}34{}6{}{}9}|{\cell {}{}{}4{}6{}{}{}}|{\cell {}{}3{}{}6{}{}9}|8|{\cell {}{}{}{}{}67{}{\sout 9}}|1|5|{\cell {}2{}{}{}{}7{}9}|{\cell {}23{}{}{}{}{}9}|.
-|{\cell 1{}3{}56{}{}9}|2|{\cell 1{}3{}56{}{}9}|{\cell {}{}{}{}{\sout 5}67{}{\sout 9}}|4|{\cell {}{}3{}5{}{}{}9}|{\cell {}{}{}{}{}{}78{}}|{\cell {}{}{}{}{}{}789}|{\cell {}{}3{}{}{}{}89}|.
-|7|8|{\cell {}{}3{}5{}{}{}9}|{\cell {}2{}{}5{}{}{}9}|{\cell {}2{}{}{}{}{}{}9}|{\cell {}{}3{}5{}{}{}9}|1|4|6|.
-|8|{\cell 1{}{}{}{}6{}{}{}}|{\cell {}23{}{}6{}{}{}}|{\cell 1{}3{}{}6{}{}{}}|5|7|9|{\cell 12{}{}{}6{}{}{}}|4|.
-|{\cell {}2{}{}{}6{}{}9}|{\cell 1{}{}{}56{}{}{}}|7|{\cell 1{}{}{}{}6{}{}9}|{\cell 1{}{}{}{}6{}89}|4|3|{\cell 12{}{}56{}8{}}|{\cell 12{}{}{}{}{}8{}}|.
-|{\cell {}{}34{}6{}{}9}|{\cell 1{}{}456{}{}{}}|{\cell {}{}3{}{}6{}{}9}|{\cell 1{}3{}{}6{}{}9}|{\cell 1{}{}{}{}6{}89}|2|{\cell {}{}{}{}{}6{}8{}}|{\cell 1{}{}{}56{}8{}}|7|.
+|{\makebox[0pt]{\hspace{-1em}\large r1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n2}}4}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}2{}{}{}{}{}8{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}2{}{}{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}2{}{}5{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}3{}{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}{}{}5678{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n9}}{\cell {}{}{}{}5{}78{}}}|.
+|{\makebox[0pt]{\hspace{-2.3em}\large r2}{\cell {}{}{}{}{}{}{}{}9}}|{\cell 1{}{}{}{}{}{}{}{}}|6|{\cell {}{}{}{}5{}{}{}{}}|4|7| 8|{\cell {}{}3{}5{}{}{}{}}|2|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r3}{\cell {}{}{}4{}67{}9}}|{\cell {}{}{}{}{}{}7{}9}|{\cell {\underline 1}{}{\underline 3}{}{}{}{}{\underline 9}}|2|{\cell 1{}{}{}{}{}7{}{}}|{\cell {}{}34{}{}{}{}{}}|5|{\cell 1{}34{}6789}|{\cell {}{}{}4{}{}78{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r4}2}|{\cell {}{}{}{}56{}{}{}}|{\cell {\underline 1}{}{\underline 3}{}{\underline 5}{}{}{}{}}|{\cell {}{}34{}6{}{}{}}|8|{\cell {}{}345{}{}{}{}}|{\cell {}{}{}4{}67{}{}}|{\cell 1{}34567{}{}}|9|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r5}{\cell {}{}{}4{}6{}{}9}}|3|7|{\cell {}{}{}{}{}{}{}8{}}|{\cell 12{}{}56{}{}{}}|{\cell {}2{}45{}{}{}9}|{\cell {}{}{}4{}6{}{}9}|{\cell 1{}{}456{}89}|{\cell {}{}{}45{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r6}{\cell {}{}{}4{}67{}9}}|8|{\cell {}{}{\underline 3}{}{\underline 5}{}{}{}{}}|{\cell {}{}34{}6{}{}{}}|{\cell {}{}{}{}56{}{}{}}|{\cell {}{}345{}{}{}9}|2|{\cell {}{}34567{}9}|1|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r7}5}|{\cell {}2{}{}{}67{}9}|{\cell {\underline 1}{}{\underline 3}{}{}{}{}{}{\underline 9}}|{\cell {}{}{}4{}6{}{}{}}|{\cell {}{}{}{}{}6{}{}{}}|8|{\cell 1{}34{}67{}9}|{\cell {}{}{}4{}67{}9}|{\cell {}{}3{}{}{}7{}{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r8}8}|{\cell {}{}{}{}5{}{}{}{}}|4| {\cell {}{}{}{}{}{}7{}{}}|3| {\cell 1{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}9}|2|6|.
+|{\makebox[0pt]{\hspace{-2.3em}\large r9}{\cell {}{}3{}{}{}{}{}{}}}| {\cell {}2{}{}5{}7{}{}}|{\cell {}2{}{}{}{}{}8{}}|1|9|6|{\cell {}{}{}4{}{}7{}{}}| {\cell {}{}{}45{}78{}}|{\cell {}{}{}{}{}{}78{}}|.
 \end{sudoku}
-\caption{Example in naked quad}
-\label{fig:nakedquad}
+\caption{Example in rn-view for naked quad.}
+\label{fig:nakedquadrn}
+\end{figure}
+
+\begin{itemize}
+\item In the cn-view, the shared unit could be either column (x-axis) or number (y-axis).
+\end{itemize}
+
+Figure \ref{fig:nakedquadcn} is an cn-view annotated instance. In the number $5$, cell $A'(1,5)$, $A'(2,5)$, $A'(5,5)$, and$A'(7,5)$ have 4 different rows $1, 3, 5, 6$ appear commonly in these four cells which satisfy the prerequisite of naked quad rule. Consequently, any other cells in the shared number $5$ which has rows $1, 3, 5, 6$ will have these four rows excluded from the number, because these four rows will not longer possible to be used in other cells, but in this case, other cells in a number have already found their unique equation.\\
+
+\begin{figure}[htbp]
+\begin{sudoku}
+|{\makebox[0pt]{\hspace{-1em}\large c1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n2}}{\cell {}23{}{}{}78{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}{}34{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}{}{\underline 3}{}{\underline 5}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}{}345{}{}8{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}{}{}{}{}78{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}2345{}{}{}{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n9}}6}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c2}4}|{\cell {}{}{}{}{}{}7{}9}|{\cell 1{}{}{}{}{}7{}9}|3|{\cell {\underline 1}{}{}{}{\underline 5}{}{}{}{}}|{\cell 1{}{}{}5{}{}{}{}}|6|8|2|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c3}{\cell {}{}{}{}{}{}{}{}9}}|5|{\cell 1{}34{}67{}9}|{\cell {}{}{}4{}67{}{}}|8|{\cell 1{}34{}6{}{}{}}|{\cell 1{}{}{}{}{}7{}9}|{\cell 1234{}6{}{}{}}|{\cell {}{}{}{}{}{}7{}9}|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c4}{\cell {}{}3{}{}6{}{}{}}}|1|8|{\cell {}{}{}4{}67{}{}}|2|{\cell {}{}3456{}{}{}}|{\cell {}{}{}45{}7{}9}|{\cell {}{}34567{}9}|{\cell {}{}3{}5{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c5}7}|{\cell {}{}{}4{}{}{}89}|{\cell {}{}{}4{}6{}{}{}}|{\cell {}2{}4{}6{}8{}}|{\cell {}{}{}{}{\underline 5}{\underline 6}{}{}{}}|{\cell 1{}{}456{}{}{}}|3|{\cell 12{}456{}{}9}|{\cell 1{}{}{}5{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large c6}{\cell {}{}3{}56{}{}{}}}|{\cell {}{}{}4{}{}{}{}{}}|2|{\cell {}{}{}4{}6{}{}{}}|{\cell {}{}{}{}{}{}7{}{}}|9|{\cell {}{}{}45{}{}{}{}}|{\cell 1{}3456{}{}{}}|8|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c7}{\cell {}{}3{}{}6{}{}{}}}|{\cell {}{}3{}{}{}789}|5|{\cell {}{}{}4{}678{}}|{\cell{\underline  1}{}{\underline 3}{}{}{}{}{}{}}|2|{\cell {}{}{}4{}{}789}|{\cell 1{}34{}67{}9}|{\cell 1{}3{}{}{}7{}9}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c8}8}|6|{\cell 1{}3{}{}{}{}{}9}|{\cell {}{}{}{}5{}{}{}{}}|4|7|2|{\cell 1{}3{}{}{}{}{}9}|{\cell 1{}3{}{}{}{}{}9}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large c9}{\cell {}23{}56{}{}{}}}|{\cell {}23{}{}{}78{}}|{\cell {}{}3{}{}{}7{}{}}|1|9|{\cell {}{}{}{}56{}{}{}}|{\cell {}{}{}{}5{}78{}}|{\cell {}23{}567{}{}}|4|.
+\end{sudoku}
+\caption{Example in cn-view for naked quad.}
+\label{fig:nakedquadcn}
+\end{figure}
+
+\begin{itemize}
+\item In the bn-view, the shared unit could only be block (x-axis).
+\end{itemize}
+
+Figure \ref{fig:nakedquadbn} is an bn-view annotated instance. In the block $8$, cell $A'(8,2)$, $A'(8,4)$, $A'(8,7)$, and$A'(8,8)$ have 4 different squares $1, 5, 7, 8$ appear commonly in these four cells which satisfy the prerequisite of naked quad rule. Consequently, any other cells in the shared block $8$ which has squares $1, 5, 7, 8$ will have these four squares excluded from the number, because these four squares will not longer possible to be used in other cells, but in this case, other cells in the block have already found their unique equation.\\
+
+\begin{figure}[htbp]
+\begin{sudoku}
+|{\makebox[0pt]{\hspace{-1em}\large b1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n2}}{\cell {}{}{}4{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}23{}{}{}7{}9}}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n4}}8}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}2{}{}{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}23{}{}{}7{}9}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}3{}{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}34{}{\underline 6}7{}9}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n9}}5}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b2}{\cell {}{}{}{}{}{}7{}9}}|1|6|{\cell {}{}{}{}5{}{}{}{}}|4|{\cell {}2{}{}{}{}7{}{}}|8|{\cell {}23{}5{}{}89}|{\cell {}2{}{}{}{}7{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b3}{\cell {}{}{}{}{}67{}9}}|{\cell {}{}{}{}{}67{}9}|{\cell {}2{}{}{}{}{}89}|3|{\cell 1{}{}{}{}{}7{}{}}|4|5|{\cell 12{}{}{}6789}|{\cell 12{}{}{}{}78{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b4}2}|6|{\cell 1{}3{}{}{}{}{}9}|{\cell {}{}3{}{}{}{}{}9}|{\cell {}{}{}45{}{}{}{}}|{\cell 1{}345{}{}{}9}|8|{\cell 1{}34{}{}{}{}9}|7|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b5}{\cell {}{}{}4{}67{}9}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}2{}{}{}{}{}8{}}|{\cell 123456789}|{\cell {}{}{}{}56{}89}|{\cell 12{}45{}78{}}|{\cell 1{}34{}6{}{}{}}|{\cell 123456789}|{\cell {}{}{}45{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b6}{\cell {}{}{}{}{}67{}9}}|8|4|{\cell 1{}{}{}5{}7{}{}}|2|{\cell {}{}{}{}{}6{}{}9}|{\cell 1{}{}{}{}6{}{}{}}|{\cell 1{}{}{}567{}9}|3|.
+|{\makebox[0pt]{\hspace{-2.3em}\large b7}{\cell {}{}{}{}{}{}{}{}9}}|{\cell {}2{}{}{}{}{}8{}}|{\cell {}2{}{}{}{}{}8{}}|7|6|{\cell {}{}{}4{}{}{}{}{}}|{\cell 1{}{}{}{}{}{}{}{}}|5|{\cell {}{}3{}{}{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b8}2}|{\cell {}{}{}{}{\underline 5}{}{}{\underline 8}{}}|4|{\cell {\underline 1}{}{}{}{\underline 5}{}{}{}{}}|{\cell {}{}3{}{}{}{}{}{}}|9|{\cell {\underline 1}{}{}{}{}{}{\underline 7}{}{}}|{\cell {\underline 1}{}{}{}{}{}{\underline 7}{\underline 8}{}}|6|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b9}5}|{\cell 1{}34{}67{}{}}|{\cell {}{}3{}{}{}{}8{}}|{\cell 1{}{}4{}{}{}{}{}}|9|2|{\cell 1{}34{}67{}{}}|{\cell 1{}3{}{}{}78{}}|{\cell 1{}{}{}{}{}78{}}.
+\end{sudoku}
+\caption{Example in bn-view for naked quad.}
+\label{fig:nakedquadbn}
 \end{figure}
 
 
-
-
-\subsection{Hidden Quad}
+\section{Hidden Quad}
 \label{sec:Hidden Quad}
-This is a rare circumstance which has four candidates only found in four cells in a unit and each cell has at least two of these candidates appear in the cell. Then all other candidates in these four cells would be excluded afterwards as soon as the situation is found. 
-In the block $b_{6}$ of Figure \ref{fig:hiddenquad}, candidates $n_{1}$, $n_{4}$, $n_{6}$ and $n_{7}$ (in boldface font) are the only 4 candidates appear in these four cells $(r_{4}, c_{7})$,  $(r_{4}, c_{9})$,  $(r_{6}, c_{7})$ and $(r_{7}, c_{9})$, thus, all other candidates in these four cells will no longer needed.
+Hidden quad is a rule used rarely when is in a situation that ``an annotated instance has four candidates only found in four cells in a shared unit and each cell has at least two of these candidates appear in each cell''. All other candidates in these four cells will be excluded as soon as the situation is satisfied. And also, re-write the equations for these four cell. A shared unit general means rows, columns, and block, but we have to clear that is only applied under rc-view. In the three other views, a shared unit will be varied according to the view as below:
+\begin{itemize}
+\item In the rc-view annotated instance, the shared unit could be either row, column or block,
+\end{itemize}
 
+In the block $6$ of an rc-view annotated instance in Figure \ref{fig:hiddenquadrc}, candidates $1$, $4$, $6$ and $7$ only appear in these four cells $A'(4,7)$,  $A'(4,9)$,  $A'(6,7)$ and $A'(7,9)$. Thus, all other candidates in these four cells will no longer needed to be exist, so the equations for these four cell will be,
+\begin{eqnarray*}
+A'(4,7) = (\set{1, 4, 6, 7}, \set{2, 3, 5, 8, 9})\\
+A'(4,9) = (\set{1, 6, 7}, \set{2, 3, 4, 5, 8, 9})\\
+A'(6,7) =  \set{1, 4, 7}, \set{2, 3, 5, 6, 8, 9})\\
+A'(7,9) = (\set{1, 7}, \set{2, 3, 4, 5, 6, 8, 9})\\
+\end{eqnarray*}
 
 \begin{figure}[htbp]
 \begin{sudoku}
 |6|3|2|1|4|5|9|7|8|.
 |8|1|{\cell {}{}{}{}5{}7{}{}}|{\cell {}{}3{}{}6{}{}{}}|9|{\cell {}2{}{}{}{}7{}{}}|{\cell {}23{}56{}{}{}}|{\cell {}23{}5{}{}{}{}}|4|.
 |{\cell {}{}{}{}5{}{}{}9}|4|{\cell {}{}{}{}5{}7{}9}|{\cell {}{}3{}{}6{}{}{}}|8|{\cell {}2{}{}{}{}7{}{}}|{\cell {}23{}56{}{}{}}|1|{\cell {}23{}56{}{}{}}|.
-|{\cell {}{}3{}{}{}{}{}9}|{\cell {}2{}{}{}{}7{}{}}|{\cell {}{}{}4{}{}{}{}9}|8|5|{\cell 1{}3{}{}{}{}{}{}}|{\cell {\textbf 1}{\sout 2}{}{\textbf 4}{}{\textbf 6}{\textbf 7}{}{}}|{\cell {}2{}{}{}{}{}{}9}|{\cell {\textbf 1}{\sout 2}{}{}{}{\textbf 6}{\textbf 7}{}{}}|.
+|{\cell {}{}3{}{}{}{}{}9}|{\cell {}2{}{}{}{}7{}{}}|{\cell {}{}{}4{}{}{}{}9}|8|5|{\cell 1{}3{}{}{}{}{}{}}|{\cell {\underline 1}{\xout 2}{}{\underline 4}{}{\underline 6}{\underline 7}{}{}}|{\cell {}2{}{}{}{}{}{}9}|{\cell {\underline 1}{\xout 2}{}{}{}{\underline 6}{\underline 7}{}{}}|.
 |1|6|{\cell {}{}{}{}5{}{}89}|2|7|4|{\cell {}{}3{}5{}{}8{}}|{\cell {}{}3{}5{}{}89}|{\cell {}{}3{}5{}{}{}{}}|.
-|{\cell {}{}3{}5{}{}{}{}}|{\cell {}2{}{}{}{}7{}{}}|{\cell {}{}{}45{}{}8{}}|9|6|{\cell 1{}3{}{}{}{}{}{}}|{\cell {\textbf 1}{\sout 2}{}{\textbf 4}{\sout 5}{}{\textbf 7}{\sout 8}{}}|{\cell {}2{}{}5{}{}8{}}|{\cell {\textbf 1}{\sout 2}{}{}{\sout 5}{}{\textbf 7}{}{}}|.
+|{\cell {}{}3{}5{}{}{}{}}|{\cell {}2{}{}{}{}7{}{}}|{\cell {}{}{}45{}{}8{}}|9|6|{\cell 1{}3{}{}{}{}{}{}}|{\cell {\underline 1}{\xout 2}{}{\underline 4}{\xout 5}{}{\underline 7}{\xout 8}{}}|{\cell {}2{}{}5{}{}8{}}|{\cell {\underline 1}{\xout 2}{}{}{\xout 5}{}{\underline 7}{}{}}|.
 |4|8|1|5|2|9|{\cell {}{}3{}{}{}7{}{}}|6|{\cell {}{}3{}{}{}7{}{}}|.
 |7|5|3|4|1|6|{\cell {}2{}{}{}{}{}8{}}|{\cell {}2{}{}{}{}{}8{}}|9|.
 |2|9|6|7|3|8|{\cell 1{}{}{}5{}{}{}{}}|4|{\cell 1{}{}{}5{}{}{}{}}|.
 \end{sudoku}
-\caption{Example in hidden quad}
-\label{fig:hiddenquad}
+\caption{Example in the rc-view for hidden quad.}
+\label{fig:hiddenquadrc}
 \end{figure}
 
+\begin{itemize}
+\item In the rn-view, the shared unit could be either row (x-axis) or number (y-axis).
+\end{itemize}
 
-\section{Advanced rules}
-\label{sec:Advancedrules}
+In the row $6$ of an rn-view annotated instance in Figure \ref{fig:hiddenquadrn}, column $4, 6, 7, 9$ only appear in these four cells $A'(6,1)$,  $A'(6,4)$,  $A'(6,6)$ and $A'(6,7)$. Thus, all other candidates in these four cells will no longer needed to be exist, the equations for these four cell will be,
+\begin{eqnarray*}
+A'(6,1) = (\set{4, 6, 7 ,9}, \set{1, 2, 3, 5, 8})\\
+A'(6,4) = (\set{4, 6}, \set{1, 2, 3, 5, 7, 8, 9})\\
+A'(6,6) =  \set{4, 9}, \set{1, 2, 3, 5, 6, 7, 8})\\
+A'(6,7) = (\set{4, 7 ,9}, \set{1, 2, 3, 5, 6, 8})\\
+\end{eqnarray*}
 
 
-\subsection{X-wing}
+\begin{figure}[htbp]
+\begin{sudoku}
+|{\makebox[0pt]{\hspace{-1em}\large r1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n2}}4}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}2{}{}{}{}{}8{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}2{}{}{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}2{}{}5{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}3{}{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}{}{}{}6{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n9}}{\cell {}{}{}{}5{}78{}}}|.
+|{\makebox[0pt]{\hspace{-2.3em}\large r2}{\cell {}{}{}{}{}{}{}{}9}}|{\cell 1{}{}{}{}{}{}{}{}}|6|{\cell {}{}{}{}5{}{}{}{}}|4|7| 8|{\cell {}{}3{}{}{}{}{}{}}|2|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r3}{\cell {}{}{}4{}67{}9}}|{\cell {}{}{}{}{}{}7{}9}|{\cell 1{}3{}{}{}{}9}|2|{\cell 1{}{}{}{}{}7{}{}}|{\cell {}{}34{}{}{}{}{}}|5|{\cell 1{}{}4{}{}789}|{\cell {}{}{}4{}{}78{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r4}2}|{\cell {}{}{}{}{}6{}{}{}}|{\cell 1{}3{}{}{}{}{}{}}|{\cell {}{}34{}{}{}{}{}}|8|{\cell {}{}345{}{}{}{}}|{\cell {}{}{}4{}{}7{}{}}|{\cell 1{}{}45{}7{}{}}|9|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r5}{\cell {}{}{}4{}6{}{}9}}|3|7|{\cell {}{}{}{}{}{}{}8{}}|{\cell 12{}{}{}{}{}{}{}}|{\cell {}2{}45{}{}{}9}|{\cell {}{}{}4{}6{}{}9}|{\cell 1{}{}45{}{}89}|{\cell {}{}{}45{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large r6}{\cell {}{}{}{\underline 4}{}{\underline 6}{\underline 7}{}{\underline 9}}}|8|{\cell {}{}3{}{}{}{}{}{}}|{\cell {}{}{\xout 3}{\underline 4}{}{\underline 6}{}{}{}}|{\cell {}{}{}{}5{}{}{}{}}|{\cell {}{}{\xout 3}{\underline 4}{}{}{}{}{\underline 9}}|2|{\cell {}{}{}{\underline 4}{}{}{\underline 7}{}{\underline 9}}|1|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r7}5}|{\cell {}2{}{}{}{}{}{}{}}|{\cell 1{}3{}{}{}{}{}9}|{\cell {}{}{}4{}6{}{}{}}|{\cell {}{}{}{}{}6{}{}{}}|8|{\cell 1{}34{}67{}9}|{\cell {}{}{}4{}{}7{}9}|{\cell {}{}3{}{}{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large r8}8}|{\cell {}{}{}{}5{}{}{}{}}|4| {\cell {}{}{}{}{}{}7{}{}}|3| {\cell 1{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}9}|2|6|.
+|{\makebox[0pt]{\hspace{-2.3em}\large r9}{\cell {}{}3{}{}{}{}{}{}}}| {\cell {}2{}{}{}{}7{}{}}|{\cell {}2{}{}{}{}{}8{}}|1|9|6|{\cell {}{}{}4{}{}7{}{}}| {\cell {}{}{}45{}78{}}|{\cell {}{}{}{}{}{}78{}}|.
+\end{sudoku}
+\caption{Example in rn-view for hidden quad.}
+\label{fig:hiddenquadrn}
+\end{figure}
+
+\begin{itemize}
+\item In the cn-view, the shared unit could be either column (x-axis) or number (y-axis).
+\end{itemize}
+
+In the column $7$ of an cn-view annotated instance in Figure \ref{fig:hiddenquadcn}, row $1, 3, 7, 9$ only appear in these four cells $A'(7,2)$,  $A'(7,5)$,  $A'(7,8)$ and $A'(7,9)$. Thus, all other rows in these four cells will no longer needed to be exist, the equations for these four cell will be,
+\begin{eqnarray*}
+A'(7,2) = (\set{3, 7 ,9}, \set{1, 2, 4, 5, 6, 8})\\
+A'(7,5) = (\set{1, 3}, \set{2, 4, 5, 6, 7, 8, 9})\\
+A'(7,8) = (\set{1, 3, 7, 9}, \set{2, 4, 5, 6, 8})\\
+A'(7,9) = (\set{1, 3, 9}, \set{2, 4, 5, 6, 7, 8})\\
+\end{eqnarray*}
+
+\begin{figure}[htbp]
+\begin{sudoku}
+|{\makebox[0pt]{\hspace{-1em}\large c1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n2}}{\cell {}23{}{}{}78{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}{}34{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}{}3{}5{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}{}345{}{}8{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}{}{}{}{}78{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}2345{}{}{}{}}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n9}}6}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c2}4}|{\cell {}{}{}{}{}{}7{}9}|{\cell {}{}{}{}{}{}7{}9}|3|{\cell 1{}{}{}5{}{}{}{}}|{\cell 1{}{}{}5{}{}{}{}}|6|8|2|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c3}{\cell {}{}{}{}{}{}{}{}9}}|5|{\cell {}{}{}{}{}6{}{}{}}|{\cell {}{}{}4{}{}{}{}{}}|8|{\cell {}{}3{}{}{}{}{}{}}|{\cell 1{}{}{}{}{}{}{}{}}|{\cell {}2{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}7{}{}}|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c4}{\cell {}{}{}{}5{}{}{}{}}}|1|8|{\cell {}{}{}{}{}{}7{}{}}|2|{\cell {}{}{}4{}6{}{}{}}|{\cell {}{}{}4{}{}{}{}9}|{\cell {}{}{}4{}6{}{}9}|{\cell {}{}3{}{}{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c5}7}|{\cell {}{}{}{}{}{}{}89}|{\cell {}{}{}4{}6{}{}{}}|{\cell {}2{}{}{}{}{}{}{}}|{\cell {}{}{}{}56{}{}{}}|{\cell 1{}{}456{}{}{}}|3|{\cell 1{}{}456{}{}9}|{\cell 1{}{}{}5{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large c6}{\cell {}{}3{}{}{}{}{}{}}}|{\cell {}{}{}4{}{}{}{}{}}|2|{\cell {}{}{}{}{}6{}{}{}}|{\cell {}{}{}{}{}{}7{}{}}|9|{\cell {}{}{}{}5{}{}{}{}}|{\cell 1{}{}{}{}{}{}{}{}}|8|.
+|{\makebox[0pt]{\hspace{-2.3em}\large c7}{\cell {}{}{}{}{}6{}{}{}}}|{\cell {}{}{\underline 3}{}{}{}{\underline 7}{}{\underline 9}}|5|{\cell {}{}{}{}{}{}{}8{}}|{\cell {\underline 1}{}{\underline 3}{}{}{}{}{}{}}|2|{\cell {}{}{}4{}{}{}{}9}|{\cell {\underline 1}{}{\underline 3}{\xout 4}{}{}{\underline 7}{}{\underline 9}}|{\cell {\underline 1}{}{\underline 3}{}{}{}{}{}{\underline 9}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c8}8}|6|{\cell 1{}3{}{}{}{}{}9}|{\cell {}{}{}{}5{}{}{}{}}|4|7|2|{\cell 1{}3{}{}{}{}{}9}|{\cell 1{}3{}{}{}{}{}9}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large c9}{\cell {}2{}{}{}{}{}{}{}}}|{\cell {}{}3{}{}{}78{}}|{\cell {}{}3{}{}{}7{}{}}|1|9|{\cell {}{}{}{}56{}{}{}}|{\cell {}{}{}{}{}{}78{}}|{\cell {}{}3{}567{}{}}|4|.
+\end{sudoku}
+\caption{Example in cn-view for hidden quad.}
+\label{fig:hiddenquadcn}
+\end{figure}
+
+\begin{itemize}
+\item In the bn-view, the shared unit could only be block (x-axis).
+\end{itemize}
+
+In the block $8$ of an bn-view annotated instance in Figure \ref{fig:hiddenquadbn}, square $1, 5, 7, 8$ only appear in these four cells $A'(8,2)$,  $A'(8,4)$,  $A'(8,7)$ and $A'(8,8)$. Thus, all other squares in these four cells will no longer needed to be exist, the equations for these four cell will be,
+\begin{eqnarray*}
+A'(8,2) = (\set{5, 8}, \set{1, 2, 3, 4, 6, 7, 9})\\
+A'(8,4) = (\set{1, 5}, \set{2, 3, 4, 6, 7, 8, 9})\\
+A'(8,7) =  \set{1, 7}, \set{2, 3, 4, 5, 6, 8, 9})\\
+A'(8,8) = (\set{1, 7, 8}, \set{2, 3, 4, 5, 6, 9})\\
+\end{eqnarray*}
+
+\begin{figure}[htbp]
+\begin{sudoku}
+|{\makebox[0pt]{\hspace{-1em}\large b1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n2}}{\cell {}{}{}4{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n3}}{\cell {}23{}{}{}7{}9}}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n4}}8}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n5}}{\cell {}2{}{}{}{}7{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n6}}{\cell {}23{}{}{}7{}9}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n7}}{\cell {}{}3{}{}{}{}{}{}}}|{\makebox[0pt]{\raisebox{2ex}[1ex]{\hspace{1em}\large n8}}{\cell {}{}34{}{\underline 6}7{}9}}|{\makebox[0pt]{\raisebox{2.5ex}[1ex]{\hspace{0.5em}\large n9}}5}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b2}{\cell {}{}{}{}{}{}7{}9}}|1|6|{\cell {}{}{}{}5{}{}{}{}}|4|{\cell {}2{}{}{}{}7{}{}}|8|{\cell {}23{}5{}{}89}|{\cell {}2{}{}{}{}7{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b3}{\cell {}{}{}{}{}67{}9}}|{\cell {}{}{}{}{}67{}9}|{\cell {}2{}{}{}{}{}89}|3|{\cell 1{}{}{}{}{}7{}{}}|4|5|{\cell 12{}{}{}6789}|{\cell 12{}{}{}{}78{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b4}2}|6|{\cell 1{}3{}{}{}{}{}9}|{\cell {}{}3{}{}{}{}{}9}|{\cell {}{}{}45{}{}{}{}}|{\cell 1{}345{}{}{}9}|8|{\cell 1{}34{}{}{}{}9}|7|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b5}{\cell {}{}{}4{}67{}9}}|{\cell {}23{}{}{}{}{}{}}|{\cell {}2{}{}{}{}{}8{}}|{\cell 123456789}|{\cell {}{}{}{}56{}89}|{\cell 12{}45{}78{}}|{\cell 1{}34{}6{}{}{}}|{\cell 123456789}|{\cell {}{}{}45{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.1em}\large b6}{\cell {}{}{}{}{}67{}9}}|8|4|{\cell 1{}{}{}5{}7{}{}}|2|{\cell {}{}{}{}{}6{}{}9}|{\cell 1{}{}{}{}6{}{}{}}|{\cell 1{}{}{}567{}9}|3|.
+|{\makebox[0pt]{\hspace{-2.3em}\large b7}{\cell {}{}{}{}{}{}{}{}9}}|{\cell {}2{}{}{}{}{}8{}}|{\cell {}2{}{}{}{}{}8{}}|7|6|{\cell {}{}{}4{}{}{}{}{}}|{\cell 1{}{}{}{}{}{}{}{}}|5|{\cell {}{}3{}{}{}{}{}{}}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b8}2}|{\cell {}{}{\xout 3}{}{\underline 5}{}{}{\underline 8}{}}|4|{\cell {\underline 1}{}{\xout 3}{}{\underline 5}{}{}{}{}}|{\cell {}{}3{}{}{}{}{}{}}|9|{\cell {\underline 1}{}{\xout 3}{}{}{}{\underline 7}{}{}}|{\cell {\underline 1}{}{\xout 3}{}{}{}{\underline 7}{\underline 8}{}}|6|.
+|{\makebox[0pt]{\hspace{-2.5em}\large b9}5}|{\cell 1{}34{}67{}{}}|{\cell {}{}3{}{}{}{}8{}}|{\cell 1{}{}4{}{}{}{}{}}|9|2|{\cell 1{}34{}67{}{}}|{\cell 1{}3{}{}{}78{}}|{\cell 1{}{}{}{}{}78{}}.
+\end{sudoku}
+\caption{Example in bn-view for hidden quad.}
+\label{fig:hiddenquadbn}
+\end{figure}
+
+\section{X-wing}
 \label{sec:X-wing}
 An X-Wing technique is rarely used because it only occurs when two rows or two columns (does not apply on blocks) each contain only two cells that have a matching candidate in between. This candidate must appear in both rows and share the same two columns or vice versa. If the condition holds, then this candidate could then be excluded from other cells in both rows and columns.
 
@@ -1205,23 +1767,38 @@ If the first solution is taken, then cell$(r_{2}, c_{8})$ will have candidate 9 
 
 \begin{figure}
 \begin{sudoku}
-|{\cell {}{}{}{}{}{}{}{}{}}|*|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|*|{\cell {}{}{}{}{}{}{}{}{}}|.
-|*|{\cell {}{}{}{}{}{6}{}{}{9}}|*|*|*|*|*|{\cell {}{}{}{}{}{6}{}{}{9}}|*|.
-|{\cell {}{}{}{}{}{}{}{}{}}|*|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|*|{\cell {}{}{}{}{}{}{}{}{}}|.
-|{\cell {}{}{}{}{}{}{}{}{}}|*|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|*|{\cell {}{}{}{}{}{}{}{}{}}|.
-|{\cell {}{}{}{}{}{}{}{}{}}|*|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|*|{\cell {}{}{}{}{}{}{}{}{}}|.
-|{\cell {}{}{}{}{}{}{}{}{}}|*|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|*|{\cell {}{}{}{}{}{}{}{}{}}|.
-|{\cell {}{}{}{}{}{}{}{}{}}|*|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|*|{\cell {}{}{}{}{}{}{}{}{}}|.
-|*|{\cell {}{}{}{4}{}{6}{}{}{}}|*|*|*|*|*|{\cell {}{}{}{4}{}{6}{}{}{}}|*|.
-|{\cell {}{}{}{}{}{}{}{}{}}|*|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|*|{\cell {}{}{}{}{}{}{}{}{}}|.
+|{\cell {}{}{}{}{}{}{}{}{}}| |{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}| |{\cell {}{}{}{}{}{}{}{}{}}|.
+||{\cell {}{}{}{}{}{\underline 6}{}{}{9}}||||||{\cell {}{}{}{}{}{\underline 6}{}{}{9}}||.
+|{\cell {}{}{}{}{}{}{}{}{}}||{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}||{\cell {}{}{}{}{}{}{}{}{}}|.
+|{\cell {}{}{}{}{}{}{}{}{}}||{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}||{\cell {}{}{}{}{}{}{}{}{}}|.
+|{\cell {}{}{}{}{}{}{}{}{}}||{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}||{\cell {}{}{}{}{}{}{}{}{}}|.
+|{\cell {}{}{}{}{}{}{}{}{}}||{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}||{\cell {}{}{}{}{}{}{}{}{}}|.
+|{\cell {}{}{}{}{}{}{}{}{}}||{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}||{\cell {}{}{}{}{}{}{}{}{}}|.
+||{\cell {}{}{}{4}{}{\underline 6}{}{}{}}||||||{\cell {}{}{}{4}{}{\underline 6}{}{}{}}||.
+|{\cell {}{}{}{}{}{}{}{}{}}||{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}||{\cell {}{}{}{}{}{}{}{}{}}|.
 \end{sudoku}
 \caption{Example in X-wing}
 \label{fig:xwing}
 \end{figure}
 
+\begin{figure}
+\begin{sudoku}
+|{\makebox[0pt]{\hspace{-1em}\large c1\raisebox{5ex}[0ex]{\hspace{2em}\large n1}}1}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n2}}2}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n3}}3}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n4}}9}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n5}}5}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n6}}8}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n7}}7}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n8}}4}|{\makebox[0pt]{\raisebox{2.6ex}[1ex]{\hspace{0.5em}\large n9}}6}|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c2}4}|{\cell {}{}{}{}{}{}7{}9}|{\cell {}{}{}{}{}{}7{}9}|3|1|5|6|8|2|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c3}9}|5|{\cell {}{}3{}{}6{}{}{}}|4|8|{\cell {}{}3{}{}6{}{}{}}|1|2|7|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c4}5}|1|8|7|2|4|9|6|3|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c5}7}|8|4|2|6|1|3|9|5|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c6}3}|4|2|6|7|9|5|1|8|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c7}6}|{\cell {}{}3{}{}{}7{}9}|5|8|3|2|4|7|1|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c8}8}|6|1|5|4|7|2|3|9|.
+|{\makebox[0pt]{\hspace{-2.5em}\large c9}2}|{\cell {}{}3{}{}{}7{}{}}|{\cell {}{}3{}{}{}7{}{}}|1|9|{\cell {}{}{}3{}{}6{}{}{}}|8|5|4|.
+\end{sudoku}
+\caption{Example in cn-view for X-wing}
+\label{fig:xwingcn}
+\end{figure}
 
 
-\subsection{XY-wing}
+\section{XY-wing}
 \label{sec:XY-wing}
 That has to be applied when two prerequisites are satisfied:
 \begin{enumerate}
@@ -1240,23 +1817,23 @@ Cell $(r_{8}, c_{8})$ is at the intersect point between cell $(r_{1}, c_{8})$ an
 
 \begin{figure}[htbp]
 \begin{sudoku}
-|{\cell {}{\textbf 2}{\textbf 3}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{\textbf 3}{}{}{}{\textbf 7}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
+|{\cell {}{\underline 2}{\underline 3}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{\underline 3}{}{}{}{\underline 7}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
 |{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
 |{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
 |{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
 |{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
 |{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
 |{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
-|{\cell {}{\textbf 2}{}{}{}{}{\textbf 7}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell 1{}{}{}{}{}{\sout 7}8{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
+|{\cell {}{\underline 2}{}{}{}{}{\underline 7}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell 1{}{}{}{}{}{\xout 7}8{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
 |{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
 \end{sudoku}
-\caption{Example in XY-wing}
+\caption{Example in rc-view for XY-wing}
 \label{fig:xywing}
 \end{figure}
 
 
 
-\subsection{XYZ-wing}
+\section{XYZ-wing}
 \label{sec:XYZ-wing}
 
 Which is pretty similar to XY-wing, but the only difference is, there is a cell specially has three candidates. So the conditions to be hold are:
@@ -1284,23 +1861,23 @@ There is a cell  $(r_{6}, c_{5})$ shared a block with both $(r_{4}, c_{5})$ and 
 \begin{figure}[htbp]
 \begin{sudoku}
 |{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
-|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{\textbf 6}{}{}{\textbf 9}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
+|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{\underline 6}{}{}{\underline 9}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
 |{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
-|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|1|{\cell {}{}{}{}{}{\textbf 6}{\textbf 7}{}{\textbf 9}}|{\cell {}{}{}{}{}{\textbf 6}{\textbf 7}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
+|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|1|{\cell {}{}{}{}{}{\underline 6}{\underline 7}{}{\underline 9}}|{\cell {}{}{}{}{}{\underline 6}{\underline 7}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
 |{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}5{}7{}9}|3|{\cell {}{}{}45{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
-|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|2|{\cell {}{}{}4{}{\sout 6}7{}{}}|8|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
+|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|2|{\cell {}{}{}4{}{\xout 6}7{}{}}|8|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
 |{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
 |{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
 |{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
 \end{sudoku}
-\caption{Example in XYZ-wing}
+\caption{Example in rc-view for XYZ-wing}
 \label{fig:xyzwing}
 \end{figure}
 
 
-\subsection{WXYZ-wing}
+\section{WXYZ-wing}
 \label{sec:WXYZ-wing}
-It is an advanced technique rather than the techniques introduced above. The prerequisites of this techniques are:
+WXYZ-wing is an advanced technique rather than the techniques introduced above. The prerequisites of this techniques are:
 \begin{enumerate}
 \item four different cells not in a same unit but have a common candidate Z,
 \item three cells have candidate XZ, YZ, WZ, and one cell has WXYZ,
@@ -1320,24 +1897,24 @@ Four cells all hae a common candidate $n_{5}$, and other conditions are all hold
 
 \begin{figure}[htbp]
 \begin{sudoku}
-|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{\textbf 2}{}{\textbf 4}{\textbf 5}{\textbf 6}{}{}{}}|{\cell {}{\textbf 2}{}{}{\textbf 5}{}{}{}{}}|.
-|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}3{}{\sout 5}{}7{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
+|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{\underline 2}{}{\underline 4}{\underline 5}{\underline 6}{}{}{}}|{\cell {}{\underline 2}{}{}{\underline 5}{}{}{}{}}|.
+|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}3{}{\xout 5}{}7{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
 |{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}34{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
 |{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
 |{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
-|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{\textbf 4}{\textbf 5}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
-|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{\textbf 5}{\textbf 6}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
+|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{\underline 4}{\underline 5}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
+|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{\underline 5}{\underline 6}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
 |{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
 |{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|{\cell {}{}{}{}{}{}{}{}{}}|.
 \end{sudoku}
-\caption{Example in WXYZ-wing}
+\caption{Example in rc-view for WXYZ-wing}
 \label{fig:wxyzwing}
 \end{figure}
 
 
 
 
-\subsection{Swordfish}
+\section{Swordfish}
 \label{sec:Swordfish}
 Swordfish is an approach extended from X-wing technique, but rarer to be seen. The concept is, a value in one position will force other positions in the same row or same column not to have the same value filled in and vice versa. It is used when there are (a graphic pattern is in Figure \ref{fig:swordfish}):
 \begin{enumerate}
@@ -1364,7 +1941,7 @@ If there is one candidate in three rows only appears in particular three columns
 |{\makebox[0pt]{\hspace{-2.25em}\large $r_{Z}$}}|X| | |*| | |X| |.
 | |*| | |*| | |*| |.
 \end{sudoku}
-\caption{Example in Swordfish}
+\caption{Example pattern in Swordfish}
 \label{fig:swordfish}
 \end{figure}
 
@@ -1373,17 +1950,17 @@ In the Figure \ref{fig:swordfishreal}, candidate $n_{6}$ appear in $(r_{3}, c_{5
 \begin{figure}[htbp]
 \begin{sudoku}
  |{\makebox[0pt]{\hspace{-1em}\large r1\raisebox{5ex}[0ex]{\hspace{1.5em}c1}}}|{\makebox[0pt]{\raisebox{5ex}{\hspace{0em}\large c2}}}|{\makebox[0pt]{\raisebox{5ex}{\hspace{0em}\large c3}}}| {\makebox[0pt]{\raisebox{5ex}{\hspace{0em}\large c4}}}|{\makebox[0pt]{\raisebox{5ex}{\hspace{0em}\large c5}}}|{\makebox[0pt]{\raisebox{5ex}{\hspace{0em}\large c6}}}|{\makebox[0pt]{\raisebox{5ex}{\hspace{0em}\large c7}}}|{\makebox[0pt]{\raisebox{5ex}{\hspace{0em}\large c8}}}|{\makebox[0pt]{\raisebox{5ex}{\hspace{0em}\large c9}}}|.
- |{\makebox[0pt]{\hspace{-2.25em}\large r2}}| | | | | | | | |.
- |{\makebox[0pt]{\hspace{-2.25em}\large r3}}4|1|3|7|{\cell {}{}{}{}{}{\textbf 6}{}{}9}|2|{\cell {}{}{}{}{}{\textbf 6}{}{}9}|8|5|.
- |{\makebox[0pt]{\hspace{-2.25em}\large r4}}| | | | | | | | |.
- |{\makebox[0pt]{\hspace{-2.25em}\large r5}}| | | | | | | | |.
- |{\makebox[0pt]{\hspace{-2.25em}\large r6}}3| | |4|2| |{\cell 1{}{}{}5{\textbf 6}{}{}9}|{\cell 1{}{}{}5{\textbf 6}{}{}9}|8|.
- |{\makebox[0pt]{\hspace{-2.25em}\large r7}}| | | | | |{\cell 1{}{}{}{}{\sout 6}{}89}| {\cell 1{}{}{}{}{\sout 6}{}{}9} |.
- |{\makebox[0pt]{\hspace{-2.25em}\large r8}}|3|4| |{\cell {}{}{}{}{}{\textbf 6}{}{}9}|1|{\cell {}2{}{}5{\textbf 6}{}8{}}|{\cell {}{}{}{}5{\textbf 6}{}{}{}}|7|.
- |{\makebox[0pt]{\hspace{-2.25em}\large r9}}| | | | | |{\cell 12{}{}{}{\sout 6}{}8{}}| | |.
+ |{\makebox[0pt]{\hspace{-2.5em}\large r2}}| | | | | | | | |.
+ |{\makebox[0pt]{\hspace{-2em}\large r3}4}|1|3|7|{\cell {}{}{}{}{}{\textbf 6}{}{}9}|2|{\cell {}{}{}{}{}{\textbf 6}{}{}9}|8|5|.
+ |{\makebox[0pt]{\hspace{-2.5em}\large r4}}| | | | | | | | |.
+ |{\makebox[0pt]{\hspace{-2.5em}\large r5}}| | | | | | | | |.
+ |{\makebox[0pt]{\hspace{-2em}\large r6}3}| | |4|2| |{\cell 1{}{}{}5{\textbf 6}{}{}9}|{\cell 1{}{}{}5{\textbf 6}{}{}9}|8|.
+ |{\makebox[0pt]{\hspace{-2.5em}\large r7}}| | | | | |{\cell 1{}{}{}{}{\xout 6}{}89}| {\cell 1{}{}{}{}{\xout 6}{}{}9} |.
+ |{\makebox[0pt]{\hspace{-2.5em}\large r8}}|3|4| |{\cell {}{}{}{}{}{\textbf 6}{}{}9}|1|{\cell {}2{}{}5{\textbf 6}{}8{}}|{\cell {}{}{}{}5{\textbf 6}{}{}{}}|7|.
+ |{\makebox[0pt]{\hspace{-2.5em}\large r9}}| | | | | |{\cell 12{}{}{}{\xout 6}{}8{}}| | |.
 \end{sudoku}
-\caption{Real example in Swordfish}
-\label{fig:swordfishreal}
+\caption{Real example in rc-view for Swordfish}
+\label{fig:swordfishrealrc}
 \end{figure}
 
 
@@ -1391,18 +1968,169 @@ In the Figure \ref{fig:swordfishreal}, candidate $n_{6}$ appear in $(r_{3}, c_{5
 
 
 \chapter{Environment}
-\label{sec:Environment}
+\label{cha:Environment}
+For the project, two softwares are used to help, one is Git and another one is Latex. Git is a software which used because it provide an efficient way to record every single change in the project for managing a project during development. And Latex is a document editor which is used on writing up the documentation in a logical structure, and referencing the related sources.
+
 
 \section{Git}
 \label{sec:git}
+Git is ``a free and open source, distributed version control system designed to handle everything from small to very large projects with speed and efficiency.\footnote{Git, \url{http://git-scm.com/}}'' Usually a server is required for controlling a project which might have different versions during development. However, a server is not required in Git. Git allows users to simply create a repository for project through Github\footnote{GitHub, a web-based hosting service for software development projects that use the Git revision control system.[Wikipedia]}that user can fetch and merge at anytime to instead of to have a server existed. By using Git, users can have a better way to manage the project during developing and have every single change recorded for anytime users want to look into a specific change. To install Git, a free version could be downloaded from \url{http://git-scm.com/}.
+
+
+\subsection{Command for using Git}
+\label{sec:command}
+Here are the commands used in the command line for supporting the project.\\
+
+\textbf{Push} Push the project to a remote repository.
+\begin{verbatim}
+git push [alias] [branch]
+\end{verbatim}
+
+\textbf{Fetch} Download the project from a remote repository.
+\begin{verbatim}
+git fetch [alias]
+\end{verbatim}
+
+\textbf{Remote} List, add and delete a remote repository aliases. If the command run with ``-v'' option, all the aliases will list with its actual URL.
+\begin{verbatim}
+git remote [option]
+git remote add [alias] [branch]
+git remote rm [alias]
+\end{verbatim}
+
+\textbf{Pull} Fetch and merge from a remote repository into current branch.
+\begin{verbatim}
+git pull <repository>
+\end{verbatim}
+
+\textbf{GUI} Open a portable graphical interface to Git. (see Subsection \ref{sec:gui})
+\begin{verbatim}
+git gui &
+\end{verbatim}
+
+
+\subsection{Git GUI}
+\label{sec:gui}
+When a change has been done, then go to git GUI, firstly scan the change (see Figure \ref{fig:gitscan}), write a command to describe the change (see Figure \ref{fig:gitcommand}, and stage the change (see Figure \ref{fig:gitstage}), then commit the change (see Figure \ref{fig:gitcommit}) in the end to record a change.
+\begin{figure}[h]
+\begin{center}
+\subfigure[Scan the change.]{
+\includegraphics[scale=0.28]{GitScan.jpg}
+\label{fig:gitscan}}
+\subfigure[Write a command for the change.]{
+\includegraphics[scale=0.28]{GitCommand.jpg}
+\label{fig:gitcommand}}
+\subfigure[Stage changed.]{
+\includegraphics[scale=0.28]{GitStage.jpg}
+\label{fig:gitstage}}
+\subfigure[Admit the commitment.]{
+\includegraphics[scale=0.28]{GitCommit.jpg}
+\label{fig:gitcommit}}
+\end{center}
+\end{figure}
+
 
 
 \section{LaTex}
-\label{sec:miktex}
+\label{sec:latex}
+LaTeX is a document preparation system for high-quality typesetting. It is most often used for medium-to-large technical or scientific documents but it can be used for almost any form of publishing.
+
+\subsection{Package usage}
+\label{sec:packageusage}
+\textbf{Usepackage} Use a package or a style.
+\begin{verbatim}
+\usepackage{package_name}
+\end{verbatim}
+
+\subsection{Sectioning}
+\label{sec:sectioning}
+Latex allows user to structure their document in order by chapters, sections, subsections and paragraphs. Here, we use chapters, sections, and subsections only by the commands:
+
+\begin{verbatim}
+\chapter{chapter}
+\section{section}
+\subsetion{subsection}
+\end{verbatim}
+
+\subsection{Figures, tables and pictures}
+\label{sec:figurestablesandpictures}
+\textbf{Pictures} Insert a picture into the document and specify the width.
+\begin{verbatim}
+\begin{figure}[location]
+\includegraphics[width]{source}
+\end{figure}
+\end{verbatim}
+
+\textbf{Sudoku} Which is import from a package ``Sudoku'' to generate a Sudoku matrix.
+\begin{verbatim}
+\begin{figure}[location]
+\begin{sudoku}
+\end{sudoku}
+\end{figure}
+\end{verbatim}
+
+\subsection{Referencing and bibliography}
+\label{sec:referencingandbibliography}
+
+\textbf{Label} Give a mark to an object you want to reference.\\
+\textbf{Ref} Reference the object you have previously marked.
+\begin{verbatim}
+\label{marker}
+\ref{marker}
+\end{verbatim}
+
+\textbf{Footnote} providing extra information to the reader.
+\begin{verbatim}
+\footnote[num]{text}
+\end{verbatim}
+
+\textbf{Cite} Cite one of the references on your bibliography list. This can be done and providing the corresponding keyword that has already been assigned to an item in the bib file[\cite{Lamport1994LATEX}, 156].
+\begin{verbatim}
+\cite[page number]{item}
+\end{verbatim}
+
+A bib file provides many different entries to list referencing sources which is used to support the report. But in this report, we have only three type of entries used in the bib file, they are: three different source, book, journal, and website.
+
+\textbf{Book} A book source which with an explicit publisher. Required fields: author, title, publisher, year. Optional fields: volume or number, series, address, edition, month, note. Here is an example:
+\begin{verbatim}
+@Book{Berthier2007Sudoku,
+  author =	{Denis Berthier},
+  title =	{The Hidden Logic of Sudoku},
+  publisher =	{Lulu.com},
+  year =	{2007},
+  edition =	{Second},
+  note =	{ISBN 978-1-84799-214-7},
+}
+\end{verbatim}
+\textbf{Article} A article from a journal or magazine. Required fields: author, title, journal, year. Optional fields: volume, number, pages, month, note. Here is an example:
+\begin{verbatim}
+@Article{FelgenhauerJarvis2006SudokuI,
+  author = 	 {Bertam Felgenhauer and Frazer Jarvis},
+  title = 	 {Mathematics of {S}udoku {I}},
+  journal = 	 {Mathematical Spectrum},
+  year = 	 {2006},
+  volume =	 {39},
+  number =	 {1},
+  pages =	 {15-22},
+  month =	 {September},
+  note =	 {Available at \url{http://www.afjarvis.staff.shef.ac.uk/maths/}}
+}
+\end{verbatim}
+\textbf{Misc} Use this type when nothing else fits. Required fields: none. Optional fields: author, title, howpublished, month, year, note.Here is an example:
+To add a website source to bibliographies:
+\begin{verbatim}
+@Misc{website:LeonhardEuler,
+   author =	{Wikipedia},
+   title =	{{Leonhard Euler --- Wikipedia{,} The Free Encyclopedia}},
+   year =	{2011},
+   url =		{http://en.wikipedia.org/wiki/Leonhard\_Euler},
+   annote =	{Online; accessed 16-September-2011}
+ }
+\end{verbatim}
 
 
 \chapter{Conclusion}
-\label{sec:Conclusion}
+\label{cha:Conclusion}
 The Sudoku puzzle might be solved by only one technique in some simple case Nevertheless, usually two or more are commonly needed in dealing general problem such like using both naked single and hidden single. The number of techniques used will increase according to the difficulty of the puzzle. The harder problem needs more complex technique to support it.
 These special approaches for solving puzzle are simple and in fact popularly used in general problem solving. They are efficient to support player to eliminate the impossibilities in the cells, and leave the rest possibilities to get to the final solution.
 
