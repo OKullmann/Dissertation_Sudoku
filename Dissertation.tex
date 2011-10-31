@@ -52,9 +52,20 @@ September, 2011\\ \vspace{12pt}
 
 
 \begin{abstract}
-Many rules for solving a Sudoku instance have been introduced for a standard instance in a row-column view. In this report, we have ``square'' and original elements (row, column, block, number) involved to get three additional extended view generated from the standard one in different dimensions instead of having a Sudoku instance only in a standard row-column view. Three other views are, row-number view, column-number view, and block-number view.
+Many rules for solving a Sudoku instance have been introduced for a standard instance in a row-column view.
+
+XXX ``row-column view'' makes no sense here: it is not explained! And it is a
+novelty of this dissertation to consider these views!! XXX
+
+ In this report, we have ``square'' and original elements (row, column, block, number) involved to get three additional extended view generated from the standard one in different dimensions instead of having a Sudoku instance only in a standard row-column view. Three other views are, row-number view, column-number view, and block-number view.
+
+XXX Urgent grammar-checking and repair is needed. XXX
+
+XXX ``Views'' must be explained at a high level XXX
 
 During finding a solution by matching all the rules with the annotated instance, have four different views for an annotated instance could make it use the simple rule as far as possible. It could cut down the time consuming on the rule matching, and also carry out a solution for the annotated instance as soon as it can.
+
+XXX You need to state what is IN THE DISSERTATION: precise definitions, examples, various techniques, and an overview on the literature XXX
 \end{abstract}
 
 
@@ -1062,7 +1073,7 @@ In the Figure \ref{fig:intersectionremovalrc}, a case that all the cells in a bl
 \caption{Example in rc-view for intersection removal.}
 \label{fig:intersectionremovalrc}
 \end{figure}
-|
+
 
 
 
@@ -1787,7 +1798,7 @@ A'(9,3) = (\set{3}, \set{1, \dots, 9} \setminus \set{3})\\
 A'(9,6) = (\set{6}, \set{1, \dots, 9} \setminus \set{6})\\
 \end{eqnarray*}
 
-\textbf{The solution for the annotated instance in cn-view is found!.}
+\textbf{The solution for the annotated instance in cn-view is found!. XXX ??? XXX}
 
 
 
@@ -2166,6 +2177,9 @@ To add a website source to bibliographies:
 
 \chapter{Conclusion}
 \label{cha:Conclusion}
+
+XXX This must be one page at least XXX
+
 The Sudoku puzzle might be solved by only one technique in some simple case Nevertheless, usually two or more are commonly needed in dealing general problem such like using both naked single and hidden single. The number of techniques used will increase according to the difficulty of the puzzle. The harder problem needs more complex technique to support it.
 These special approaches for solving puzzle are simple and in fact popularly used in general problem solving. They are efficient to support player to eliminate the impossibilities in the cells, and leave the rest possibilities to get to the final solution.
 
