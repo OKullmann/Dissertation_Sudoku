@@ -6,7 +6,7 @@ auto
 *.dvi
 *.log
 *.toc
-*.pdf
+# *.pdf (normally ignored, but not here for the final version)
 *.out
 *.log
 amsmath.sty.txt
